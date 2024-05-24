@@ -1,4 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    domains: [
+      "img.freepik.com",
+      "dynamic.brandcrowd.com",
+      "cdn-icons-png.flaticon.com",
+    ],
+  },
+}
 
-export default nextConfig;
+export default nextConfig
