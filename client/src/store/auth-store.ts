@@ -1,6 +1,5 @@
 import { create } from "zustand"
 import axios from "axios"
-import { useGoogleLogin } from "@react-oauth/google"
 
 interface User {
   id: number
@@ -12,21 +11,34 @@ interface User {
 type Store = {
   user: User | null
   login: any
+  logout: any
+  isAuthenticated: boolean
 }
 
 const authStore = create<Store>()((set) => ({
   user: null,
+  login: async ({ token }: { token: string }) => {
+    console.log("token", token)
+    const { data } = await axios.post("http://localhost:8000/auth/google", {
+      token: token,
+    })
+    console.log("data", data)
 
-  login: async () => {},
+    if (data.message === "Ok") {
+      localStorage.setItem("binod", data.token)
+      set({ user: data.user, isAuthenticated: true })
+      return true
+    }
 
-  // login: useGoogleLogin({
-  //   onSuccess: async (tokenResponse) => {
-  //     console.log(tokenResponse)
-  //   },
-  //   onError: (err) => {
-  //     console.log("Google login error:", err)
-  //   },
-  // }),
+    return false
+  },
+
+  logout: async () => {
+    localStorage.removeItem("binod")
+    set({ user: null, isAuthenticated: false })
+  },
+
+  isAuthenticated: false,
 }))
 
 export default authStore

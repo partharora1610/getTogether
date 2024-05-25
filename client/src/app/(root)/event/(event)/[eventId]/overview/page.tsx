@@ -1,3 +1,4 @@
+"use client"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Dialog,
@@ -10,8 +11,13 @@ import {
 import PostForm from "@/components/forms/PostForm"
 import PollForn from "@/components/forms/PollForm"
 import ReminderForm from "@/components/forms/ReminderForm"
+import authStore from "@/store/auth-store"
+import { useRouter } from "next/navigation"
 
 const Page = () => {
+  const router = useRouter()
+  const { login, logout, isAuthenticated, user } = authStore()
+
   return (
     <div>
       <OverviewHeader />

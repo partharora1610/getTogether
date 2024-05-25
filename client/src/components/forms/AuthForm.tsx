@@ -3,12 +3,31 @@
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { useGoogleLogin } from "@react-oauth/google"
+import { useRouter } from "next/navigation"
+import authStore from "@/store/auth-store"
 
 export default function AuthForm() {
-  // const { login } = authStore()
+  const { login, logout, isAuthenticated, user } = authStore()
 
-  const url =
-    "https://accounts.google.com/o/oauth2/v2/auth?client_id=403568051053-ue6i1784hhl08q4ujgtf6c5u2ov4n7t7.apps.googleusercontent.com&redirect_uri=http://localhost:3000/api/auth/callback/google&response_type=code&scope=email%20profile&access_type=offline&prompt=consent"
+  const router = useRouter()
+
+  const loginClickHandler = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      console.log("Google login success:", tokenResponse.access_token)
+      const flag = await login({ token: tokenResponse.access_token })
+
+      if (flag) {
+        router.push("/event/1/overview")
+      } else {
+        router.push("/auth")
+      }
+    },
+
+    onError: (err) => {
+      console.log("Google login error:", err)
+    },
+  })
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
@@ -37,8 +56,7 @@ export default function AuthForm() {
               variant="outline"
               onClick={async (e) => {
                 e.preventDefault()
-                // console.log(url)
-                window.location.href = url
+                loginClickHandler()
               }}
             >
               <ChromeIcon className="mr-2 h-4 wc-4" />
@@ -97,3 +115,7 @@ function MountainIcon(props: any) {
     </svg>
   )
 }
+
+// const { login } = authStore()
+// const url =
+//   "https://accounts.google.com/o/oauth2/v2/auth?client_id=403568051053-ue6i1784hhl08q4ujgtf6c5u2ov4n7t7.apps.googleusercontent.com&redirect_uri=http://localhost:3000/api/auth/callback/google&response_type=code&scope=email%20profile&access_type=offline&prompt=consent"
