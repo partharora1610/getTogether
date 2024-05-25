@@ -19,6 +19,8 @@ const CanvasDialog = ({
     React.SetStateAction<{ title: string; json: string }[]>
   >
 }) => {
+  const [venuePlan, setVenuePlan] = React.useState<string>("")
+
   return (
     <Dialog>
       <DialogTrigger className="border-2 border-dashed border-gray-200 text-gray-500 px-4 py-4 rounded-md cursor-pointer">
@@ -37,6 +39,7 @@ const CanvasDialog = ({
                 </Label>
 
                 <Input
+                  onChange={(e) => setVenuePlan(e.target.value)}
                   placeholder="For example: Floor 1, Floor 2, etc."
                   className="text-base mt-2"
                 />
@@ -48,7 +51,7 @@ const CanvasDialog = ({
                     addVenuePlan((prev) => [
                       ...prev,
                       {
-                        title: "Floor 1 Right Side",
+                        title: venuePlan,
                         json: "",
                       },
                     ])

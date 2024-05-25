@@ -9,23 +9,35 @@ interface User {
 }
 
 type Store = {
-  user: User | null
+  user: any
+  setUser: any
   login: any
   logout: any
   isAuthenticated: boolean
+  setAuthenticated: any
 }
 
 const authStore = create<Store>()((set) => ({
   user: null,
+
+  setUser: (user: any) => {
+    set({ user })
+  },
+
   login: async ({ token }: { token: string }) => {
     console.log("token", token)
-    const { data } = await axios.post("http://localhost:8000/auth/google", {
-      token: token,
-    })
+    const { data } = await axios.post(
+      "http://localhost:8000/auth/google",
+      {
+        token: token,
+      },
+      {
+        withCredentials: true,
+      }
+    )
     console.log("data", data)
 
     if (data.message === "Ok") {
-      localStorage.setItem("binod", data.token)
       set({ user: data.user, isAuthenticated: true })
       return true
     }
@@ -34,11 +46,14 @@ const authStore = create<Store>()((set) => ({
   },
 
   logout: async () => {
-    localStorage.removeItem("binod")
     set({ user: null, isAuthenticated: false })
   },
 
   isAuthenticated: false,
+
+  setAuthenticated: (flag: boolean) => {
+    set({ isAuthenticated: flag })
+  },
 }))
 
 export default authStore

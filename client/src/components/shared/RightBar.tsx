@@ -1,54 +1,135 @@
+import { Check, X } from "lucide-react"
 import React from "react"
-import { Button } from "../ui/button"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 const RightBar = () => {
   return (
     <div>
-      <div className="flex items-center justify-center mt-4 mb-8">
-        <Button className="tesxt-base px-6 py-4">
-          Manage Event Guest / Vendors
-        </Button>
-      </div>
       <VendorList />
     </div>
   )
 }
 
 const GUESTS = [
-  "Mr Mukesh Bansal",
-  "Mr Nitin kamath",
-  "Wedding Venue Service",
-  "Crazy Events",
-  "Crazy Events",
-  "Crazy Events",
-  "Crazy Events",
-  "Crazy Events",
-  "Crazy Events",
-  "Crazy Events",
-  "Crazy Events",
-  "Crazy Events",
-  "Crazy Events",
-  "Crazy Events",
-  "Crazy Events",
-  "Crazy Events",
-  "Crazy Events",
+  {
+    name: "Mr Mukesh Bansal",
+    rsvp: true,
+  },
+  {
+    name: "Mr Nitin kamath",
+    rsvp: false,
+  },
+  {
+    name: "Wedding Venue Service",
+    rsvp: true,
+  },
+  {
+    name: "Mr Mukesh Bansal",
+    rsvp: true,
+  },
+  {
+    name: "Mr Nitin kamath",
+    rsvp: false,
+  },
+  {
+    name: "Wedding Venue Service",
+    rsvp: true,
+  },
+  {
+    name: "Mr Mukesh Bansal",
+    rsvp: true,
+  },
+  {
+    name: "Mr Nitin kamath",
+    rsvp: false,
+  },
+  {
+    name: "Wedding Venue Service",
+    rsvp: true,
+  },
+  {
+    name: "Mr Nitin kamath",
+    rsvp: false,
+  },
+  {
+    name: "Wedding Venue Service",
+    rsvp: true,
+  },
+  {
+    name: "Mr Mukesh Bansal",
+    rsvp: true,
+  },
+  {
+    name: "Mr Nitin kamath",
+    rsvp: false,
+  },
+  {
+    name: "Wedding Venue Service",
+    rsvp: true,
+  },
 ]
 
 const VendorList = () => {
   return (
     <div className="bg-white py-4 px-2 rounded-sm">
-      <h3 className="font-medium text-xl mb-4 pl-3">Event Guest</h3>
-      <div className="flex flex-col gap-4">
-        {GUESTS.map((vendor) => {
-          return (
-            <div className="flex gap-2 items-center px-2 py-3 rounded-md">
-              <div className="w-[48px] h-[48px] bg-gray-800 rounded-full"></div>
-              <div>
-                <p className="text-base">{vendor}</p>
-              </div>
-            </div>
-          )
+      <div className="mb-6 pl-3  flex gap-2 items-start justify-between">
+        <div>
+          <h3 className="font-semibold text-2xl ">Event Guest</h3>
+          <p className="text-lg text-gray-600">(198 guests)</p>
+        </div>
+        <div className="text-primary-400 font-semibold underline cursor-pointer">
+          Manage
+        </div>
+      </div>
+      <div className="flex flex-col gap-6 w-full">
+        {GUESTS.map((guest) => {
+          return <GuestListItem guest={guest.name} rsvp={guest.rsvp} />
         })}
+      </div>
+    </div>
+  )
+}
+
+const GuestListItem = ({ guest, rsvp }: { guest: string; rsvp: boolean }) => {
+  return (
+    <div className="flex gap-2 items-center px-2 py-3 rounded-md  ">
+      <div className="min-w-[40px] min-h-[40px] bg-gray-800 rounded-full"></div>
+      <div className="flex justify-between items-center w-full">
+        <p className="text-base">{guest}</p>
+
+        {rsvp ? (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <div className="bg-green-100 text-green-700 p-1 rounded-md cursor-pointer">
+                  <Check size={16} />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Accepted</p>
+                <p className="font-semibold">2 plus ones</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ) : (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <div className="bg-red-100 text-red-700 p-1 rounded-md cursor-pointer">
+                  <X size={16} />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Rejected</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
       </div>
     </div>
   )

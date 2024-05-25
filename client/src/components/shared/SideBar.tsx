@@ -6,21 +6,38 @@ import {
   TicketIcon,
   User2Icon,
 } from "lucide-react"
+import { usePathname } from "next/navigation"
 
 const CHANNELS = ["Discussion", "Dance Practice", "Dress Code"]
 
 const SideBar = () => {
+  const pathname = usePathname()
+
+  const lastPath = pathname.split("/").pop()
+
   return (
     <div>
       <Link href="/event/1/overview">
-        <div className="flex items-center gap-4 px-5 py-4 cursor-pointer border-2 border-gray-100 rounded-md hover:bg-gray-200 mb-6">
+        <div
+          className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
+            lastPath === "overview"
+              ? "bg-primary-400/10 text-primary-400 font-medium "
+              : ""
+          }`}
+        >
           <LucideHome size={22} />
           <h2 className="text-lg">Overview</h2>
         </div>
       </Link>
 
       <Link href="/event/1/rsvp">
-        <div className="flex items-center gap-4 px-5 py-4 cursor-pointer border-2 border-gray-100 rounded-md hover:bg-gray-200 mb-6">
+        <div
+          className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
+            lastPath === "rsvp"
+              ? "bg-primary-400/10 text-primary-400 font-medium "
+              : ""
+          }`}
+        >
           <TicketIcon size={22} />
           <h2 className="text-lg">RSVP</h2>
         </div>
@@ -37,7 +54,7 @@ const SideBar = () => {
           {CHANNELS.map((channel) => (
             <div
               key={channel}
-              className="flex items-center gap-4 px-5 py-4 cursor-pointer border-2 border-gray-100 rounded-md hover:bg-gray-200"
+              className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md "
             >
               <MonitorSpeakerIcon size={22} />
               <h2 className="text-lg">{channel}</h2>
@@ -55,7 +72,13 @@ const SideBar = () => {
           </h2>
 
           <Link href="/event/1/guest-list">
-            <div className="flex items-center gap-4 px-5 py-4 cursor-pointer border-2 border-gray-100 rounded-md hover:bg-gray-200 mb-6">
+            <div
+              className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
+                lastPath === "guest-list"
+                  ? "bg-primary-400/10 text-primary-400 font-medium "
+                  : ""
+              }`}
+            >
               <User2Icon size={22} />
               <div>
                 <h2 className="text-lg">Event Guest List</h2>
@@ -65,7 +88,13 @@ const SideBar = () => {
           </Link>
 
           <Link href="/event/1/event-details">
-            <div className="flex items-center gap-4 px-5 py-4 cursor-pointer border-2 border-gray-100 rounded-md hover:bg-gray-200 mb-6">
+            <div
+              className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
+                lastPath === "event-details"
+                  ? "bg-primary-400/10 text-primary-400 font-medium "
+                  : ""
+              }`}
+            >
               <User2Icon size={22} />
               <div>
                 <h2 className="text-lg">Event Details</h2>
@@ -81,15 +110,15 @@ const SideBar = () => {
           <h2 className="text-lg text-gray-600 font-medium mb-4 uppercase">
             Chat with Vendors
           </h2>
-          <div className="flex items-center gap-4 px-5 py-4 cursor-pointer border-2 border-gray-100 rounded-md hover:bg-gray-200 mb-6">
+          <div className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md  mb-6">
             <User2Icon size={22} />
             <h2 className="text-lg">Rahul Catering Service</h2>
           </div>
-          <div className="flex items-center gap-4 px-5 py-4 cursor-pointer border-2 border-gray-100 rounded-md hover:bg-gray-200 mb-6">
+          <div className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md  mb-6">
             <User2Icon size={22} />
             <h2 className="text-lg">Binod Planners</h2>
           </div>
-          <div className="flex items-center gap-4 px-5 py-4 cursor-pointer border-2 border-gray-100 rounded-md hover:bg-gray-200 mb-6">
+          <div className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md  mb-6">
             <User2Icon size={22} />
             <h2 className="text-lg">Binod Planners</h2>
           </div>

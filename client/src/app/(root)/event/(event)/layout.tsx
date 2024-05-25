@@ -9,7 +9,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <SideBar />
         </div>
         <div className="col-span-6 ">{children}</div>
-        <div className="col-span-2 bg-gray-100 px-3 py-4">
+        <div className="col-span-2 bg-gray-50 px-3 py-4">
           <RightBar />
         </div>
       </main>
