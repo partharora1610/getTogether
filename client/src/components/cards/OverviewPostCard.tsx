@@ -16,10 +16,10 @@ const OverviewPostCard = ({
         <div>
           <div className="flex gap-2 mb-4 items-center">
             <div className="w-[38px] h-[38px] bg-gray-700 rounded-md"></div>
-            <h1 className="text-2xl font-medium mb-2">{title}</h1>
+            <h1 className="text-xl font-medium mb-2">{title}</h1>
           </div>
-          <p className="text-xl text-gray-500">{description}</p>
-          <p className="text-xl text-gray-500 mt-2">Please Acknowledge this.</p>
+          <p className="text-md text-gray-500">{description}</p>
+          <p className="text-md text-gray-500 mt-2">Please Acknowledge this.</p>
         </div>
       </div>
       <div>

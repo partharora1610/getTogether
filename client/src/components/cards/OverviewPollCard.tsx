@@ -17,17 +17,17 @@ const OverviewPollCard = ({
 
   return (
     <div className="bg-white shadow-md px-6 py-8 rounded-md">
-      <div className="mb-8">
+      <div className="mb-4">
         <div className="flex gap-2 mb-4 items-center">
           <div className="w-[38px] h-[38px] bg-gray-700 rounded-md"></div>
           <h1 className="text-xl font-medium mb-2">{title}</h1>
         </div>
-        <p className="text-xl text-gray-500">{description}</p>
+        <p className="text-md text-gray-500">{description}</p>
       </div>
 
       <div className="flex flex-col gap-1">
         <div>
-          <p className="text-xl font-medium">Select 1 Option</p>
+          <p className="text-md font-medium">Select 1 Option</p>
         </div>
         {options &&
           options.map((option) => {

@@ -79,7 +79,7 @@ const VendorList = () => {
     <div className="bg-white py-4 px-2 rounded-sm">
       <div className="mb-6 pl-3  flex gap-2 items-start justify-between">
         <div>
-          <h3 className="font-semibold text-2xl ">Event Guest</h3>
+          <h3 className="font-semibold text-xl ">Event Guest</h3>
           <p className="text-lg text-gray-600">(198 guests)</p>
         </div>
         <div className="text-primary-400 font-semibold underline cursor-pointer">

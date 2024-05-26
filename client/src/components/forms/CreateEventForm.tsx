@@ -24,11 +24,12 @@ import { Textarea } from "../ui/textarea"
 import CreateEventAccordian from "../accordian/CreateEventAccordian"
 import { cn } from "@/lib/utils"
 import { CalendarIcon } from "lucide-react"
+import axios from "axios"
 
 const formSchema = z.object({
   title: z.string(),
   description: z.string(),
-  startDate: z.date(),
+  startDate: z.string(),
   startTime: z.string(),
   endDate: z.string(),
   venue: z.string(),
@@ -44,7 +45,7 @@ const CreateEventForm = () => {
     defaultValues: {
       title: "",
       description: "",
-      startDate: new Date(),
+      startDate: "",
       startTime: "",
       endDate: "",
       venue: "",
@@ -53,8 +54,26 @@ const CreateEventForm = () => {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { title, description, startDate, endDate, startTime } = values
+    console.log(title, description, startDate, endDate, startTime)
     console.log(values)
+
+    const response = await axios.post(
+      "http://localhost:8000/events",
+      {
+        title,
+        description,
+        startDate,
+        endDate,
+        startTime,
+      },
+      {
+        withCredentials: true,
+      }
+    )
+
+    console.log(response)
   }
 
   return (
@@ -106,34 +125,13 @@ const CreateEventForm = () => {
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>Start Date</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-[240px] pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              <span>Pick a date</span>
-
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <FormControl>
+                        <Input
+                          type="date"
+                          className="text-lg py-2 px-4"
+                          {...field}
+                        />
+                      </FormControl>
                       <FormDescription>
                         Your date of birth is used to calculate your age.
                       </FormDescription>
@@ -161,38 +159,17 @@ const CreateEventForm = () => {
                 />
                 <FormField
                   control={form.control}
-                  name="startDate"
+                  name="endDate"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>End Date</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-[240px] pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              <span>Pick a date</span>
-
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <FormControl>
+                        <Input
+                          type="date"
+                          className="text-lg py-2 px-4"
+                          {...field}
+                        />
+                      </FormControl>
                       <FormDescription>
                         Your date of birth is used to calculate your age.
                       </FormDescription>

@@ -46,6 +46,9 @@ const authStore = create<Store>()((set) => ({
   },
 
   logout: async () => {
+    await axios.get("http://localhost:8000/user/logout", {
+      withCredentials: true,
+    })
     set({ user: null, isAuthenticated: false })
   },
 
