@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import React from "react"
+import axios from "axios"
+import { useParams } from "next/navigation"
 
 const formSchema = z.object({
   vendorName: z.string(),
@@ -21,6 +23,9 @@ const formSchema = z.object({
 })
 
 const AddVendorForm = () => {
+
+  const { eventId } = useParams();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -30,9 +35,17 @@ const AddVendorForm = () => {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { vendorName, email } = values;
+    const response = await axios.post(`http://localhost:8000/events/${eventId}/invite/vendor`, {
+      name: vendorName,
+      email
+    }, {
+      withCredentials: true,
+    });
+    console.log(response);
   }
+
 
   return (
     <div className="border-2 border-gray-100 px-6 py-8 rounded-md">

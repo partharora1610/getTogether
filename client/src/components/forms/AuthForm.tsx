@@ -6,9 +6,12 @@ import Link from "next/link"
 import { useGoogleLogin } from "@react-oauth/google"
 import { useRouter } from "next/navigation"
 import authStore from "@/store/auth-store"
+import { useSearchParams } from "next/navigation"
 
 export default function AuthForm() {
-  const { login, logout, isAuthenticated, user } = authStore()
+  const { login } = authStore()
+  const params = useSearchParams();
+  const callbackUrl = params.get('callbackUrl');
 
   const router = useRouter()
 
@@ -18,7 +21,11 @@ export default function AuthForm() {
       const flag = await login({ token: tokenResponse.access_token })
 
       if (flag) {
-        router.push("/event/1/overview")
+        if (callbackUrl) {
+          router.push(callbackUrl);
+        } else {
+          router.push("/event/create")
+        }
       } else {
         router.push("/auth")
       }

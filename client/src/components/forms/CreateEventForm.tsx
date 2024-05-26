@@ -25,6 +25,7 @@ import CreateEventAccordian from "../accordian/CreateEventAccordian"
 import { cn } from "@/lib/utils"
 import { CalendarIcon } from "lucide-react"
 import axios from "axios"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   title: z.string(),
@@ -40,6 +41,8 @@ const formSchema = z.object({
 })
 
 const CreateEventForm = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,10 +59,8 @@ const CreateEventForm = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const { title, description, startDate, endDate, startTime } = values
-    console.log(title, description, startDate, endDate, startTime)
-    console.log(values)
 
-    const response = await axios.post(
+    const { data } = await axios.post(
       "http://localhost:8000/events",
       {
         title,
@@ -73,7 +74,9 @@ const CreateEventForm = () => {
       }
     )
 
-    console.log(response)
+    const eventId = data.data.id;
+    router.push(`/event/${eventId}/overview`);
+
   }
 
   return (

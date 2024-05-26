@@ -17,7 +17,7 @@ const SideBar = () => {
 
   return (
     <div>
-      <Link href="/event/1/overview">
+      <Link href="/event/clwnc41zo000ftlrah96z8xms/overview">
         <div
           className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
             lastPath === "overview"
@@ -30,7 +30,7 @@ const SideBar = () => {
         </div>
       </Link>
 
-      <Link href="/event/1/rsvp">
+      <Link href="/event/clwnc41zo000ftlrah96z8xms/rsvp">
         <div
           className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
             lastPath === "rsvp"
@@ -71,7 +71,7 @@ const SideBar = () => {
             Admin Control
           </h2>
 
-          <Link href="/event/1/guest-list">
+          <Link href="/event/clwnc41zo000ftlrah96z8xms/guest-list">
             <div
               className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
                 lastPath === "guest-list"
@@ -87,7 +87,7 @@ const SideBar = () => {
             </div>
           </Link>
 
-          <Link href="/event/1/event-details">
+          <Link href="/event/clwnh5eeq0002l3og9y84skpj/event-details">
             <div
               className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
                 lastPath === "event-details"
