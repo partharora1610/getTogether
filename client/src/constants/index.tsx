@@ -1,4 +1,5 @@
 "use client"
+import { NegativeTag, NeutralTag, PositiveTag } from "@/components/tags/tags"
 import { ColumnDef } from "@tanstack/react-table"
 
 export type Guest = {
@@ -25,43 +26,28 @@ export const columns: ColumnDef<Guest>[] = [
       console.log(status)
 
       return status == "Accepted" ? (
-        <AcceptedTag />
+        <PositiveTag text={"Accepted"} />
       ) : status == "Declined" ? (
-        <DeclinedTag />
+        <NegativeTag text="Declined" />
       ) : (
-        <NotAnsweredTag />
+        <NeutralTag text="Not Answered" />
       )
     },
   },
   {
     accessorKey: "plusOnes",
     header: "Plus Ones",
+    cell: ({ row }) => {
+      const plusOnes = row.getValue("plusOnes")
+
+      if (plusOnes == 0) {
+        return "NA"
+      }
+
+      return plusOnes
+    },
   },
 ]
-
-const AcceptedTag = () => {
-  return (
-    <span className="px-2 py-1 text-xs text-white bg-green-700/80 rounded-full">
-      Accepted
-    </span>
-  )
-}
-
-const NotAnsweredTag = () => {
-  return (
-    <span className="px-2 py-1 text-xs text-white bg-gray-400 rounded-full">
-      Not Answered
-    </span>
-  )
-}
-
-const DeclinedTag = () => {
-  return (
-    <span className="px-2 py-1 text-xs text-white bg-red-700/60 rounded-full">
-      Declined
-    </span>
-  )
-}
 
 export const guests: Guest[] = [
   {
@@ -123,5 +109,40 @@ export const guests: Guest[] = [
     guestName: "James Jackson",
     rsvpStatus: "Accepted",
     plusOnes: 2,
+  },
+]
+
+export const AVATARS = [
+  {
+    name: "Avatar 1",
+    link: "https://api.dicebear.com/8.x/micah/svg?seed=Ginger",
+  },
+  {
+    name: "Avatar 2",
+    link: "https://api.dicebear.com/8.x/micah/svg?seed=Shadow",
+  },
+  {
+    name: "Avatar 3",
+    link: "https://api.dicebear.com/8.x/micah/svg?seed=Princess",
+  },
+  {
+    name: "Avatar 4",
+    link: "https://api.dicebear.com/8.x/open-peeps/svg?seed=Boo",
+  },
+  {
+    name: "Avatar 5",
+    link: "https://api.dicebear.com/8.x/personas/svg?seed=Mimi",
+  },
+  {
+    name: "Avatar 6",
+    link: "https://api.dicebear.com/8.x/micah/svg?seed=Baby",
+  },
+  {
+    name: "Avatar 7",
+    link: "https://api.dicebear.com/8.x/micah/svg?seed=Cleo",
+  },
+  {
+    name: "Avatar 8",
+    link: "https://api.dicebear.com/8.x/micah/svg?seed=Loki",
   },
 ]

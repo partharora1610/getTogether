@@ -1,7 +1,12 @@
 import React, { useEffect } from "react"
 import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react"
 import { fabric } from "fabric"
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import canvasStore from "@/store/create-canvas-store"
 
 const Canvas = ({
@@ -83,8 +88,40 @@ const Canvas = ({
   return (
     <div>
       {create && (
-        <div className="flex gap-4">
-          <button onClick={onAddCakeTable}>Cake Table</button>
+        <div className="flex gap-6">
+          <div className="cursor-pointer flex" onClick={onAddCakeTable}>
+            <TooltipComponent img={"/cake-table.png"} hover="Cake Table" />
+          </div>
+
+          <div className="cursor-pointer flex" onClick={onAddFoodTable}>
+            <TooltipComponent img={"/food_1.svg"} hover="Food Counter" />
+          </div>
+
+          <div className="cursor-pointer flex" onClick={onAddSeating}>
+            <TooltipComponent img={"/chair_1.svg"} hover="Seating Individual" />
+          </div>
+
+          <div className="cursor-pointer flex" onClick={onAddSeating_1}>
+            <TooltipComponent img={"/guest_1.png"} hover="Seating Group" />
+          </div>
+
+          <div className="cursor-pointer flex" onClick={onAddStage_3}>
+            <TooltipComponent img={"/stage_3.svg"} hover="Main Stage" />
+          </div>
+
+          <div className="cursor-pointer flex" onClick={onAddTable}>
+            <TooltipComponent img={"/table_1.svg"} hover="Table" />
+          </div>
+
+          <div className="cursor-pointer flex" onClick={onAddTable}>
+            <TooltipComponent img={"/"} hover="Entrance Gate" />
+          </div>
+
+          <div className="cursor-pointer flex" onClick={onAddTable}>
+            <TooltipComponent img={""} hover="Emergency Exit" />
+          </div>
+
+          {/* 
           <button onClick={onAddFoodTable}>Food Table</button>
           <button onClick={onAddSeating}>Seating</button>
           <button onClick={onAddSeating_1}>Seating 1</button>
@@ -92,7 +129,7 @@ const Canvas = ({
           <button onClick={onAddTable}>Table</button>
           <button onClick={() => console.log(selectedObjects)}>
             Selected Objects
-          </button>
+          </button> */}
           <button onClick={clearCanvas}>Clear Canvas</button>
         </div>
       )}
@@ -101,6 +138,21 @@ const Canvas = ({
         onReady={onReady}
       />
     </div>
+  )
+}
+
+const TooltipComponent = ({ img, hover }: { img: string; hover: string }) => {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <img src={img} alt="" className="w-10 h-10" />
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{hover}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   )
 }
 

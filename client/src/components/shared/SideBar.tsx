@@ -34,7 +34,7 @@ const SideBar = () => {
 
   return (
     <div>
-      <Link href="/event/1/overview">
+      <Link href="/event/clwnrcw8h0002by5wog9y5h6i/overview">
         <div
           className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
             lastPath === "overview"
@@ -47,7 +47,7 @@ const SideBar = () => {
         </div>
       </Link>
 
-      <Link href="/event/1/rsvp">
+      <Link href="/event/clwnrcw8h0002by5wog9y5h6i/rsvp">
         <div
           className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
             lastPath === "rsvp"
@@ -69,7 +69,7 @@ const SideBar = () => {
 
         <div className="flex flex-col gap-6">
           {CHANNELS.map((channel) => (
-            <Link href={`/event/1/${channel.id}`}>
+            <Link href={`/event/clwnrcw8h0002by5wog9y5h6i/${channel.id}`}>
               <div
                 key={channel.id}
                 className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md "
@@ -90,7 +90,7 @@ const SideBar = () => {
             Admin Control
           </h2>
 
-          <Link href="/event/1/guest-list">
+          <Link href="/event/clwnrcw8h0002by5wog9y5h6i/guest-list">
             <div
               className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
                 lastPath === "guest-list"
@@ -106,7 +106,7 @@ const SideBar = () => {
             </div>
           </Link>
 
-          <Link href="/event/1/event-details">
+          <Link href="/event/clwnrcw8h0002by5wog9y5h6i/event-details">
             <div
               className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
                 lastPath === "event-details"

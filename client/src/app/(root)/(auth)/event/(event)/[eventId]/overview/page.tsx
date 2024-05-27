@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import eventStore from "@/store/event-store"
 import PollForm from "@/components/forms/PollForm"
+import CompleteGuestProfileDialog from "@/components/dialog/CompleteGuestProfileDialog"
 
 const Page = () => {
   const { event, loading } = eventStore()
@@ -29,7 +30,7 @@ const Page = () => {
 
   return (
     <div className="bg-gray-50">
-      {JSON.stringify(event)}
+      {/* {JSON.stringify(event)} */}
       <OverviewHeader />
       <EventAnnouncement />
     </div>
@@ -39,7 +40,7 @@ const Page = () => {
 const OverviewHeader = () => {
   const { event } = eventStore()
   return (
-    <div className="border-b-2 bg-white border-gray-100 pb-12 mb-8">
+    <div className="border-b-2 bg-white border-gray-100 pb-12 mb-8 relative">
       <div className="w-full h-[240px] bg-gray-400 mb-8"></div>
 
       <h2 className="text-3xl font-semibold text-center mb-2">
@@ -52,7 +53,14 @@ const OverviewHeader = () => {
           <HostSpecialDialog />
         </div>
       </div>
+
+      {/* <div className="flex justify-center"> */}
+      <div className="bg-black/30 px-4 py-4 mt-4 rounded-md cursor-pointer  absolute top-0 right-4 flex items-center justify-between">
+        {/* <div className="text-white"></div> */}
+        <CompleteGuestProfileDialog />
+      </div>
     </div>
+    // </div>
   )
 }
 

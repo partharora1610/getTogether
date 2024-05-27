@@ -24,6 +24,8 @@ import { Input } from "@/components/ui/input"
 
 import { Guest } from "@/constants"
 import React from "react"
+import { Button } from "../ui/button"
+import InviteGuestDialog from "../dialog/InviteGuestDialog"
 
 const columns: ColumnDef<Guest>[] = [
   {
@@ -76,9 +78,9 @@ export function GuestList<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className="flex items-center justify-between py-4">
         <Input
-          placeholder="Filter emails..."
+          placeholder="Find by guest name..."
           value={
             (table.getColumn("guestName")?.getFilterValue() as string) ?? ""
           }
@@ -87,6 +89,10 @@ export function GuestList<TData, TValue>({
           }
           className="max-w-sm"
         />
+
+        <div>
+          <InviteGuestDialog />
+        </div>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -116,7 +122,7 @@ export function GuestList<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="text-base">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

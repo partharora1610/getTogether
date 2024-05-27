@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import axios from "axios"
 import eventStore from "@/store/event-store"
+import { Plus, PlusIcon } from "lucide-react"
 
 const Page = () => {
   return (
@@ -23,7 +24,18 @@ const Page = () => {
       </div>
 
       <div className="mt-10">
-        <h1 className="text-xl font-semibold mb-12">Recent Activity</h1>
+        <div className="flex justify-between">
+          <h1 className="text-xl font-semibold mb-12">Recent Activity</h1>
+
+          <div>
+            <Button className="px-8 flex gap-1 py-4 text-primary-400 bg-white hover:bg-primary-400/10">
+              <span>
+                <PlusIcon size={20} />
+              </span>
+              <p>Create Post</p>
+            </Button>
+          </div>
+        </div>
         <div className="flex flex-col gap-12 justify-center items-center">
           {Array.from({ length: 2 }).map((_, index) => (
             <FeedCard key={index} />
@@ -32,6 +44,10 @@ const Page = () => {
       </div>
     </div>
   )
+}
+
+const CreatePostDialog = () => {
+  return
 }
 
 const FeedCard = () => {

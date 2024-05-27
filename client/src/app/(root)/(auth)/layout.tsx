@@ -1,12 +1,11 @@
 import AuthProvider from "@/components/Provider/AuthProvider"
-import Navbar from "@/components/shared/Navbar"
+import React from "react"
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <AuthProvider>
-      <Navbar />
-      <main>{children}</main>
-    </AuthProvider>
+    <div>
+      <AuthProvider>{children}</AuthProvider>
+    </div>
   )
 }
 

@@ -10,7 +10,7 @@ const page = () => {
   const { inviteId } = useParams()
   const searchParams = useSearchParams()
   const role = searchParams.get("role")
-  const eventId = searchParams.get("eventId")
+  const eventId = searchParams.get("event")
 
   const acceptInvite = async () => {
     const response = await axios.post(

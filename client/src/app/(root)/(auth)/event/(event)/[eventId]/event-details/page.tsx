@@ -5,6 +5,7 @@ import AddVendorForm from "@/components/forms/AddVendorForm"
 import CanvasDialog from "@/components/dialog/CanvasDialog"
 import VenuePlanList from "@/components/shared/VenuePlanList"
 import EventVenueForm from "@/components/forms/EventVenueForm"
+import { NegativeTag } from "@/components/tags/tags"
 
 const VENDORS = [
   {
@@ -158,28 +159,6 @@ const VendorCard = () => {
         </div>
       </div>
     </div>
-  )
-}
-
-const NegativeTag = ({ text }: { text: string }) => {
-  return (
-    <span className="bg-red-100 text-red-700 px-2 py-1 rounded-md">{text}</span>
-  )
-}
-
-const PositiveTag = ({ text }: { text: string }) => {
-  return (
-    <span className="bg-green-100 text-green-700 px-2 py-1 rounded-md">
-      {text}
-    </span>
-  )
-}
-
-const NeutralTag = ({ text }: { text: string }) => {
-  return (
-    <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded-md">
-      {text}
-    </span>
   )
 }
 

@@ -1,4 +1,4 @@
-import { withNextVideo } from "next-video/process";
+import { withNextVideo } from "next-video/process"
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -6,8 +6,9 @@ const nextConfig = {
       "img.freepik.com",
       "dynamic.brandcrowd.com",
       "cdn-icons-png.flaticon.com",
+      "api.dicebear.com",
     ],
   },
 }
 
-export default withNextVideo(nextConfig, { folder: 'y' });
+export default withNextVideo(nextConfig, { folder: "y" })

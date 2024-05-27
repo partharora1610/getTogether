@@ -280,8 +280,8 @@ const SendMailDialog = () => {
 const ShareWithVendorDialog = () => {
   return (
     <Dialog>
-      <DialogTrigger>Hello</DialogTrigger>
-      <DialogContent>
+      <DialogTrigger className="underline">Send to Vendor</DialogTrigger>
+      <DialogContent className="max-w-xl">
         <DialogHeader>
           <DialogTitle className="mb-4">
             Communicate the event Requirements with Vendors

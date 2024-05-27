@@ -45,60 +45,50 @@ const SendVendorInfo = () => {
 
   return (
     <div>
-      <div className="grid gap-12 grid-cols-2">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="message"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Message</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Enter Message"
-                      className="text-base"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {ALLVENDORS.map((vendor) => {
-              return (
-                <div className="flex justify-between items-center">
-                  <label>{vendor.name}</label>
-                  <Switch
-                    value={vendor.id}
-                    onChange={(e: any) => {
-                      if (e.target.checked) {
-                        setSelectedVendors([...selectedVendors, vendor])
-                      } else {
-                        setSelectedVendors(
-                          selectedVendors.filter(
-                            (selectedVendor) => selectedVendor.id !== vendor.id
-                          )
-                        )
-                      }
-                    }}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="message"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Message</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Enter Message"
+                    className="text-base"
+                    {...field}
                   />
-                </div>
-              )
-            })}
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {ALLVENDORS.map((vendor) => {
+            return (
+              <div className="flex justify-between items-center">
+                <label>{vendor.name}</label>
+                <Switch
+                  value={vendor.id}
+                  onChange={(e: any) => {
+                    if (e.target.checked) {
+                      setSelectedVendors([...selectedVendors, vendor])
+                    } else {
+                      setSelectedVendors(
+                        selectedVendors.filter(
+                          (selectedVendor) => selectedVendor.id !== vendor.id
+                        )
+                      )
+                    }
+                  }}
+                />
+              </div>
+            )
+          })}
 
-            <Button type="submit">Send Message</Button>
-          </form>
-        </Form>
-
-        <div>
-          <div className="">
-            <h2 className="mb-4 text-lg text-black">Message Preview</h2>
-            <p className="text-base">{form.getValues().message}</p>
-            <p></p>
-          </div>
-        </div>
-      </div>
+          <Button type="submit">Send Message</Button>
+        </form>
+      </Form>
     </div>
   )
 }
