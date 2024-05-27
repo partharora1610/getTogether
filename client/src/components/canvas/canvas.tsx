@@ -1,25 +1,18 @@
 import React, { useEffect } from "react"
 import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react"
 import { fabric } from "fabric"
-import json from "./data.json"
 
-const Canvas = () => {
-  const [canvasJSON, setCanvasJSON] = React.useState<string | null>(null)
+import canvasStore from "@/store/create-canvas-store"
+
+const Canvas = ({
+  create,
+  loadedJson,
+}: {
+  create: boolean
+  loadedJson?: string
+}) => {
+  const { setJson } = canvasStore()
   const { selectedObjects, editor, onReady } = useFabricJSEditor()
-
-  const getJSON = () => {
-    setCanvasJSON(JSON.stringify(editor?.canvas.toJSON()))
-    console.log(editor?.canvas.toJSON())
-  }
-
-  const onAddCircle = () => {
-    console.log(editor?.canvas.toJSON())
-    editor?.addCircle()
-  }
-
-  const onAddRectangle = () => {
-    editor?.addRectangle()
-  }
 
   const clearCanvas = () => {
     editor?.deleteAll()
@@ -61,30 +54,48 @@ const Canvas = () => {
     })
   }
 
+  // Update JSON representation of the canvas in the store
   useEffect(() => {
-    if (editor) {
-      editor.canvas.loadFromJSON(json, () => {
+    setJson(JSON.stringify(editor?.canvas.toJSON()))
+  }, [JSON.stringify(editor?.canvas.toJSON())])
+
+  // Effect to load the canvas from JSON when `loadedJson` is provided
+  useEffect(() => {
+    if (editor?.canvas && loadedJson) {
+      editor.canvas.loadFromJSON(loadedJson, () => {
         editor.canvas.renderAll()
       })
     }
-  }, [editor])
+  }, [editor, loadedJson])
+
+  // Effect to disable canvas and object selection based on `create` prop
+  useEffect(() => {
+    if (editor?.canvas) {
+      editor.canvas.selection = create
+      editor.canvas.defaultCursor = create ? "default" : "not-allowed"
+      editor.canvas.forEachObject((obj) => {
+        obj.selectable = create
+      })
+      editor.canvas.renderAll()
+    }
+  }, [create, editor])
 
   return (
     <div>
-      {canvasJSON && <p>{canvasJSON}</p>}
-      <div className="flex gap-4">
-        <button onClick={onAddCakeTable}>Cake Table</button>
-        <button onClick={onAddFoodTable}>Food Table</button>
-        <button onClick={onAddSeating}>Seating</button>
-        <button onClick={onAddSeating_1}>Seating 1</button>
-        <button onClick={onAddStage_3}>Stage 3</button>
-        <button onClick={onAddTable}>Table</button>
-        <button onClick={getJSON}>JSON</button>
-        <button onClick={() => console.log(selectedObjects)}>
-          Selected Objects
-        </button>
-        <button onClick={clearCanvas}>Clear Canvas</button>
-      </div>
+      {create && (
+        <div className="flex gap-4">
+          <button onClick={onAddCakeTable}>Cake Table</button>
+          <button onClick={onAddFoodTable}>Food Table</button>
+          <button onClick={onAddSeating}>Seating</button>
+          <button onClick={onAddSeating_1}>Seating 1</button>
+          <button onClick={onAddStage_3}>Stage 3</button>
+          <button onClick={onAddTable}>Table</button>
+          <button onClick={() => console.log(selectedObjects)}>
+            Selected Objects
+          </button>
+          <button onClick={clearCanvas}>Clear Canvas</button>
+        </div>
+      )}
       <FabricJSCanvas
         className="sample-canvas border-2 h-[480px] w-[1000px] border-gray-200 m-auto rounded-lg"
         onReady={onReady}

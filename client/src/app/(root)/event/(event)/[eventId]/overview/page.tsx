@@ -9,43 +9,43 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import PostForm from "@/components/forms/PostForm"
-import PollForn from "@/components/forms/PollForm"
 import ReminderForm from "@/components/forms/ReminderForm"
-import authStore from "@/store/auth-store"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import OverviewPostCard from "@/components/cards/OverviewPostCard"
 import OverviewPollCard from "@/components/cards/OverviewPollCard"
 import Video from "next-video"
 import getStarted from "/videos/get-started.mp4"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
-// import { ScrollArea } from "@/components/ui/scroll-area"
+import eventStore from "@/store/event-store"
+import PollForm from "@/components/forms/PollForm"
 
 const Page = () => {
-  const router = useRouter()
-  const { login, logout, isAuthenticated, user } = authStore()
+  const { event, loading } = eventStore()
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className="bg-gray-50">
+      {JSON.stringify(event)}
       <OverviewHeader />
-      {/* <ScrollArea className="h-[100vh]"> */}
       <EventAnnouncement />
-      {/* </ScrollArea> */}
     </div>
   )
 }
 
 const OverviewHeader = () => {
+  const { event } = eventStore()
   return (
     <div className="border-b-2 bg-white border-gray-100 pb-12 mb-8">
       <div className="w-full h-[240px] bg-gray-400 mb-8"></div>
+
       <h2 className="text-3xl font-semibold text-center mb-2">
-        Ranveer Wedding Night
+        {event?.title}
       </h2>
-      <p className="text-center text-lg text-gray-500">
-        Lets celebrate ranveer special night together and make it a memorable
-        one.
-      </p>
+      <p className="text-center text-lg text-gray-500">{event?.description}</p>
 
       <div className="flex items-center justify-center">
         <div className="mt-6 flex gap-4 items-center">
@@ -56,52 +56,25 @@ const OverviewHeader = () => {
   )
 }
 
-const POST = [
-  {
-    type: "post",
-    title:
-      "Creating a new channel where we can discuss about the dress code of the event",
-    description:
-      "Lets celebrate ranveer special night together and make it a memorable one.Lets celebrate ranveer special night together and make it a memorable one.Lets celebrate ranveer special night together and make it a memorable one.",
-    date: "2022-01-01",
-  },
-  {
-    type: "poll",
-    title: "Which color should be the theme of the event?",
-    description:
-      "Lets celebrate ranveer special night together and make it a memorable one.lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.",
-    options: ["Red", "Blue", "Green", "Yellow"],
-    date: "2022-01-01",
-  },
-  {
-    type: "post",
-    title:
-      "Creating a new channel where we can discuss about the dress code of the event",
-    description:
-      "Lets celebrate ranveer special night together and make it a memorable one.Lets celebrate ranveer special night together and make it a memorable one.Lets celebrate ranveer special night together and make it a memorable one.",
-    date: "2022-01-01",
-  },
-  {
-    type: "poll",
-    title: "Which color should be the theme of the event?",
-    description:
-      "Lets celebrate ranveer special night together and make it a memorable one.lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.",
-    options: ["Red", "Blue", "Green", "Yellow"],
-    date: "2022-01-01",
-  },
-  {
-    type: "post",
-    title:
-      "Creating a new channel where we can discuss about the dress code of the event",
-    description:
-      "Lets celebrate ranveer special night together and make it a memorable one.Lets celebrate ranveer special night together and make it a memorable one.Lets celebrate ranveer special night together and make it a memorable one.",
-    date: "2022-01-01",
-  },
-]
-
 const POLL = []
 
 const EventAnnouncement = () => {
+  const { event } = eventStore()
+
+  if (!event) return null
+
+  const allPosts = [...event?.eventPosts, ...event?.eventPolls]
+  console.log(allPosts)
+
+  allPosts.sort((a, b) => {
+    const dateA = new Date(event.createdAt)
+    const dateB = new Date(event.createdAt)
+
+    if (dateA < dateB) return -1
+    if (dateA > dateB) return 1
+    return 0
+  })
+
   return (
     <div className="bg-white py-6 rounded-t-3xl">
       <div className="flex justify-between items-center pl-5 pr-5 mb-4">
@@ -114,25 +87,26 @@ const EventAnnouncement = () => {
       </div>
       <div className="p-4 rounded-sm">
         <div className="flex flex-col gap-16">
-          {POST.map((post) => {
-            if (post.type === "post") {
-              return (
-                <OverviewPostCard
-                  title={post.title}
-                  description={post.description}
-                  date={post.date}
-                />
-              )
-            } else {
+          {allPosts.map((post) => {
+            if (post.options) {
               return (
                 <OverviewPollCard
-                  title={post.title}
+                  id={post.id}
+                  heading={post.heading}
                   description={post.description}
-                  options={post.options}
                   date={post.date}
+                  options={post.options}
                 />
               )
             }
+
+            return (
+              <OverviewPostCard
+                heading={post.heading}
+                description={post.description}
+                date={post.date}
+              />
+            )
           })}
         </div>
       </div>
@@ -165,6 +139,7 @@ const CreateAnnoucementDialog = () => {
     </div>
   )
 }
+
 const HostSpecialDialog = () => {
   return (
     <div>
@@ -216,6 +191,9 @@ const HostSpecialDialog = () => {
 }
 
 const TabsComponent = () => {
+  const pathname = usePathname()
+  const eventId = pathname.split("/")[2]
+
   return (
     <Tabs defaultValue="account" className="w-full my-4">
       <TabsList>
@@ -224,10 +202,10 @@ const TabsComponent = () => {
         <TabsTrigger value="reminder">Reminder</TabsTrigger>
       </TabsList>
       <TabsContent value="post">
-        <PostForm />
+        <PostForm eventId={eventId} />
       </TabsContent>
       <TabsContent value="poll">
-        <PollForn />
+        <PollForm eventId={eventId} />
       </TabsContent>
       <TabsContent value="reminder">
         <ReminderForm />

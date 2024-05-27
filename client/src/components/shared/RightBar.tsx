@@ -1,3 +1,4 @@
+"use client"
 import { Check, X } from "lucide-react"
 import React from "react"
 import {
@@ -6,6 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import eventStore from "@/store/event-store"
 
 const RightBar = () => {
   return (
@@ -44,37 +46,43 @@ const GUESTS = [
     name: "Mr Mukesh Bansal",
     rsvp: true,
   },
-  {
-    name: "Mr Nitin kamath",
-    rsvp: false,
-  },
-  {
-    name: "Wedding Venue Service",
-    rsvp: true,
-  },
-  {
-    name: "Mr Nitin kamath",
-    rsvp: false,
-  },
-  {
-    name: "Wedding Venue Service",
-    rsvp: true,
-  },
-  {
-    name: "Mr Mukesh Bansal",
-    rsvp: true,
-  },
-  {
-    name: "Mr Nitin kamath",
-    rsvp: false,
-  },
-  {
-    name: "Wedding Venue Service",
-    rsvp: true,
-  },
+  // {
+  //   name: "Mr Nitin kamath",
+  //   rsvp: false,
+  // },
+  // {
+  //   name: "Wedding Venue Service",
+  //   rsvp: true,
+  // },
+  // {
+  //   name: "Mr Nitin kamath",
+  //   rsvp: false,
+  // },
+  // {
+  //   name: "Wedding Venue Service",
+  //   rsvp: true,
+  // },
+  // {
+  //   name: "Mr Mukesh Bansal",
+  //   rsvp: true,
+  // },
+  // {
+  //   name: "Mr Nitin kamath",
+  //   rsvp: false,
+  // },
+  // {
+  //   name: "Wedding Venue Service",
+  //   rsvp: true,
+  // },
 ]
 
 const VendorList = () => {
+  const { event, loading } = eventStore()
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
+
   return (
     <div className="bg-white py-4 px-2 rounded-sm">
       <div className="mb-6 pl-3  flex gap-2 items-start justify-between">
@@ -86,6 +94,8 @@ const VendorList = () => {
           Manage
         </div>
       </div>
+      <p>{JSON.stringify(event?.guests)}</p>
+
       <div className="flex flex-col gap-6 w-full">
         {GUESTS.map((guest) => {
           return <GuestListItem guest={guest.name} rsvp={guest.rsvp} />

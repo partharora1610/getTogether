@@ -22,8 +22,7 @@ import { Input } from "@/components/ui/input"
 import React from "react"
 import { Textarea } from "../ui/textarea"
 import CreateEventAccordian from "../accordian/CreateEventAccordian"
-import { cn } from "@/lib/utils"
-import { CalendarIcon } from "lucide-react"
+import { useRouter } from "next/navigation"
 import axios from "axios"
 
 const formSchema = z.object({
@@ -40,6 +39,8 @@ const formSchema = z.object({
 })
 
 const CreateEventForm = () => {
+  const router = useRouter()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,8 +57,6 @@ const CreateEventForm = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const { title, description, startDate, endDate, startTime } = values
-    console.log(title, description, startDate, endDate, startTime)
-    console.log(values)
 
     const response = await axios.post(
       "http://localhost:8000/events",
@@ -73,7 +72,13 @@ const CreateEventForm = () => {
       }
     )
 
-    console.log(response)
+    if (response.status === 201) {
+      const {
+        data: { id },
+      } = response.data
+
+      router.push(`/event/${id}/overview`)
+    }
   }
 
   return (

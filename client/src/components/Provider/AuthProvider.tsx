@@ -4,10 +4,12 @@ import authStore from "@/store/auth-store"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, setAuthenticated, setUser } = authStore()
   const router = useRouter()
+  const pathname = usePathname()
   const [loading, setLoading] = useState<boolean>(true)
 
   const fetchUser = async () => {
@@ -26,12 +28,19 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setLoading(false)
       } else {
         setAuthenticated(false)
-        router.push("/auth")
+        router.push(
+          `/auth?callbackUrl=${encodeURIComponent(
+            pathname + window.location.search
+          )}`
+        )
       }
     } catch (error) {
-      console.error("Failed to fetch user", error)
       setAuthenticated(false)
-      router.push("/auth")
+      router.push(
+        `/auth?callbackUrl=${encodeURIComponent(
+          pathname + window.location.search
+        )}`
+      )
     }
   }
 

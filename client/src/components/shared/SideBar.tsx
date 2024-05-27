@@ -8,7 +8,24 @@ import {
 } from "lucide-react"
 import { usePathname } from "next/navigation"
 
-const CHANNELS = ["Discussion", "Dance Practice", "Dress Code"]
+const CHANNELS = [
+  {
+    id: "discussion",
+    name: "Discussion",
+  },
+  {
+    id: "announcements",
+    name: "Announcements",
+  },
+  {
+    id: "qna",
+    name: "QnA",
+  },
+  {
+    id: "feedback",
+    name: "Feedback",
+  },
+]
 
 const SideBar = () => {
   const pathname = usePathname()
@@ -52,13 +69,15 @@ const SideBar = () => {
 
         <div className="flex flex-col gap-6">
           {CHANNELS.map((channel) => (
-            <div
-              key={channel}
-              className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md "
-            >
-              <MonitorSpeakerIcon size={22} />
-              <h2 className="text-lg">{channel}</h2>
-            </div>
+            <Link href={`/event/1/${channel.id}`}>
+              <div
+                key={channel.id}
+                className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md "
+              >
+                <MonitorSpeakerIcon size={22} />
+                <h2 className="text-lg">{channel.name}</h2>
+              </div>
+            </Link>
           ))}
         </div>
       </div>

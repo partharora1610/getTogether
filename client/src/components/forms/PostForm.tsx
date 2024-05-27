@@ -16,25 +16,40 @@ import { Input } from "@/components/ui/input"
 import React from "react"
 import { Textarea } from "../ui/textarea"
 import { Switch } from "../ui/switch"
+import axios from "axios"
 
 const formSchema = z.object({
-  title: z.string(),
+  heading: z.string(),
   description: z.string(),
   sendEmail: z.boolean(),
 })
 
-const PostForm = () => {
+const PostForm = ({ eventId }: { eventId: string }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
+      heading: "",
       description: "",
       sendEmail: false,
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { heading, description, sendEmail } = values
+
+    const response = await axios.post(
+      `http://localhost:8000/events/${eventId}/posts`,
+      {
+        heading,
+        description,
+        sendEmail,
+      },
+      {
+        withCredentials: true,
+      }
+    )
+
+    console.log(response.data)
   }
 
   return (
@@ -44,7 +59,7 @@ const PostForm = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="title"
+              name="heading"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Heading</FormLabel>
@@ -103,7 +118,7 @@ const PostForm = () => {
               <div className="flex gap-4 items-center mb-4">
                 <div className="min-w-[40px] min-h-[40px] bg-gray-300 rounded-sm"></div>
                 <h3 className="font-medium text-lg text-black">
-                  {form.getValues().title || "Your Post Title"}
+                  {form.getValues().heading || "Your Post Title"}
                 </h3>
               </div>
 

@@ -16,22 +16,23 @@ import { Input } from "@/components/ui/input"
 import React from "react"
 import { Textarea } from "../ui/textarea"
 import { Switch } from "../ui/switch"
+import axios from "axios"
 
 const formSchema = z.object({
-  title: z.string(),
+  heading: z.string(),
   description: z.string(),
   sendEmail: z.boolean(),
   options: z.string(),
   allowMultiple: z.boolean(),
 })
 
-const PollForm = () => {
+const PollForm = ({ eventId }: { eventId: string }) => {
   const [pollOptions, setPollOptions] = React.useState<string[]>([])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
+      heading: "",
       description: "",
       sendEmail: false,
       options: "",
@@ -39,11 +40,29 @@ const PollForm = () => {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log({
       ...values,
       options: pollOptions,
     })
+
+    const { heading, description, sendEmail, allowMultiple } = values
+
+    const response = await axios.post(
+      `http://localhost:8000/events/${eventId}/polls`,
+      {
+        heading,
+        description,
+        sendEmail,
+        allowMultiple,
+        options: pollOptions,
+      },
+      {
+        withCredentials: true,
+      }
+    )
+
+    console.log(response.data)
   }
 
   return (
@@ -53,7 +72,7 @@ const PollForm = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="title"
+              name="heading"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Heading</FormLabel>
@@ -134,14 +153,14 @@ const PollForm = () => {
                   <FormControl>
                     <div className="flex gap-4">
                       <Input placeholder="shadcn" {...field} />
-                      <Button
+                      <div
+                        className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-md"
                         onClick={() => {
                           setPollOptions([...pollOptions, field.value])
                         }}
-                        variant="ghost"
                       >
                         Add
-                      </Button>
+                      </div>
                     </div>
                   </FormControl>
                   <FormMessage />
@@ -159,7 +178,7 @@ const PollForm = () => {
               <div className="flex gap-4 items-center mb-4">
                 <div className="min-w-[40px] min-h-[40px] bg-gray-300 rounded-sm"></div>
                 <h3 className="font-medium text-lg text-black">
-                  {form.getValues().title}
+                  {form.getValues().heading}
                 </h3>
               </div>
 

@@ -3,6 +3,7 @@ import authStore from "@/store/auth-store"
 import React from "react"
 import { Button } from "../ui/button"
 import { useRouter } from "next/navigation"
+import SwitchEventDialog from "../dialog/SwitchEventDialog"
 
 const Navbar = () => {
   const router = useRouter()
@@ -13,6 +14,9 @@ const Navbar = () => {
       <h2 className="font-bold text-sm">getTOGETHER</h2>
 
       <div className="flex gap-6 ">
+        <div>
+          <SwitchEventDialog />
+        </div>
         {isAuthenticated ? (
           <div className="flex gap-6">
             <div>{"user.name"}</div>

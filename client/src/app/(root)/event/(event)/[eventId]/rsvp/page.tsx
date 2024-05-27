@@ -10,6 +10,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import axios from "axios"
+import eventStore from "@/store/event-store"
 
 const Page = () => {
   return (
@@ -17,29 +21,64 @@ const Page = () => {
       <div className="mt-16">
         <RSVPCard />
       </div>
+
+      <div className="mt-10">
+        <h1 className="text-xl font-semibold mb-12">Recent Activity</h1>
+        <div className="flex flex-col gap-12 justify-center items-center">
+          {Array.from({ length: 2 }).map((_, index) => (
+            <FeedCard key={index} />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const FeedCard = () => {
+  return (
+    <div className="w-[800px] shadow-md rounded-lg px-4 py-8">
+      <div className="flex gap-4 items-center">
+        <div className="w-[48px] h-[48px] bg-gray-800 rounded-md"></div>
+        <div>
+          <p className="text-lg">
+            Mr.Josh <span>Just confirmed his presence</span>
+          </p>
+          <p className="text-gray-500">2 hours ago</p>
+        </div>
+      </div>
+
+      <div className="mt-2 mb-4">
+        <p className="text-base">
+          Very excited and happy to meet you on 24th this month, lets come and
+          make this event a banger
+        </p>
+      </div>
+
+      <Image
+        className="m-auto"
+        src="/thumbsup.png"
+        alt="service_headers"
+        width={700}
+        height={400}
+      />
     </div>
   )
 }
 
 const RSVPCard = () => {
+  const { event } = eventStore()
+
   return (
     <div className="border-2 w-full border-gray-100 rounded-md flex gap-6 px-6 py-6 h-full">
-      <Image
-        className="rounded-md"
-        src="https://img.freepik.com/free-photo/fresh-gourmet-meal-beef-taco-salad-plate-generated-by-ai_188544-13382.jpg?size=626&ext=jpg&ga=GA1.1.1224184972.1715212800&semt=ais"
-        alt="service_headers"
-        width={400}
-        height={400}
-      />
-
       <div className="w-full">
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-10">
           <div>
-            <h1 className="text-3xl font-semibold">Raj Wedding Night</h1>
-            <p>Event Description</p>
+            <h1 className="text-xl font-medium mb-2">{event?.title}</h1>
+            <p className="text-lg text-gray-600">{event?.description}</p>
+            {/* 
             <h1 className="">Location</h1>
             <p>Event Location</p>
-            <p>Add to calender</p>
+            <p>Add to calender</p> */}
           </div>
 
           <div>
@@ -48,17 +87,92 @@ const RSVPCard = () => {
           </div>
         </div>
         <div className="flex gap-16 mt-12 justify-end">
-          {/* <Button className=" px-4 py-6" variant="link" onClick={() => {}}> */}
           <NegativeDialog />
-          {/* </Button> */}
-          <Button className="px-12 py-6" onClick={() => {}}>
-            RSVP
-          </Button>
+          <PositiveDialog />
         </div>
       </div>
     </div>
   )
 }
+
+const PositiveDialog = () => {
+  const [plusCount, setPlusCount] = React.useState(0)
+  const { event } = eventStore()
+
+  const handleConfirm = async () => {
+    if (event === null) {
+      return
+    }
+
+    const response = await axios.post(
+      `http://localhost:8000/events/${event.id}/rsvp/accept`,
+      {},
+      {
+        withCredentials: true,
+      }
+    )
+
+    if (response.status === 200) {
+      console.log("RSVP Confirmed")
+    }
+  }
+
+  return (
+    <Dialog>
+      <DialogTrigger className="hover:underline">
+        <button className="hover:bg-primary-400/10 hover:border-white px-8 py-4 rounded-xl text-primary-400 border-2 border-primary-400">
+          Count me in
+        </button>
+      </DialogTrigger>
+      <DialogContent className="max-w-xl">
+        <DialogHeader>
+          <DialogTitle className="text-xl mb-4">
+            Confirm your presence
+          </DialogTitle>
+
+          <DialogDescription>
+            <div className="text-base mb-10 flex items-center gap-4 ">
+              <div className="min-w-[40px] h-[40px] bg-gray-800 rounded-md"></div>
+              <div className="text-gray-900">
+                Thankyou so much for confirming you presence, lets make this
+                event a special one for everyone
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <div className="flex flex-col gap-1">
+                <Label className="text-base text-gray-800">
+                  Number of guests
+                </Label>
+                <p>We dont need an exact number, approx will work</p>
+              </div>
+
+              <Input
+                className="w-[100px]"
+                min={0}
+                max={10}
+                type="number"
+                value={plusCount}
+                onChange={(e) => setPlusCount(Number(e.target.value))}
+              />
+            </div>
+
+            <div className="flex gap-8 mt-12 justify-end">
+              <Button
+                className="px-8 py-4"
+                variant="secondary"
+                onClick={handleConfirm}
+              >
+                Confirm my RSVP
+              </Button>
+            </div>
+          </DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 const NegativeDialog = () => {
   return (
     <Dialog>
@@ -71,13 +185,19 @@ const NegativeDialog = () => {
             Are you absolutely sure?
           </DialogTitle>
           <DialogDescription>
-            <p className="text-base mb-8">
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </p>
+            {/* <p className="text-base mb-8">
+              If you are not sure about your presence, you can always confirm
+            </p> */}
 
-            {/* Change the position here !!! */}
-            <div className="flex items-center bg-gray-200 mb-4">
+            <div className="flex gap-4 items-center mb-8 mt-2">
+              <div className="min-w-[40px] h-[40px] bg-gray-800 rounded-md"></div>
+              <div className="text-base">
+                I will be very sad if you dont make it. If you are not sure
+                about your presence, you can always confirm
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center  mb-4">
               <Image
                 src="/images.jpeg"
                 alt="service_headers"
@@ -85,16 +205,12 @@ const NegativeDialog = () => {
                 height={200}
               />
             </div>
-            <div className="flex gap-2 items-center">
-              <div className="w-[40px] h-[40px] bg-gray-400 rounded-md"></div>
-              <div>I will be very sad!!!</div>
-            </div>
 
             <div className="flex gap-8 mt-12 justify-end">
               <Button
                 className="px-12 py-6"
                 onClick={() => {
-                  console.log("I will not be able to make it")
+                  // console.log("I will not be able to make it")
                 }}
               >
                 Cancel
@@ -104,7 +220,7 @@ const NegativeDialog = () => {
                 className="px-12 py-6"
                 variant="secondary"
                 onClick={() => {
-                  console.log("I will not be able to make it")
+                  // console.log("I will not be able to make it")
                 }}
               >
                 Yes, I'm sure
@@ -118,18 +234,3 @@ const NegativeDialog = () => {
 }
 
 export default Page
-/**
- * Personalize Invite
- * Special Hosr Message
- * FE Settings
- * Integration with google calender
- *
- *
- *
- *
- *
- *
- *
- * BE
- * Chats
- */
