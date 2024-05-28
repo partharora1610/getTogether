@@ -1,16 +1,17 @@
 "use client"
 
 import eventStore from "@/store/event-store"
-import { usePathname } from "next/navigation"
+import { useParams } from "next/navigation"
 import React, { useEffect } from "react"
 
 const EventProvider = ({ children }: { children: React.ReactNode }) => {
-  const pathname = usePathname()
-  const { fetchEventById } = eventStore()
+  const params = useParams()
+  const { fetchEventById, fecthUserRole } = eventStore()
 
-  const eventId = pathname.split("/")[2]
+  const eventId = params.eventId as string
 
   useEffect(() => {
+    fecthUserRole(eventId)
     fetchEventById(eventId)
   }, [eventId])
 

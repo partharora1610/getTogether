@@ -24,9 +24,15 @@ export default function Home() {
         </p>
       </div>
 
-      <Link className="" href="/dashboard" target="_blank">
-        Get started <ArrowRight className="ml-2 h-5 w-5" />
-      </Link>
+      <div className="flex justify-center items-center">
+        <Link
+          className="bg-primary-400 text-white"
+          href="/auth"
+          target="_blank"
+        >
+          Get started <ArrowRight className="ml-2 h-5 w-5" />
+        </Link>
+      </div>
 
       {/* value proposition section */}
       <div>

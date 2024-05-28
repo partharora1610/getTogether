@@ -11,17 +11,29 @@ import { useParams, usePathname } from "next/navigation"
 import AddChannelDialog from "../dialog/AddChannelDialog"
 import eventStore from "@/store/event-store"
 import { useEffect } from "react"
+import socket from "@/lib/socket"
 
 const SideBar = () => {
-  const { event } = eventStore()
+  const { event, currentRole } = eventStore()
 
-  const params = useParams()
+  const {
+    channelId,
+    eventId,
+  }: {
+    channelId: string
+    eventId: string
+  } = useParams()
   const pathname = usePathname()
   console.log(event)
 
   const lastPath = pathname.split("/").pop()
-  const eventId = params.eventId as string
 
+  const joinChannelHandler = () => {
+    socket.emit("joinChannel", {
+      roleId: currentRole.id,
+      channelId: channelId,
+    })
+  }
   return (
     <div>
       <Link href="/event/clwqaq1ys0002hqg4jxuond1x/overview">
@@ -57,7 +69,10 @@ const SideBar = () => {
           {/* <p>{JSON.stringify(event?.channels)}</p> */}
 
           {event?.channels?.map((channel: any) => (
-            <Link href={`/event/clwqaq1ys0002hqg4jxuond1x/${channel.id}`}>
+            <Link
+              href={`/event/clwqaq1ys0002hqg4jxuond1x/${channel.id}`}
+              onClick={() => joinChannelHandler}
+            >
               <div
                 key={channel.id}
                 className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md "
@@ -106,6 +121,24 @@ const SideBar = () => {
               <div>
                 <h2 className="text-lg">Event Details</h2>
                 <p className="text-gray-500">Manage event vendors,venue etc</p>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/event/clwqaq1ys0002hqg4jxuond1x/themes">
+            <div
+              className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
+                lastPath === "guest-list"
+                  ? "bg-primary-400/10 text-primary-400 font-medium "
+                  : ""
+              }`}
+            >
+              <User2Icon size={22} />
+              <div>
+                <h2 className="text-lg">Platform Settings</h2>
+                <p className="text-gray-500">
+                  Use custom themes that suit your event
+                </p>
               </div>
             </div>
           </Link>

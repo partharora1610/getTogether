@@ -1,8 +1,18 @@
 "use client"
 import ChatInput from "@/components/shared/ChatInput"
-import React from "react"
+import { useSocket } from "@/hooks/useSocket"
+import { useParams } from "next/navigation"
+import React, { useEffect, useState } from "react"
 
 const Page = () => {
+  const { channelId } = useParams()
+  useSocket()
+
+  useEffect(() => {
+    // database call to fetch messages
+    // msgStore.fetchMessages(channelId)
+  }, [channelId])
+
   return (
     <div className="relative min-h-full bg-zinc-50 flex-col justify-between gap-2">
       <div className="flex-1 justify-between flex flex-col mb-2">
@@ -74,6 +84,12 @@ const ChatDateDivider = ({ date }: { date: string }) => {
 }
 
 const ChatContainer = () => {
+  const [messages, setMessages] = useState([])
+
+  useEffect(() => {
+    // database call to fetch messages
+  }, [])
+
   return (
     <div className="mt-10 flex flex-col gap-4 mx-8">
       <ChatItem />

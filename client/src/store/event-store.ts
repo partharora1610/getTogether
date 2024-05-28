@@ -16,7 +16,11 @@ interface Event {
 type Store = {
   loading: boolean
   events: Event[]
+
   event: Event | null
+  currentRole: any
+  fecthUserRole: (eventId: string) => void
+
   fetchEventById: (id: string) => void
   fetchEvents: () => void
   createEvent: (event: any) => void
@@ -26,6 +30,7 @@ const eventStore = create<Store>()((set) => ({
   events: [],
   loading: false,
   event: null,
+  currentRole: "",
 
   fetchEvents: async () => {
     set({ loading: true })
@@ -39,6 +44,19 @@ const eventStore = create<Store>()((set) => ({
     }
 
     set({ loading: false })
+  },
+
+  fecthUserRole: async (eventId) => {
+    const response = await axios.get(
+      `http://localhost:8000/events/${eventId}/role`,
+      {
+        withCredentials: true,
+      }
+    )
+
+    if (response.status == 200) {
+      set({ currentRole: response.data.data.role })
+    }
   },
 
   createEvent: async (event) => {

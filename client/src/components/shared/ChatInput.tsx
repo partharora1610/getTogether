@@ -4,6 +4,8 @@ import { Send } from "lucide-react"
 import { Button } from "../ui/button"
 import { Textarea } from "../ui/textarea"
 import { useRef } from "react"
+import chatStore from "@/store/chat-store"
+import socket from "@/lib/socket"
 
 interface ChatInputProps {
   isDisabled?: boolean
@@ -11,9 +13,17 @@ interface ChatInputProps {
 
 const ChatInput = ({ isDisabled }: ChatInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const { sendMessage } = chatStore()
 
-  const handleSendMessage = () => {
-    console.log(textareaRef.current?.value)
+  const handleSendMessage = async () => {
+    const message = textareaRef.current?.value
+
+    if (message) {
+      sendMessage({ message: message, roleId: "1" })
+
+      socket.emit("channelSendMessage", message)
+      textareaRef.current.value = ""
+    }
   }
 
   return (
