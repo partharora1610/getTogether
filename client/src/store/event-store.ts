@@ -10,6 +10,7 @@ interface Event {
   eventPolls: any
   eventHostMessage: true
   createdAt: string
+  channels: any
 }
 
 type Store = {

@@ -42,11 +42,13 @@ const Page = () => {
       <div className="mb-12">
         <HeadingH2 title={"About the event"} />
         <p>Very Basic Form</p>
+        <p>TODO:FORM and HOST MESSAGE</p>
       </div>
 
       <div className="mb-12">
         <div>
           <HeadingH2 title={"Venue Details & Plan"} />
+          <p>TODO:VENUE UPDATE IN THE DB</p>
         </div>
 
         <div className="mt-6">

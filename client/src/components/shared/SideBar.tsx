@@ -3,34 +3,21 @@ import Link from "next/link"
 import {
   LucideHome,
   MonitorSpeakerIcon,
+  PlusIcon,
   TicketIcon,
   User2Icon,
 } from "lucide-react"
-import { usePathname } from "next/navigation"
-
-const CHANNELS = [
-  {
-    id: "discussion",
-    name: "Discussion",
-  },
-  {
-    id: "announcements",
-    name: "Announcements",
-  },
-  {
-    id: "qna",
-    name: "QnA",
-  },
-  {
-    id: "feedback",
-    name: "Feedback",
-  },
-]
+import { useParams, usePathname } from "next/navigation"
+import AddChannelDialog from "../dialog/AddChannelDialog"
+import eventStore from "@/store/event-store"
 
 const SideBar = () => {
+  const { event } = eventStore()
+  const params = useParams()
   const pathname = usePathname()
 
   const lastPath = pathname.split("/").pop()
+  const eventId = params.eventId as string
 
   return (
     <div>
@@ -61,14 +48,10 @@ const SideBar = () => {
       </Link>
 
       <div className="mb-8">
-        <div>
-          <h2 className="text-lg text-gray-600 font-medium mb-4 uppercase">
-            Discussion Channels
-          </h2>
-        </div>
+        <AddChannelDialog eventId={eventId} />
 
         <div className="flex flex-col gap-6">
-          {CHANNELS.map((channel) => (
+          {event?.channels.map((channel: any) => (
             <Link href={`/event/clwnrcw8h0002by5wog9y5h6i/${channel.id}`}>
               <div
                 key={channel.id}

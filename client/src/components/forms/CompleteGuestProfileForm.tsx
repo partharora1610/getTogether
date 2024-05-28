@@ -14,6 +14,7 @@ const CompleteGuestProfileForm = () => {
         <Label className="text-base text-gray-900 font-medium">
           Select Event NickName
         </Label>
+        <p>Keep it funny and relateable</p>
         <Input
           className="mt-2 text-base"
           placeholder="For ex: Grooms Uncle, Chacha "
