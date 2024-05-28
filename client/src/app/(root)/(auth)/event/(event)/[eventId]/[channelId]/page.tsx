@@ -1,17 +1,22 @@
 "use client"
+
 import ChatInput from "@/components/shared/ChatInput"
 import { useSocket } from "@/hooks/useSocket"
 import { useParams } from "next/navigation"
 import React, { useEffect, useState } from "react"
+import socket from "@/lib/socket"
 
 const Page = () => {
   const { channelId } = useParams()
   useSocket()
 
   useEffect(() => {
-    // database call to fetch messages
-    // msgStore.fetchMessages(channelId)
-  }, [channelId])
+
+    return () => {
+      socket.emit("leaveChannel", channelId);    
+    }
+    
+  }, [])
 
   return (
     <div className="relative min-h-full bg-zinc-50 flex-col justify-between gap-2">

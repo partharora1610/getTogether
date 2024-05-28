@@ -6,9 +6,9 @@ import React, { useEffect } from "react"
 
 const EventProvider = ({ children }: { children: React.ReactNode }) => {
   const params = useParams()
-  const { fetchEventById, fecthUserRole } = eventStore()
-
+  const { fetchEventById, fecthUserRole, currentRole } = eventStore()
   const eventId = params.eventId as string
+  console.log("CurrentRole: ", currentRole);
 
   useEffect(() => {
     fecthUserRole(eventId)

@@ -54,8 +54,11 @@ const eventStore = create<Store>()((set) => ({
       }
     )
 
+    console.log("Response: ", response);
+
     if (response.status == 200) {
-      set({ currentRole: response.data.data.role })
+      set({ currentRole: response.data.data })
+      console.log("Data: ", response.data);
     }
   },
 

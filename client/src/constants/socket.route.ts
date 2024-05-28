@@ -1,5 +1,6 @@
 export const ROOM_SOCKET = {
-  ROOM_SEND_MESSAGE: "roomSendMessage",
-  ROOM_NEW_MESSAGE: "roomNewMessage",
-  JOIN_ROOM: "joinRoom",
+  CHANNEL_SEND_MESSAGE: "channelSendMessage",
+  CHANNEL_NEW_MESSAGE: "channelNewMessage",
+  JOIN_CHANNEL: "joinChannel",
+  LEAVE_CHANNEL: "leaveChannel",
 }

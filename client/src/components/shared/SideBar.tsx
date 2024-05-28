@@ -1,42 +1,32 @@
 "use client"
+
 import Link from "next/link"
 import {
   LucideHome,
   MonitorSpeakerIcon,
-  PlusIcon,
   TicketIcon,
   User2Icon,
 } from "lucide-react"
 import { useParams, usePathname } from "next/navigation"
 import AddChannelDialog from "../dialog/AddChannelDialog"
 import eventStore from "@/store/event-store"
-import { useEffect } from "react"
-import socket from "@/lib/socket"
 
 const SideBar = () => {
-  const { event, currentRole } = eventStore()
+  const { event } = eventStore()
 
   const {
-    channelId,
     eventId,
   }: {
     channelId: string
     eventId: string
   } = useParams()
-  const pathname = usePathname()
-  console.log(event)
 
+  const pathname = usePathname()
   const lastPath = pathname.split("/").pop()
 
-  const joinChannelHandler = () => {
-    socket.emit("joinChannel", {
-      roleId: currentRole.id,
-      channelId: channelId,
-    })
-  }
   return (
     <div>
-      <Link href="/event/clwqaq1ys0002hqg4jxuond1x/overview">
+      <Link href={`/event/${eventId}/overview`}>
         <div
           className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
             lastPath === "overview"
@@ -49,7 +39,7 @@ const SideBar = () => {
         </div>
       </Link>
 
-      <Link href="/event/clwqaq1ys0002hqg4jxuond1x/rsvp">
+      <Link href={`/event/${eventId}/rsvp`}>
         <div
           className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
             lastPath === "rsvp"
@@ -66,12 +56,9 @@ const SideBar = () => {
         <AddChannelDialog eventId={eventId} />
 
         <div className="flex flex-col gap-6">
-          {/* <p>{JSON.stringify(event?.channels)}</p> */}
-
           {event?.channels?.map((channel: any) => (
             <Link
-              href={`/event/clwqaq1ys0002hqg4jxuond1x/${channel.id}`}
-              onClick={() => joinChannelHandler}
+              href={`/event/${eventId}/${channel.id}`}
             >
               <div
                 key={channel.id}
@@ -93,7 +80,7 @@ const SideBar = () => {
             Admin Control
           </h2>
 
-          <Link href="/event/clwqaq1ys0002hqg4jxuond1x/guest-list">
+          <Link href={`/event/${eventId}/guest-list`}>
             <div
               className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
                 lastPath === "guest-list"
@@ -109,7 +96,7 @@ const SideBar = () => {
             </div>
           </Link>
 
-          <Link href="/event/clwqaq1ys0002hqg4jxuond1x/event-details">
+          <Link href={`/event/${eventId}/event-details`}>
             <div
               className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
                 lastPath === "event-details"
@@ -125,7 +112,7 @@ const SideBar = () => {
             </div>
           </Link>
 
-          <Link href="/event/clwqaq1ys0002hqg4jxuond1x/themes">
+          <Link href={`/event/${eventId}/themes`}>
             <div
               className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
                 lastPath === "guest-list"
