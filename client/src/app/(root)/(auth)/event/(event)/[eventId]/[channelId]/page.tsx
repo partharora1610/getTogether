@@ -11,11 +11,9 @@ const Page = () => {
   useSocket()
 
   useEffect(() => {
-
     return () => {
       socket.emit("leaveChannel", channelId);    
     }
-    
   }, [])
 
   return (
