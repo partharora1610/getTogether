@@ -20,6 +20,10 @@ import { ScrollArea } from "../ui/scroll-area"
 const InviteGuestDialog = () => {
   const router = useRouter()
 
+  const inviteGuestHandler = () => {
+    console.log("Invite Guest")
+  }
+
   return (
     <Dialog>
       <DialogTrigger>Invite Guest</DialogTrigger>
@@ -42,7 +46,9 @@ const InviteGuestDialog = () => {
                   <Input className=" text-base" placeholder="Enter email" />
                 </div>
 
-                <Button className="mt-12 w-full">Send Invite</Button>
+                <Button className="mt-12 w-full" onClick={inviteGuestHandler}>
+                  Send Invite
+                </Button>
               </TabsContent>
               <TabsContent value="batch">
                 <BatchEmail />

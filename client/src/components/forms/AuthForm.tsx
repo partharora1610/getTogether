@@ -23,7 +23,7 @@ export default function AuthForm() {
         if (callbackUrl) {
           router.push(callbackUrl)
         } else {
-          router.push("/event/create")
+          router.push("/event/onboarding")
         }
       } else {
         router.push("/auth")

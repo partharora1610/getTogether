@@ -10,18 +10,21 @@ import {
 import { useParams, usePathname } from "next/navigation"
 import AddChannelDialog from "../dialog/AddChannelDialog"
 import eventStore from "@/store/event-store"
+import { useEffect } from "react"
 
 const SideBar = () => {
   const { event } = eventStore()
+
   const params = useParams()
   const pathname = usePathname()
+  console.log(event)
 
   const lastPath = pathname.split("/").pop()
   const eventId = params.eventId as string
 
   return (
     <div>
-      <Link href="/event/clwnrcw8h0002by5wog9y5h6i/overview">
+      <Link href="/event/clwqaq1ys0002hqg4jxuond1x/overview">
         <div
           className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
             lastPath === "overview"
@@ -34,7 +37,7 @@ const SideBar = () => {
         </div>
       </Link>
 
-      <Link href="/event/clwnrcw8h0002by5wog9y5h6i/rsvp">
+      <Link href="/event/clwqaq1ys0002hqg4jxuond1x/rsvp">
         <div
           className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
             lastPath === "rsvp"
@@ -51,8 +54,10 @@ const SideBar = () => {
         <AddChannelDialog eventId={eventId} />
 
         <div className="flex flex-col gap-6">
-          {event?.channels.map((channel: any) => (
-            <Link href={`/event/clwnrcw8h0002by5wog9y5h6i/${channel.id}`}>
+          {/* <p>{JSON.stringify(event?.channels)}</p> */}
+
+          {event?.channels?.map((channel: any) => (
+            <Link href={`/event/clwqaq1ys0002hqg4jxuond1x/${channel.id}`}>
               <div
                 key={channel.id}
                 className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md "
@@ -73,7 +78,7 @@ const SideBar = () => {
             Admin Control
           </h2>
 
-          <Link href="/event/clwnrcw8h0002by5wog9y5h6i/guest-list">
+          <Link href="/event/clwqaq1ys0002hqg4jxuond1x/guest-list">
             <div
               className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
                 lastPath === "guest-list"
@@ -89,7 +94,7 @@ const SideBar = () => {
             </div>
           </Link>
 
-          <Link href="/event/clwnrcw8h0002by5wog9y5h6i/event-details">
+          <Link href="/event/clwqaq1ys0002hqg4jxuond1x/event-details">
             <div
               className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
                 lastPath === "event-details"

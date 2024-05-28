@@ -8,11 +8,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import eventStore from "@/store/event-store"
+import { guests } from "@/constants"
 
 const RightBar = () => {
   return (
     <div>
-      <VendorList />
+      <GuestList />
     </div>
   )
 }
@@ -46,37 +47,9 @@ const GUESTS = [
     name: "Mr Mukesh Bansal",
     rsvp: true,
   },
-  // {
-  //   name: "Mr Nitin kamath",
-  //   rsvp: false,
-  // },
-  // {
-  //   name: "Wedding Venue Service",
-  //   rsvp: true,
-  // },
-  // {
-  //   name: "Mr Nitin kamath",
-  //   rsvp: false,
-  // },
-  // {
-  //   name: "Wedding Venue Service",
-  //   rsvp: true,
-  // },
-  // {
-  //   name: "Mr Mukesh Bansal",
-  //   rsvp: true,
-  // },
-  // {
-  //   name: "Mr Nitin kamath",
-  //   rsvp: false,
-  // },
-  // {
-  //   name: "Wedding Venue Service",
-  //   rsvp: true,
-  // },
 ]
 
-const VendorList = () => {
+const GuestList = () => {
   const { event, loading } = eventStore()
 
   if (loading) {
@@ -96,10 +69,20 @@ const VendorList = () => {
       </div>
       <p>{JSON.stringify(event?.guests)}</p>
 
+      <p>{event?.guests == 0 ? "No Guest" : "Hello"}</p>
+
       <div className="flex flex-col gap-6 w-full">
-        {GUESTS.map((guest) => {
+        {GUESTS.map((guest) => (
+          <GuestListItem
+            key={guest.name}
+            guest={guest.name}
+            rsvp={guest.rsvp}
+          />
+        ))}
+
+        {/* {event?.guests.map((guest: any) => {
           return <GuestListItem guest={guest.name} rsvp={guest.rsvp} />
-        })}
+        })} */}
       </div>
     </div>
   )
