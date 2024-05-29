@@ -2,40 +2,41 @@
 import React from "react"
 import { Button } from "@/components/ui/button"
 import AddVendorForm from "@/components/forms/AddVendorForm"
-import CanvasDialog from "@/components/dialog/CanvasDialog"
 import VenuePlanList from "@/components/shared/VenuePlanList"
 import EventVenueForm from "@/components/forms/EventVenueForm"
 import { NegativeTag } from "@/components/tags/tags"
+import eventStore from "@/store/event-store"
 
-const VENDORS = [
-  {
-    id: 1,
-    name: "Binod Planner",
-    service: "Type 1",
-    contact: "Contact 1",
-    email: "Email 1",
-    address: "Address 1",
-  },
-  {
-    id: 2,
-    name: "Binod Catering Service",
-    service: "Type 1",
-    contact: "Contact 1",
-    email: "Email 1",
-    address: "Address 1",
-  },
-  {
-    id: 2,
-    name: "Binod Decoration Services",
-    service: "Type 1",
-    contact: "Contact 1",
-    email: "Email 1",
-    address: "Address 1",
-  },
-]
+// const VENDORS = [
+//   {
+//     id: 1,
+//     name: "Binod Planner",
+//     service: "Type 1",
+//     contact: "Contact 1",
+//     email: "Email 1",
+//     address: "Address 1",
+//   },
+//   {
+//     id: 2,
+//     name: "Binod Catering Service",
+//     service: "Type 1",
+//     contact: "Contact 1",
+//     email: "Email 1",
+//     address: "Address 1",
+//   },
+//   {
+//     id: 2,
+//     name: "Binod Decoration Services",
+//     service: "Type 1",
+//     contact: "Contact 1",
+//     email: "Email 1",
+//     address: "Address 1",
+//   },
+// ]
 
 const Page = () => {
   const [addingVendor, setAddingVendor] = React.useState(false)
+  const { vendors } = eventStore()
 
   return (
     <div>
@@ -116,22 +117,37 @@ const Page = () => {
           </div>
         </div>
 
-        {/*  */}
+        {/* Rendering Vendor Cards */}
         <div className="grid grid-cols-2 gap-20">
           <div className="flex flex-col gap-8">
-            {VENDORS.map((vendor) => (
-              <VendorCard key={vendor.id} />
-            ))}
+            {vendors.map((v: any) => {
+              const { id, name, email, phone } = v.vendor
+              return (
+                <VendorCard
+                  key={v.id}
+                  name={name}
+                  email={email}
+                  phone={phone}
+                />
+              )
+            })}
           </div>
           <div>{addingVendor ? <AddVendorForm /> : <></>}</div>
         </div>
       </div>
-      {/*  */}
     </div>
   )
 }
 
-const VendorCard = () => {
+const VendorCard = ({
+  name,
+  email,
+  phone,
+}: {
+  name: string
+  email: string
+  phone: string
+}) => {
   return (
     <div className="border-2 border-gray-200 w-[600px] px-4 py-6 rounded-md">
       <div className="w-full">
@@ -139,7 +155,7 @@ const VendorCard = () => {
           <div className="min-w-[52px] h-[52px] bg-gray-500 rounded-md"></div>
           <div className="flex w-full justify-between">
             <div>
-              <p className="text-lg">Binod Planner Company</p>
+              <p className="text-lg">{name}</p>
               <p className="text-gray-500">
                 Responsible for <span className="underline"> Catering </span>
               </p>
