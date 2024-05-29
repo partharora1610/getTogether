@@ -8,6 +8,7 @@ import chatStore from "@/store/chat-store"
 import socket from "@/lib/socket"
 import { useParams } from "next/navigation"
 import eventStore from "@/store/event-store"
+import { ROOM_SOCKET } from "@/constants/socket.route"
 
 interface ChatInputProps {
   isDisabled?: boolean
@@ -28,7 +29,7 @@ const ChatInput = ({ isDisabled }: ChatInputProps) => {
 
     if (message && currentRole) {
       sendMessage({ message: message, roleId: currentRole.id as string, eventId: eventId as string, channelId: channelId as string })
-      socket.emit("channelSendMessage", message)
+      socket.emit(ROOM_SOCKET.CHANNEL_SEND_MESSAGE, { msg: message })
       textareaRef.current.value = ""
     }
   }

@@ -3,6 +3,7 @@ import socket from "@/lib/socket"
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation";
 import eventStore from "@/store/event-store";
+import { Message } from "@/store/chat-store";
 
 export const useSocket = () => {
   
@@ -10,27 +11,33 @@ export const useSocket = () => {
   const  { currentRole } = eventStore();
   const [ readyToJoin, setReadyToJoin ] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   if (channelId && currentRole) {
-  //     setReadyToJoin(true);
-  //   }
-  // }, [channelId, currentRole]);
+  useEffect(() => {
+    if (channelId && currentRole) {
+      setReadyToJoin(true);
+    }
+  }, [channelId, currentRole]);
 
-  // useEffect(() => {
-  //   if (readyToJoin) {
-  //     socket.connect();
+  useEffect(() => {
+    if (readyToJoin) {
+      if (!socket.connected) {
+        socket.connect();
+      }
       
-  //     // socket.emit(ROOM_SOCKET.JOIN_CHANNEL, { channelId, roleId: currentRole.id as string });
+      socket.emit(ROOM_SOCKET.JOIN_CHANNEL, { channelId, roleId: currentRole.id as string });
+      
+      socket.on(ROOM_SOCKET.CHANNEL_NEW_MESSAGE, (message: string) => {
+        console.log("Message: ", message);
+        alert(`Message: ${message}`);
+    });
 
-     
-
-  //     return () => {
-  //       if (socket) {
-  //         socket.emit(ROOM_SOCKET.LEAVE_CHANNEL, channelId);
-  //         socket.disconnect();
-  //       }
-  //     };
-  //   }
-  // }, [readyToJoin])
+      return () => {
+        if (socket) {
+          socket.off(ROOM_SOCKET.CHANNEL_NEW_MESSAGE);
+          socket.emit(ROOM_SOCKET.LEAVE_CHANNEL, channelId);
+          socket.disconnect();
+        }
+      };
+    }
+  }, [readyToJoin])
 
 }
