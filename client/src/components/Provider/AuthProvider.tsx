@@ -24,7 +24,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (response.status === 200) {
         setAuthenticated(true)
-        setUser(response.data.user)
+        setUser(response.data.data)
         setLoading(false)
       } else {
         setAuthenticated(false)
