@@ -20,6 +20,7 @@ import { Plus } from "lucide-react"
 import eventStore from "@/store/event-store"
 import PollForm from "@/components/forms/PollForm"
 import CompleteGuestProfileDialog from "@/components/dialog/CompleteGuestProfileDialog"
+import appearanceStore from "@/store/appearance-store"
 
 const Page = () => {
   const { event, loading } = eventStore()
@@ -63,8 +64,6 @@ const OverviewHeader = () => {
     // </div>
   )
 }
-
-const POLL = []
 
 const EventAnnouncement = () => {
   const { event } = eventStore()
@@ -123,11 +122,20 @@ const EventAnnouncement = () => {
 }
 
 const CreateAnnoucementDialog = () => {
+  const { primaryColor, textColor } = appearanceStore()
+
+  const bgClass = `bg-[${primaryColor}]/10 `
+  const textClass = `text-[${primaryColor}]`
+  const borderClass = `border-[${primaryColor}]`
+  const hoverTextClass = `hover:text-${primaryColor}`
+
   return (
     <div>
       <Dialog>
         <DialogTrigger>
-          <div className="flex gap-1 text-primary-400 items-center border-2 border-transparent px-4 py-2 rounded-md">
+          <div
+            className={`flex gap-1 ${textClass} items-center border-2 border-transparent px-4 py-2 rounded-md`}
+          >
             <Plus size={20} />
             <button className="text-base font-medium">
               Create Announcement
@@ -149,11 +157,21 @@ const CreateAnnoucementDialog = () => {
 }
 
 const HostSpecialDialog = () => {
+  const { primaryColor, textColor } = appearanceStore()
+
+  const bgClass = `bg-[${primaryColor}]/10 `
+  const textClass = `text-[${primaryColor}]`
+  const borderClass = `border-[${primaryColor}]`
+  const hoverTextClass = `hover:text-${primaryColor}`
+  const hoverBorderClass = `hover:border-${primaryColor}`
+  // hover:border-primary-400
   return (
     <div>
       <Dialog>
         <DialogTrigger>
-          <button className="px-4 py-2 rounded-md border border-black bg-white text-black text-sm hover:border-primary-400 hover:text-primary-400 hover:shadow-[4px_4px_0px_0px_rgba(220,14,99,1)] transition duration-200">
+          <button
+            className={`px-4 py-2 rounded-md border border-black bg-white text-black text-sm ${hoverBorderClass}   ${hoverTextClass} hover:shadow-[4px_4px_0px_0px_rgba(220,14,99,1)] transition duration-200`}
+          >
             Special message from the host
           </button>
         </DialogTrigger>
@@ -186,7 +204,9 @@ const HostSpecialDialog = () => {
               </div> */}
 
               <div className="mt-8 mb-4 flex justify-end">
-                <Button className="text-base font-medium px-6 py-6 border-primary-400 border-2 bg-transparent text-primary-400 hover:bg-primary-400 hover:text-white">
+                <Button
+                  className={`text-base font-medium px-6 py-6 ${borderClass} border-2 bg-transparent ${textClass} hover:bg-[${primaryColor}] hover:text-white`}
+                >
                   Take me to RSVP
                 </Button>
               </div>

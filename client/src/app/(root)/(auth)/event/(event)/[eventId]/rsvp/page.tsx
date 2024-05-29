@@ -14,9 +14,15 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import axios from "axios"
 import eventStore from "@/store/event-store"
-import { Plus, PlusIcon } from "lucide-react"
+import { PlusIcon } from "lucide-react"
+import appearanceStore from "@/store/appearance-store"
 
 const Page = () => {
+  const { primaryColor, textColor } = appearanceStore()
+
+  const bgClass = `bg-[${primaryColor}]/10 `
+  const textClass = `text-[${primaryColor}]`
+
   return (
     <div>
       <div className="mt-16">
@@ -28,7 +34,9 @@ const Page = () => {
           <h1 className="text-xl font-semibold mb-12">Recent Activity</h1>
 
           <div>
-            <Button className="px-8 flex gap-1 py-4 text-primary-400 bg-white hover:bg-primary-400/10">
+            <Button
+              className={`px-8 flex gap-1 py-4 ${textClass} bg-white hover:${bgClass}`}
+            >
               <span>
                 <PlusIcon size={20} />
               </span>
@@ -112,6 +120,12 @@ const RSVPCard = () => {
 }
 
 const PositiveDialog = () => {
+  const { primaryColor, textColor } = appearanceStore()
+
+  const bgClass = `bg-[${primaryColor}]/10 `
+  const textClass = `text-[${primaryColor}]`
+  const borderClass = `border-[${primaryColor}]`
+
   const [plusCount, setPlusCount] = React.useState(0)
   const { event } = eventStore()
 
@@ -136,7 +150,9 @@ const PositiveDialog = () => {
   return (
     <Dialog>
       <DialogTrigger className="hover:underline">
-        <button className="hover:bg-primary-400/10 hover:border-white px-8 py-4 rounded-xl text-primary-400 border-2 border-primary-400">
+        <button
+          className={`hover:${bgClass} hover:border-white px-8 py-4 rounded-xl ${textClass} border-2 ${borderClass}`}
+        >
           Count me in
         </button>
       </DialogTrigger>

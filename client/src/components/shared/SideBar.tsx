@@ -10,11 +10,12 @@ import {
 import { useParams, usePathname } from "next/navigation"
 import AddChannelDialog from "../dialog/AddChannelDialog"
 import eventStore from "@/store/event-store"
-import { useEffect } from "react"
 import socket from "@/lib/socket"
+import appearanceStore from "@/store/appearance-store"
 
 const SideBar = () => {
   const { event, currentRole } = eventStore()
+  const { primaryColor, textColor } = appearanceStore()
 
   const {
     channelId,
@@ -34,14 +35,16 @@ const SideBar = () => {
       channelId: channelId,
     })
   }
+
+  const bgClass = `bg-[${primaryColor}]/10 `
+  const textClass = `text-[${primaryColor}]`
+
   return (
     <div>
-      <Link href="/event/clwqaq1ys0002hqg4jxuond1x/overview">
+      <Link href={`/event/${eventId}/overview`}>
         <div
           className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
-            lastPath === "overview"
-              ? "bg-primary-400/10 text-primary-400 font-medium "
-              : ""
+            lastPath === "overview" ? `${bgClass} ${textClass} font-medium` : ""
           }`}
         >
           <LucideHome size={22} />
@@ -49,12 +52,10 @@ const SideBar = () => {
         </div>
       </Link>
 
-      <Link href="/event/clwqaq1ys0002hqg4jxuond1x/rsvp">
+      <Link href={`/event/${eventId}/rsvp`}>
         <div
           className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
-            lastPath === "rsvp"
-              ? "bg-primary-400/10 text-primary-400 font-medium "
-              : ""
+            lastPath === "rsvp" ? `${bgClass} ${textClass} font-medium` : ""
           }`}
         >
           <TicketIcon size={22} />
@@ -66,16 +67,19 @@ const SideBar = () => {
         <AddChannelDialog eventId={eventId} />
 
         <div className="flex flex-col gap-6">
-          {/* <p>{JSON.stringify(event?.channels)}</p> */}
-
           {event?.channels?.map((channel: any) => (
             <Link
-              href={`/event/clwqaq1ys0002hqg4jxuond1x/${channel.id}`}
+              href={`/event/${eventId}/${channel.id}`}
+              // href={`/event/clwqaq1ys0002hqg4jxuond1x/${channel.id}`}
               onClick={() => joinChannelHandler}
             >
               <div
                 key={channel.id}
-                className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md "
+                className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
+                  lastPath === "overview"
+                    ? `${bgClass} ${textClass} font-medium`
+                    : ""
+                }`}
               >
                 <MonitorSpeakerIcon size={22} />
                 <h2 className="text-lg">{channel.name}</h2>
@@ -93,11 +97,11 @@ const SideBar = () => {
             Admin Control
           </h2>
 
-          <Link href="/event/clwqaq1ys0002hqg4jxuond1x/guest-list">
+          <Link href={`/event/${eventId}/guest-list`}>
             <div
               className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
                 lastPath === "guest-list"
-                  ? "bg-primary-400/10 text-primary-400 font-medium "
+                  ? `${bgClass} ${textClass} font-medium`
                   : ""
               }`}
             >
@@ -109,11 +113,11 @@ const SideBar = () => {
             </div>
           </Link>
 
-          <Link href="/event/clwqaq1ys0002hqg4jxuond1x/event-details">
+          <Link href={`/event/${eventId}/event-details`}>
             <div
               className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
                 lastPath === "event-details"
-                  ? "bg-primary-400/10 text-primary-400 font-medium "
+                  ? `${bgClass} ${textClass} font-medium`
                   : ""
               }`}
             >
@@ -125,11 +129,11 @@ const SideBar = () => {
             </div>
           </Link>
 
-          <Link href="/event/clwqaq1ys0002hqg4jxuond1x/themes">
+          <Link href={`/event/${eventId}/themes`}>
             <div
               className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
-                lastPath === "guest-list"
-                  ? "bg-primary-400/10 text-primary-400 font-medium "
+                lastPath === "themes"
+                  ? `${bgClass} ${textClass} font-medium`
                   : ""
               }`}
             >

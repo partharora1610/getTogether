@@ -1,19 +1,19 @@
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
-
 import Image from "next/image"
+import { ContainerScroll } from "@/components/ui/scroll-animation"
 
 export default function Home() {
   return (
     <>
-      <div className="mx-auto mb-4 flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full border border-gray-200 bg-white px-7 py-2 shadow-md backdrop-blur transition-all hover:border-gray-300 hover:bg-white/50">
+      <div className="mt-28 mx-auto mb-4 flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full border border-gray-200 bg-white px-7 py-2 shadow-md backdrop-blur transition-all hover:border-gray-300 hover:bg-white/50">
         <p className="text-sm font-semibold text-gray-700">
           getTogether is now public!
         </p>
       </div>
       <div className="flex justify-center flex-col items-center">
         <h1 className="max-w-4xl text-5xl font-bold md:text-6xl lg:text-7xl text-center">
-          Manange you <span className="text-primary-400">events</span> at one
+          Manange your <span className="text-primary-400">events</span> at one
           place.
         </h1>
         <p className="mt-5 text-center max-w-prose text-zinc-700 sm:text-lg">
@@ -24,13 +24,10 @@ export default function Home() {
         </p>
       </div>
 
-      <div className="flex justify-center items-center">
-        <Link
-          className="bg-primary-400 text-white"
-          href="/auth"
-          target="_blank"
-        >
-          Get started <ArrowRight className="ml-2 h-5 w-5" />
+      <div className="flex justify-center items-center mt-4">
+        <Link className="text-primary-400" href="/auth" target="_blank">
+          Get started
+          {/* <ArrowRight className="ml-2 h-5 w-5" /> */}
         </Link>
       </div>
 
@@ -50,23 +47,6 @@ export default function Home() {
             />
           </div>
 
-          <div>
-            <div className="mx-auto max-w-6xl px-6 lg:px-8">
-              <div className="mt-16 flow-root sm:mt-24">
-                <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
-                  <Image
-                    src="/dashboard-preview.jpg"
-                    alt="product preview"
-                    width={1364}
-                    height={866}
-                    quality={100}
-                    className="rounded-md bg-white p-2 sm:p-8 md:p-20 shadow-2xl ring-1 ring-gray-900/10"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -80,17 +60,28 @@ export default function Home() {
             />
           </div>
         </div>
+        <ContainerScroll titleComponent={""}>
+          <Image
+            src={`/hero.png`}
+            alt="hero"
+            height={720}
+            width={1400}
+            className="mx-auto rounded-2xl  h-full object-left-top"
+            draggable={false}
+          />
+        </ContainerScroll>
       </div>
 
       {/* Feature section */}
-      <div className="mx-auto mb-32 mt-32 max-w-5xl sm:mt-56">
+      <div className="mx-auto mb-32 max-w-5xl">
         <div className="mb-12 px-6 lg:px-8">
           <div className="mx-auto max-w-2xl sm:text-center">
             <h2 className="mt-2 font-bold text-4xl text-gray-900 sm:text-5xl">
               Host your events with ease
             </h2>
             <p className="mt-4 text-lg text-gray-600">
-              Chatting to your PDF files has never been easier than with Quill.
+              Managing your both personal and professional events has never been
+              easier than with getTogether.
             </p>
           </div>
         </div>
@@ -104,14 +95,7 @@ export default function Home() {
                 Sign up for an account and create events
               </span>
               <span className="mt-2 text-zinc-700">
-                Either starting out with a free plan or choose our{" "}
-                <Link
-                  href="/pricing"
-                  className="text-blue-700 underline underline-offset-2"
-                >
-                  pro plan
-                </Link>
-                .
+                Create multiple events and manage them at one place
               </span>
             </div>
           </li>
@@ -122,8 +106,8 @@ export default function Home() {
                 Add Guest and Vendors to different events
               </span>
               <span className="mt-2 text-zinc-700">
-                We&apos;ll process your file and make it ready for you to chat
-                with.
+                Add guest and vendors to your events and manage them at one
+                place
               </span>
             </div>
           </li>
@@ -133,10 +117,7 @@ export default function Home() {
               <span className="text-xl font-semibold">
                 Manage Venue and Guest list at one place
               </span>
-              <span className="mt-2 text-zinc-700">
-                It&apos;s that simple. Try out Quill today - it really takes
-                less than a minute.
-              </span>
+              <span className="mt-2 text-zinc-700">It&apos;s that simple.</span>
             </div>
           </li>
         </ol>
