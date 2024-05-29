@@ -10,24 +10,27 @@ export const useSocket = () => {
   const  { currentRole } = eventStore();
   const [ readyToJoin, setReadyToJoin ] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (channelId && currentRole) {
-      setReadyToJoin(true);
-    }
-  }, [channelId, currentRole]);
+  // useEffect(() => {
+  //   if (channelId && currentRole) {
+  //     setReadyToJoin(true);
+  //   }
+  // }, [channelId, currentRole]);
 
-  useEffect(() => {
-    if (readyToJoin) {
-      socket.connect();
-      socket.emit(ROOM_SOCKET.JOIN_CHANNEL, { channelId, roleId: currentRole.id as string });
+  // useEffect(() => {
+  //   if (readyToJoin) {
+  //     socket.connect();
+      
+  //     // socket.emit(ROOM_SOCKET.JOIN_CHANNEL, { channelId, roleId: currentRole.id as string });
 
-      return () => {
-        if (socket) {
-          socket.emit(ROOM_SOCKET.LEAVE_CHANNEL, channelId);
-          socket.disconnect();
-        }
-      };
-    }
-  }, [readyToJoin])
+     
+
+  //     return () => {
+  //       if (socket) {
+  //         socket.emit(ROOM_SOCKET.LEAVE_CHANNEL, channelId);
+  //         socket.disconnect();
+  //       }
+  //     };
+  //   }
+  // }, [readyToJoin])
 
 }

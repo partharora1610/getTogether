@@ -1,25 +1,34 @@
 import { create } from "zustand"
 import axios from "axios"
 
-interface Message {}
+export type Message = {
+  message: string;
+  timestamp: Date;
+  channelId: string;
+  senderId: string;
+}
 
 type Store = {
   messages: Message[]
-  fetchMessages: () => void
+  fetchMessages: (eventId: string, channelId: string) => void
   sendMessage: ({
     message,
     roleId,
+    eventId,
+    channelId
   }: {
     message: string
     roleId: string
+    eventId: string
+    channelId: string
   }) => void
 }
 
 const chatStore = create<Store>((set) => ({
   messages: [],
 
-  fetchMessages: async () => {
-    const response = await axios.get("http://localhost:8000/", {
+  fetchMessages: async (eventId: string, channelId: string) => {
+    const response = await axios.get(`http://localhost:8000/events/${eventId}/channels/${channelId}/messages`, {
       withCredentials: true,
     })
 
@@ -28,9 +37,9 @@ const chatStore = create<Store>((set) => ({
     }
   },
 
-  sendMessage: async ({ message, roleId }) => {
+  sendMessage: async ({ message, roleId, eventId, channelId }) => {
     const response = await axios.post(
-      "http://localhost:8000/",
+      `http://localhost:8000/events/${eventId}/channels/${channelId}/messages`,
       {
         message,
         roleId,

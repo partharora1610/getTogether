@@ -10,11 +10,15 @@ import {
 import { useParams, usePathname } from "next/navigation"
 import AddChannelDialog from "../dialog/AddChannelDialog"
 import eventStore from "@/store/event-store"
+import socket from "@/lib/socket"
+import { ROOM_SOCKET } from "@/constants/socket.route"
 
 const SideBar = () => {
   const { event } = eventStore()
+  const { currentRole } = eventStore();
 
   const {
+    channelId,
     eventId,
   }: {
     channelId: string
@@ -23,6 +27,10 @@ const SideBar = () => {
 
   const pathname = usePathname()
   const lastPath = pathname.split("/").pop()
+
+  const handleJoinChannel = (channelId: string, roleId: string) => {
+    socket.emit(ROOM_SOCKET.JOIN_CHANNEL, { channelId, roleId });
+  }
 
   return (
     <div>
@@ -59,6 +67,11 @@ const SideBar = () => {
           {event?.channels?.map((channel: any) => (
             <Link
               href={`/event/${eventId}/${channel.id}`}
+              onClick={() => {
+                console.log(currentRole);
+                currentRole && handleJoinChannel(channelId, currentRole.id as string)
+              }
+            }
             >
               <div
                 key={channel.id}
