@@ -23,7 +23,7 @@ import CompleteGuestProfileDialog from "@/components/dialog/CompleteGuestProfile
 import appearanceStore from "@/store/appearance-store"
 
 const Page = () => {
-  const { event, loading } = eventStore()
+  const { loading } = eventStore()
 
   if (loading) {
     return <div>Loading...</div>
@@ -39,6 +39,7 @@ const Page = () => {
 
 const OverviewHeader = () => {
   const { event } = eventStore()
+
   return (
     <div className="border-b-2 bg-white border-gray-100 pb-12 mb-8 relative">
       <div className="w-full h-[240px] bg-gray-400 mb-8"></div>

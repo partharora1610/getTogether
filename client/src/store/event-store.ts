@@ -27,6 +27,7 @@ type Store = {
   eventHostMessage: any
   channels: any
   eventFloorPlan: any
+  guestPosts: any
 
   addRsvp: (rsvp: any) => void
   addEventFloorPlan: (eventFloorPlan: any) => void
@@ -38,6 +39,7 @@ type Store = {
   addInvite: (invite: any) => void
   addVendor: (vendor: any) => void
   addVenue: (venue: any) => void
+  addGuestPost: (guestPost: any) => void
 
   event: Event | null
   currentRole: any
@@ -64,6 +66,10 @@ const eventStore = create<Store>()((set) => ({
   eventHostMessage: [],
   channels: [],
   eventFloorPlan: [],
+  guestPosts: [],
+
+  addGuestPost: (guestPost) =>
+    set((state) => ({ guestPosts: [...state.guestPosts, guestPost] })),
 
   addRsvp: (rsvp) => set((state) => ({ rsvp: [...state.rsvp, rsvp] })),
   addEventFloorPlan: (eventFloorPlan) =>

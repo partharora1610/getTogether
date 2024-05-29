@@ -35,7 +35,6 @@ const authStore = create<Store>()((set) => ({
         withCredentials: true,
       }
     )
-    console.log("data", data)
 
     if (data.message === "Ok") {
       set({ user: data.user, isAuthenticated: true })
