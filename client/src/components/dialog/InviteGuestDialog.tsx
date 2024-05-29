@@ -9,18 +9,29 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { useEffect, useState } from "react"
 import { Textarea } from "../ui/textarea"
 import { ScrollArea } from "../ui/scroll-area"
+import axios from 'axios';
 
 const InviteGuestDialog = () => {
-  const router = useRouter()
+  const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const { eventId } = useParams() as { eventId: string };
 
-  const inviteGuestHandler = () => {}
+  const inviteGuestHandler = async () => {
+    const response = await axios.post(`http://localhost:8000/events/${eventId}/invite/guest`, {
+      name,
+      email,
+    }, {
+      withCredentials: true,
+    });
+    console.log(response);
+  }
 
   return (
     <Dialog>
@@ -33,15 +44,25 @@ const InviteGuestDialog = () => {
           <DialogDescription>
             <Tabs defaultValue="default" className="w-[400px]">
               <TabsList className="mb-2">
-                <TabsTrigger value="individual">Indiviidual Invite</TabsTrigger>
+                <TabsTrigger value="individual">Individual Invite</TabsTrigger>
                 <TabsTrigger value="batch">Batch Invite</TabsTrigger>
               </TabsList>
               <TabsContent value="individual">
                 <div className="flex flex-wrap gap-2 mt-4">
                   <Label className="text-base text-gray-900 font-medium">
+                    Guest Name
+                  </Label>
+                  <Input className=" text-base" placeholder="Enter name" value={name} onChange={(e) => {
+                    setName(e.target.value);
+                  }
+                  }/>
+                  <Label className="text-base text-gray-900 font-medium">
                     Guest Email
                   </Label>
-                  <Input className=" text-base" placeholder="Enter email" />
+                  <Input className=" text-base" placeholder="Enter email" value={email} onChange={(e) => {
+                    setEmail(e.target.value);
+                  }
+                  }/>
                 </div>
 
                 <Button className="mt-12 w-full" onClick={inviteGuestHandler}>
