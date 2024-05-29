@@ -11,7 +11,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-
 import {
   Table,
   TableBody,
@@ -21,10 +20,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
-
 import { Guest } from "@/constants"
 import React from "react"
-import { Button } from "../ui/button"
 import InviteGuestDialog from "../dialog/InviteGuestDialog"
 
 const columns: ColumnDef<Guest>[] = [

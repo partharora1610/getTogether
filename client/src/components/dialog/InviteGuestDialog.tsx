@@ -20,9 +20,7 @@ import { ScrollArea } from "../ui/scroll-area"
 const InviteGuestDialog = () => {
   const router = useRouter()
 
-  const inviteGuestHandler = () => {
-    console.log("Invite Guest")
-  }
+  const inviteGuestHandler = () => {}
 
   return (
     <Dialog>
