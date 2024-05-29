@@ -5,24 +5,9 @@ import { useSocket } from "@/hooks/useSocket"
 import { useParams } from "next/navigation"
 import React, { useEffect, useState } from "react"
 import socket from "@/lib/socket"
-import { ROOM_SOCKET } from "@/constants/socket.route"
-import { Message } from "@/store/chat-store"
 
 const Page = () => {
-  const { channelId } = useParams()
   useSocket()
-
-  useEffect(() => {
-    
-    socket.on(ROOM_SOCKET.CHANNEL_NEW_MESSAGE, (msg: Message) => {
-        alert(`Message: ${msg}`);
-    });
-
-    return () => {
-      socket.emit("leaveChannel", channelId);    
-    }
-    
-  }, [channelId]);
 
   return (
     <div className="relative min-h-full bg-zinc-50 flex-col justify-between gap-2">

@@ -12,10 +12,11 @@ import AddChannelDialog from "../dialog/AddChannelDialog"
 import eventStore from "@/store/event-store"
 import socket from "@/lib/socket"
 import appearanceStore from "@/store/appearance-store"
+import { ROOM_SOCKET } from "@/constants/socket.route"
 
 const SideBar = () => {
   const { event, currentRole } = eventStore()
-  const { primaryColor, textColor } = appearanceStore()e
+  const { primaryColor } = appearanceStore();
 
   const {
     channelId,
@@ -28,9 +29,9 @@ const SideBar = () => {
   const pathname = usePathname()
   const lastPath = pathname.split("/").pop()
 
-  const handleJoinChannel = (channelId: string, roleId: string) => {
-    socket.emit(ROOM_SOCKET.JOIN_CHANNEL, { channelId, roleId });
-  }
+  // const handleJoinChannel = (channelId: string, roleId: string) => {
+  //   socket.emit(ROOM_SOCKET.JOIN_CHANNEL, { channelId, roleId });
+  // }
 
   const bgClass = `bg-[${primaryColor}]/10 `
   const textClass = `text-[${primaryColor}]`
@@ -66,8 +67,9 @@ const SideBar = () => {
           {event?.channels?.map((channel: any) => (
             <Link
               href={`/event/${eventId}/${channel.id}`}
-              // href={`/event/clwqaq1ys0002hqg4jxuond1x/${channel.id}`}
-              onClick={() => joinChannelHandler}w
+              // onClick={() => {
+              //   currentRole && handleJoinChannel(channelId, currentRole.id as string);
+              // }
             >
               <div
                 key={channel.id}
