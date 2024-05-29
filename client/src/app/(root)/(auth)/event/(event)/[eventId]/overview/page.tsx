@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import PostForm from "@/components/forms/PostForm"
 import ReminderForm from "@/components/forms/ReminderForm"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
 import OverviewPostCard from "@/components/cards/OverviewPostCard"
 import OverviewPollCard from "@/components/cards/OverviewPollCard"
 import Video from "next-video"
@@ -23,7 +23,7 @@ import CompleteGuestProfileDialog from "@/components/dialog/CompleteGuestProfile
 import appearanceStore from "@/store/appearance-store"
 
 const Page = () => {
-  const { loading } = eventStore()
+  const { loading, roleType } = eventStore()
 
   if (loading) {
     return <div>Loading...</div>
@@ -31,6 +31,7 @@ const Page = () => {
 
   return (
     <div className="bg-gray-50">
+      {/* <p>{roleType}</p> */}
       <OverviewHeader />
       <EventAnnouncement />
     </div>

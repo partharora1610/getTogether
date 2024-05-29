@@ -4,10 +4,22 @@ import ChatInput from "@/components/shared/ChatInput"
 import { useSocket } from "@/hooks/useSocket"
 import { useParams } from "next/navigation"
 import React, { useEffect, useState } from "react"
-import socket from "@/lib/socket"
+import chatStore from "@/store/chat-store"
 
 const Page = () => {
+  const { fetchMessages } = chatStore()
+  const params = useParams()
+
+  const { eventId, channelId } = params as {
+    eventId: string
+    channelId: string
+  }
+
   useSocket()
+
+  useEffect(() => {
+    fetchMessages(eventId, channelId)
+  }, [eventId, channelId])
 
   return (
     <div className="relative min-h-full bg-zinc-50 flex-col justify-between gap-2">
@@ -42,7 +54,9 @@ const ChatContainerHeader = () => {
   )
 }
 
-const ChatItem = () => {
+const ChatItem = ({ messageObj }: any) => {
+  const { message } = messageObj
+
   return (
     <div className="flex shadow w-3/4 p-2 my-2 gap-4 rounded-lg items-start bg-white">
       <img
@@ -53,12 +67,7 @@ const ChatItem = () => {
       />
 
       <div>
-        <p className="text-base leading-7 mb-1">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro sequi
-          rerum, quis fugiat praesentium aliquid eius consectetur at fuga qui.
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magni a
-          delectus molestiae quo eius consectetur.
-        </p>
+        <p className="text-base leading-7 mb-1">{message}</p>
         <p className="text-gray-500 text-sm">2 dyas ago</p>
       </div>
     </div>
@@ -80,25 +89,13 @@ const ChatDateDivider = ({ date }: { date: string }) => {
 }
 
 const ChatContainer = () => {
-  const [messages, setMessages] = useState([])
-
-  useEffect(() => {
-    // database call to fetch messages
-  }, [])
+  const { messages } = chatStore()
 
   return (
     <div className="mt-10 flex flex-col gap-4 mx-8">
-      <ChatItem />
-      <ChatItem />
-      <ChatDateDivider date={"12-03-2024"} />
-      <ChatItem />
-      <ChatItem />
-      <ChatItem />
-      <ChatItem />
-      <ChatItem />
-      <ChatItem />
-      <ChatItem />
-      <ChatItem />
+      {messages.map((message) => (
+        <ChatItem key={message.id} messageObj={message} />
+      ))}
     </div>
   )
 }

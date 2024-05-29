@@ -1,21 +1,24 @@
 import { create } from "zustand"
 import axios from "axios"
 
-export type Message = {
-  message: string;
-  timestamp: Date;
-  channelId: string;
-  senderId: string;
-}
+// export type Message = {
+//   id: string
+//   message: string
+//   timestamp: Date
+//   channelId: string
+//   senderId: string
+// }
 
 type Store = {
-  messages: Message[]
+  messages: any[]
+  updateMesages: (message: any) => void
+
   fetchMessages: (eventId: string, channelId: string) => void
   sendMessage: ({
     message,
     roleId,
     eventId,
-    channelId
+    channelId,
   }: {
     message: string
     roleId: string
@@ -27,10 +30,17 @@ type Store = {
 const chatStore = create<Store>((set) => ({
   messages: [],
 
+  updateMesages: (message) => {
+    set((state) => ({ messages: [...state.messages, message] }))
+  },
+
   fetchMessages: async (eventId: string, channelId: string) => {
-    const response = await axios.get(`http://localhost:8000/events/${eventId}/channels/${channelId}/messages`, {
-      withCredentials: true,
-    })
+    const response = await axios.get(
+      `http://localhost:8000/events/${eventId}/channels/${channelId}/messages`,
+      {
+        withCredentials: true,
+      }
+    )
 
     if (response.status === 200) {
       set({ messages: response.data.data })

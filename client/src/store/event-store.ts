@@ -1,5 +1,6 @@
 import { create } from "zustand"
 import axios from "axios"
+import { Role } from "@/types"
 
 interface Event {
   id: number
@@ -43,6 +44,7 @@ type Store = {
 
   event: Event | null
   currentRole: any
+  roleType: Role
   fetchUserRole: (eventId: string) => void
 
   fetchEventById: (id: string) => void
@@ -54,7 +56,7 @@ const eventStore = create<Store>()((set) => ({
   events: [],
   loading: false,
   event: null,
-  currentRole: "",
+  currentRole: {},
 
   rsvp: [],
   invites: [],
@@ -115,15 +117,23 @@ const eventStore = create<Store>()((set) => ({
       }
     )
 
-    console.log("Response: ", response);
-
     if (response.status == 200) {
-      set({ currentRole: response.data.data })
-      console.log("Data: ", response.data);
+      const { role, data } = response.data
+
+      set({ currentRole: data })
+
+      if (role === "host") {
+        set({ roleType: Role.HOST })
+      } else if (role === "guest") {
+        set({ roleType: Role.GUEST })
+      } else if (role == "vendor") {
+        set({ roleType: Role.VENDOR })
+      }
     }
   },
 
-  // Use this to create and then update the local store with the new event
+  roleType: Role.NULL,
+
   createEvent: async (event) => {
     const response = await axios.post(process.env.BACKEND_BASE_URL!, event)
   },

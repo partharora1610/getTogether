@@ -3,7 +3,7 @@
 import { Send } from "lucide-react"
 import { Button } from "../ui/button"
 import { Textarea } from "../ui/textarea"
-import { use, useRef } from "react"
+import { useRef } from "react"
 import chatStore from "@/store/chat-store"
 import socket from "@/lib/socket"
 import { useParams } from "next/navigation"
@@ -16,7 +16,7 @@ interface ChatInputProps {
 
 const ChatInput = ({ isDisabled }: ChatInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const { eventId, channelId } = useParams();
+  const { eventId, channelId } = useParams()
   const { sendMessage } = chatStore()
   const { currentRole } = eventStore()
 
@@ -24,12 +24,17 @@ const ChatInput = ({ isDisabled }: ChatInputProps) => {
     const message = textareaRef.current?.value
 
     if (!currentRole) {
-      console.log("Current Role is null !!!");
+      console.log("Current Role is null !!!")
     }
 
     if (message && currentRole) {
-      sendMessage({ message: message, roleId: currentRole.id as string, eventId: eventId as string, channelId: channelId as string })
       socket.emit(ROOM_SOCKET.CHANNEL_SEND_MESSAGE, { msg: message })
+      sendMessage({
+        message: message,
+        roleId: currentRole.id as string,
+        eventId: eventId as string,
+        channelId: channelId as string,
+      })
       textareaRef.current.value = ""
     }
   }
