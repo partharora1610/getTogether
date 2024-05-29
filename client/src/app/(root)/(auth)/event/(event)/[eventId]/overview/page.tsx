@@ -23,7 +23,7 @@ import CompleteGuestProfileDialog from "@/components/dialog/CompleteGuestProfile
 import appearanceStore from "@/store/appearance-store"
 
 const Page = () => {
-  const { loading, roleType } = eventStore()
+  const { loading } = eventStore()
 
   if (loading) {
     return <div>Loading...</div>

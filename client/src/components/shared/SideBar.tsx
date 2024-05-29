@@ -16,7 +16,6 @@ const SideBar = () => {
   const { event, roleType } = eventStore()
   const { primaryColor } = appearanceStore()
 
-  // ??
   const {
     eventId,
   }: {

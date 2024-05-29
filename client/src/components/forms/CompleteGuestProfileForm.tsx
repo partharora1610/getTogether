@@ -4,9 +4,27 @@ import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { AVATARS } from "@/constants"
+import axios from "axios"
 
 const CompleteGuestProfileForm = () => {
   const [selectedAvatar, setSelectedAvatar] = useState(AVATARS[0])
+
+  const updateAvatarHandler = async (avatar: any) => {
+    const response = await axios.post(
+      "http://localhost:8000/avatars",
+      {
+        avatar: "avatar",
+        nickName: "nickname",
+      },
+      {
+        withCredentials: true,
+      }
+    )
+
+    if (response.status == 200) {
+      console.log("Avatar updated successfully")
+    }
+  }
 
   return (
     <div className="">

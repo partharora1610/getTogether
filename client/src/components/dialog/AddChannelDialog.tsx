@@ -7,11 +7,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { PlusIcon } from "lucide-react"
+import { BadgeCent, PlusIcon } from "lucide-react"
 import axios from "axios"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
+import appearanceStore from "@/store/appearance-store"
 
 enum CHANNELS {
   PUBLIC = "PUBLIC",
@@ -21,6 +22,10 @@ enum CHANNELS {
 const AddChannelDialog = ({ eventId }: { eventId: string }) => {
   const [channelName, setChannelName] = useState<string>("")
   const [channelType, setChannelType] = useState<string>(CHANNELS.PUBLIC)
+  const { primaryColor } = appearanceStore()
+
+  const textClass = `text-[${primaryColor}]`
+  const bgClass = `bg-[${primaryColor}]/10`
 
   async function createChannel() {
     await axios.post(
@@ -37,17 +42,15 @@ const AddChannelDialog = ({ eventId }: { eventId: string }) => {
 
   return (
     <Dialog>
-      <DialogTrigger>
-        <div className="flex justify-between">
-          <h2 className="text-lg text-gray-600 font-medium mb-4 uppercase">
-            Discussion Channels
-          </h2>
-          <div>
-            <PlusIcon
-              size={22}
-              className="text-primary-400 bg-primary-400/10 rounded-md p-1 cursor-pointer"
-            />
-          </div>
+      <DialogTrigger className="flex justify-between w-full">
+        <h2 className="text-lg text-gray-600 font-medium mb-4 uppercase">
+          Discussion Channels
+        </h2>
+        <div>
+          <PlusIcon
+            size={22}
+            className={`${textClass} ${bgClass} rounded-md p-1 cursor-pointer`}
+          />
         </div>
       </DialogTrigger>
       <DialogContent className="max-w-md">
