@@ -1,9 +1,9 @@
 "use client"
+
 import Link from "next/link"
 import {
   LucideHome,
   MonitorSpeakerIcon,
-  PlusIcon,
   TicketIcon,
   User2Icon,
 } from "lucide-react"
@@ -15,7 +15,7 @@ import appearanceStore from "@/store/appearance-store"
 
 const SideBar = () => {
   const { event, currentRole } = eventStore()
-  const { primaryColor, textColor } = appearanceStore()
+  const { primaryColor, textColor } = appearanceStore()e
 
   const {
     channelId,
@@ -24,21 +24,17 @@ const SideBar = () => {
     channelId: string
     eventId: string
   } = useParams()
-  const pathname = usePathname()
-  console.log(event)
 
+  const pathname = usePathname()
   const lastPath = pathname.split("/").pop()
 
-  const joinChannelHandler = () => {
-    socket.emit("joinChannel", {
-      roleId: currentRole.id,
-      channelId: channelId,
-    })
+  const handleJoinChannel = (channelId: string, roleId: string) => {
+    socket.emit(ROOM_SOCKET.JOIN_CHANNEL, { channelId, roleId });
   }
 
   const bgClass = `bg-[${primaryColor}]/10 `
   const textClass = `text-[${primaryColor}]`
-
+  
   return (
     <div>
       <Link href={`/event/${eventId}/overview`}>
@@ -71,7 +67,7 @@ const SideBar = () => {
             <Link
               href={`/event/${eventId}/${channel.id}`}
               // href={`/event/clwqaq1ys0002hqg4jxuond1x/${channel.id}`}
-              onClick={() => joinChannelHandler}
+              onClick={() => joinChannelHandler}w
             >
               <div
                 key={channel.id}

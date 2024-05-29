@@ -1,20 +1,36 @@
 import { ROOM_SOCKET } from "@/constants/socket.route"
 import socket from "@/lib/socket"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { useParams } from "next/navigation";
+import eventStore from "@/store/event-store";
 
 export const useSocket = () => {
-  useEffect(() => {
-    socket.connect()
+  
+  const { channelId } = useParams();
+  const  { currentRole } = eventStore();
+  const [ readyToJoin, setReadyToJoin ] = useState<boolean>(false);
 
-    socket.on(ROOM_SOCKET.JOIN_ROOM, (data) => {})
+  // useEffect(() => {
+  //   if (channelId && currentRole) {
+  //     setReadyToJoin(true);
+  //   }
+  // }, [channelId, currentRole]);
 
-    socket.on(ROOM_SOCKET.ROOM_NEW_MESSAGE, (status, username) => {})
+  // useEffect(() => {
+  //   if (readyToJoin) {
+  //     socket.connect();
+      
+  //     // socket.emit(ROOM_SOCKET.JOIN_CHANNEL, { channelId, roleId: currentRole.id as string });
 
-    socket.on(ROOM_SOCKET.ROOM_SEND_MESSAGE, (status, username) => {})
+     
 
-    return () => {
-      socket.off("connected")
-      socket.off("messages")
-    }
-  }, [])
+  //     return () => {
+  //       if (socket) {
+  //         socket.emit(ROOM_SOCKET.LEAVE_CHANNEL, channelId);
+  //         socket.disconnect();
+  //       }
+  //     };
+  //   }
+  // }, [readyToJoin])
+
 }
