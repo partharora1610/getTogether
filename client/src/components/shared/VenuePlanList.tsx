@@ -1,34 +1,29 @@
 import React from "react"
 import CanvasDialog, { ViewFloorPlanCanvas } from "../dialog/CanvasDialog"
+import eventStore from "@/store/event-store"
 
 interface VenuePlan {
+  id: string
   title: string
-  json: string
+  floorPlanJson: string
 }
 
 const VenuePlanList = () => {
-  const [venuePlans, setVenuePlans] = React.useState([
-    {
-      title: "Floor 1",
-      json: "",
-    },
-    {
-      title: "Floor 2",
-      json: "",
-    },
-    {
-      title: "Floor 3",
-      json: "",
-    },
-  ])
+  const { eventFloorPlan } = eventStore()
 
   return (
     <div className="flex gap-6 ">
-      {venuePlans.map((venuePlan: VenuePlan) => {
-        return <ViewFloorPlanCanvas plan={venuePlan} />
+      {eventFloorPlan?.map((venuePlan: VenuePlan) => {
+        return (
+          <ViewFloorPlanCanvas
+            title={venuePlan.title}
+            json={venuePlan.floorPlanJson}
+            key={venuePlan.id}
+          />
+        )
       })}
 
-      <CanvasDialog addVenuePlan={setVenuePlans} />
+      <CanvasDialog />
     </div>
   )
 }

@@ -17,6 +17,8 @@ import React from "react"
 import { Textarea } from "../ui/textarea"
 import { Switch } from "../ui/switch"
 import axios from "axios"
+import eventStore from "@/store/event-store"
+import { toast } from "../ui/use-toast"
 
 const formSchema = z.object({
   heading: z.string(),
@@ -25,6 +27,7 @@ const formSchema = z.object({
 })
 
 const PostForm = ({ eventId }: { eventId: string }) => {
+  const { addEventPost } = eventStore()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,7 +52,20 @@ const PostForm = ({ eventId }: { eventId: string }) => {
       }
     )
 
-    console.log(response.data)
+    if (response.status == 200) {
+      addEventPost(response.data.data)
+      toast({
+        title: "Post Added",
+        description: "Post has been added successfully",
+        variant: "default",
+      })
+    } else {
+      toast({
+        title: "Poll Creation Failed",
+        description: "Poll creation failed",
+        variant: "destructive",
+      })
+    }
   }
 
   return (

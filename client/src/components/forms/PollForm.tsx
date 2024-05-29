@@ -18,6 +18,7 @@ import { Textarea } from "../ui/textarea"
 import { Switch } from "../ui/switch"
 import { useToast } from "@/components/ui/use-toast"
 import axios from "axios"
+import eventStore from "@/store/event-store"
 
 const formSchema = z.object({
   heading: z.string(),
@@ -30,6 +31,7 @@ const formSchema = z.object({
 const PollForm = ({ eventId }: { eventId: string }) => {
   const [pollOptions, setPollOptions] = React.useState<string[]>([])
   const { toast } = useToast()
+  const { addEventPoll } = eventStore()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,6 +67,8 @@ const PollForm = ({ eventId }: { eventId: string }) => {
     )
 
     if (response.status === 200) {
+      addEventPoll(response.data.data)
+
       toast({
         title: "Poll Created",
         description: "Poll has been created successfully",

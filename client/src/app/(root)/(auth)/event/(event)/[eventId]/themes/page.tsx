@@ -1,5 +1,9 @@
 "use client"
+import { Button } from "@/components/ui/button"
+import { useToast } from "@/components/ui/use-toast"
 import { PRIMARYCOLOR } from "@/constants/primary-color"
+import appearanceStore from "@/store/appearance-store"
+import { useParams } from "next/navigation"
 import React, { useState } from "react"
 
 const Page = () => {
@@ -21,7 +25,24 @@ const Page = () => {
 }
 
 const PrimaryColorSelection = () => {
-  const [selectedColor, setSelectedColor] = useState<any>(PRIMARYCOLOR[0])
+  const { toast } = useToast()
+  const { updateAppearance, primaryColor } = appearanceStore()
+  const [selectedColor, setSelectedColor] = useState<any>(primaryColor)
+  const [loading, setLoading] = useState<boolean>(false)
+  const params = useParams()
+
+  const eventId = params.eventId as string
+
+  const changePrimaryColorHandler = async () => {
+    setLoading(true)
+    await updateAppearance(eventId, selectedColor, () => {
+      toast({
+        title: "Theme Successfully Changed",
+        variant: "default",
+      })
+    })
+    setLoading(false)
+  }
 
   return (
     <div>
@@ -35,43 +56,34 @@ const PrimaryColorSelection = () => {
             </p>
           </div>
           <div className="flex gap-4">
+            <div className={`w-12 h-12 rounded-md bg-[${selectedColor}]`}></div>
             <div
-              className={`w-12 h-12 rounded-md bg-[${selectedColor.color}]`}
-            ></div>
-            <div
-              className={`w-12 h-12 rounded-md bg-[${selectedColor.color}]/10`}
+              className={`w-12 h-12 rounded-md bg-[${selectedColor}]/10`}
             ></div>
           </div>
         </div>
       </div>
 
-      {/* bg-[#dc0e63] */}
-      {/* bg-[#FF6B00] */}
-      {/* bg-[#ae3ec9] */}
-      {/* bg-[#f03e3e] */}
-      {/* bg-[#1971c2] */}
-      {/* bg-[#099268] */}
-      {/* bg-[#0c8599] */}
-
-      {/* bg-[#ae3ec9]/10 */}
-      {/* bg-[#dc0e63]/10 */}
-      {/* bg-[#FF6B00]/10 */}
-      {/* bg-[#f03e3e]/10 */}
-      {/* bg-[#1971c2]/10 */}
-      {/* bg-[#099268]/10 */}
-      {/* bg-[#0c8599]/10 */}
-
       <div className="mt-4 flex flex-wrap gap-20">
         {PRIMARYCOLOR.map((color) => (
           <div
-            onClick={() => setSelectedColor(color)}
+            onClick={() => setSelectedColor(color.color)}
             className={`flex gap-2 items-center border-2 border-transparent cursor-pointer p-2 rounded-md ${
-              color.id == selectedColor.id ? " border-gray-400" : ""
+              color.color == selectedColor ? "border-gray-600" : ""
             } `}
           >
             <div className={`w-14 h-14 rounded-md bg-[${color.color}]`}></div>
           </div>
         ))}
+      </div>
+
+      <div className="flex justify-end mt-16">
+        <Button
+          disabled={primaryColor == selectedColor || loading}
+          onClick={changePrimaryColorHandler}
+        >
+          {loading ? "Applying Theme" : "Save Theme"}
+        </Button>
       </div>
     </div>
   )

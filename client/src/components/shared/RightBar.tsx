@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/tooltip"
 import eventStore from "@/store/event-store"
 import { guests } from "@/constants"
+import appearanceStore from "@/store/appearance-store"
 
 const RightBar = () => {
   return (
@@ -51,6 +52,8 @@ const GUESTS = [
 
 const GuestList = () => {
   const { event, loading } = eventStore()
+  const { primaryColor } = appearanceStore()
+  const textClass = `text-[${primaryColor}]`
 
   if (loading) {
     return <div>Loading...</div>
@@ -63,7 +66,7 @@ const GuestList = () => {
           <h3 className="font-semibold text-xl ">Event Guest</h3>
           <p className="text-lg text-gray-600">(198 guests)</p>
         </div>
-        <div className="text-primary-400 font-semibold underline cursor-pointer">
+        <div className={`${textClass} font-semibold underline cursor-pointer`}>
           Manage
         </div>
       </div>

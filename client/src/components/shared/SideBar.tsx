@@ -11,11 +11,11 @@ import { useParams, usePathname } from "next/navigation"
 import AddChannelDialog from "../dialog/AddChannelDialog"
 import eventStore from "@/store/event-store"
 import socket from "@/lib/socket"
-import { ROOM_SOCKET } from "@/constants/socket.route"
+import appearanceStore from "@/store/appearance-store"
 
 const SideBar = () => {
-  const { event } = eventStore()
-  const { currentRole } = eventStore();
+  const { event, currentRole } = eventStore()
+  const { primaryColor, textColor } = appearanceStore()e
 
   const {
     channelId,
@@ -32,14 +32,15 @@ const SideBar = () => {
     socket.emit(ROOM_SOCKET.JOIN_CHANNEL, { channelId, roleId });
   }
 
+  const bgClass = `bg-[${primaryColor}]/10 `
+  const textClass = `text-[${primaryColor}]`
+  
   return (
     <div>
       <Link href={`/event/${eventId}/overview`}>
         <div
           className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
-            lastPath === "overview"
-              ? "bg-primary-400/10 text-primary-400 font-medium "
-              : ""
+            lastPath === "overview" ? `${bgClass} ${textClass} font-medium` : ""
           }`}
         >
           <LucideHome size={22} />
@@ -50,9 +51,7 @@ const SideBar = () => {
       <Link href={`/event/${eventId}/rsvp`}>
         <div
           className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
-            lastPath === "rsvp"
-              ? "bg-primary-400/10 text-primary-400 font-medium "
-              : ""
+            lastPath === "rsvp" ? `${bgClass} ${textClass} font-medium` : ""
           }`}
         >
           <TicketIcon size={22} />
@@ -67,15 +66,16 @@ const SideBar = () => {
           {event?.channels?.map((channel: any) => (
             <Link
               href={`/event/${eventId}/${channel.id}`}
-              onClick={() => {
-                console.log(currentRole);
-                currentRole && handleJoinChannel(channelId, currentRole.id as string)
-              }
-            }
+              // href={`/event/clwqaq1ys0002hqg4jxuond1x/${channel.id}`}
+              onClick={() => joinChannelHandler}w
             >
               <div
                 key={channel.id}
-                className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md "
+                className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
+                  lastPath === "overview"
+                    ? `${bgClass} ${textClass} font-medium`
+                    : ""
+                }`}
               >
                 <MonitorSpeakerIcon size={22} />
                 <h2 className="text-lg">{channel.name}</h2>
@@ -97,7 +97,7 @@ const SideBar = () => {
             <div
               className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
                 lastPath === "guest-list"
-                  ? "bg-primary-400/10 text-primary-400 font-medium "
+                  ? `${bgClass} ${textClass} font-medium`
                   : ""
               }`}
             >
@@ -113,7 +113,7 @@ const SideBar = () => {
             <div
               className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
                 lastPath === "event-details"
-                  ? "bg-primary-400/10 text-primary-400 font-medium "
+                  ? `${bgClass} ${textClass} font-medium`
                   : ""
               }`}
             >
@@ -128,8 +128,8 @@ const SideBar = () => {
           <Link href={`/event/${eventId}/themes`}>
             <div
               className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
-                lastPath === "guest-list"
-                  ? "bg-primary-400/10 text-primary-400 font-medium "
+                lastPath === "themes"
+                  ? `${bgClass} ${textClass} font-medium`
                   : ""
               }`}
             >
