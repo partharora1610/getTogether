@@ -31,7 +31,6 @@ const Page = () => {
 
   return (
     <div className="bg-gray-50">
-      {/* {JSON.stringify(event)} */}
       <OverviewHeader />
       <EventAnnouncement />
     </div>
@@ -55,30 +54,25 @@ const OverviewHeader = () => {
         </div>
       </div>
 
-      {/* <div className="flex justify-center"> */}
       <div className="bg-black/30 px-4 py-4 mt-4 rounded-md cursor-pointer  absolute top-0 right-4 flex items-center justify-between">
-        {/* <div className="text-white"></div> */}
         <CompleteGuestProfileDialog />
       </div>
     </div>
-    // </div>
   )
 }
 
 const EventAnnouncement = () => {
-  const { event } = eventStore()
+  const { eventPolls, eventPosts } = eventStore()
 
-  if (!event) return null
-
-  const allPosts = [...event?.eventPosts, ...event?.eventPolls]
+  const allPosts = [...eventPosts, ...eventPolls]
   console.log(allPosts)
 
   allPosts.sort((a, b) => {
-    const dateA = new Date(event.createdAt)
-    const dateB = new Date(event.createdAt)
+    const dateA = new Date(a.createdAt)
+    const dateB = new Date(b.createdAt)
 
-    if (dateA < dateB) return -1
-    if (dateA > dateB) return 1
+    if (dateA < dateB) return 1
+    if (dateA > dateB) return -1
     return 0
   })
 
@@ -122,12 +116,9 @@ const EventAnnouncement = () => {
 }
 
 const CreateAnnoucementDialog = () => {
-  const { primaryColor, textColor } = appearanceStore()
+  const { primaryColor } = appearanceStore()
 
-  const bgClass = `bg-[${primaryColor}]/10 `
   const textClass = `text-[${primaryColor}]`
-  const borderClass = `border-[${primaryColor}]`
-  const hoverTextClass = `hover:text-${primaryColor}`
 
   return (
     <div>
@@ -157,14 +148,13 @@ const CreateAnnoucementDialog = () => {
 }
 
 const HostSpecialDialog = () => {
-  const { primaryColor, textColor } = appearanceStore()
+  const { primaryColor } = appearanceStore()
 
-  const bgClass = `bg-[${primaryColor}]/10 `
   const textClass = `text-[${primaryColor}]`
   const borderClass = `border-[${primaryColor}]`
   const hoverTextClass = `hover:text-${primaryColor}`
   const hoverBorderClass = `hover:border-${primaryColor}`
-  // hover:border-primary-400
+
   return (
     <div>
       <Dialog>
@@ -198,10 +188,6 @@ const HostSpecialDialog = () => {
                   maiores
                 </p>
               </div>
-
-              {/* <div className="flex">
-                <Button>Send Email</Button>
-              </div> */}
 
               <div className="mt-8 mb-4 flex justify-end">
                 <Button

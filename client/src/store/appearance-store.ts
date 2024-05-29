@@ -1,13 +1,11 @@
 import { create } from "zustand"
 import axios from "axios"
 
-interface Appearance {}
-
 type Store = {
   primaryColor: string
   textColor: string
 
-  updateAppearance: (eventId: string, primaryColor: string) => void
+  updateAppearance: (eventId: string, primaryColor: string, cb: any) => void
   fetchAppearance: (eventId: string) => void
 }
 
@@ -15,7 +13,7 @@ const appearanceStore = create<Store>((set) => ({
   primaryColor: "",
   textColor: "#ffffff",
 
-  updateAppearance: async (eventId, primaryColor) => {
+  updateAppearance: async (eventId, primaryColor, cb) => {
     const response = await axios.post(
       `http://localhost:8000/events/${eventId}/theme`,
       {
@@ -32,6 +30,7 @@ const appearanceStore = create<Store>((set) => ({
         primaryColor,
         textColor: "#ffffff",
       })
+      cb()
     }
   },
 

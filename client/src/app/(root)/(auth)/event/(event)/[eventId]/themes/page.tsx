@@ -1,5 +1,6 @@
 "use client"
 import { Button } from "@/components/ui/button"
+import { useToast } from "@/components/ui/use-toast"
 import { PRIMARYCOLOR } from "@/constants/primary-color"
 import appearanceStore from "@/store/appearance-store"
 import { useParams } from "next/navigation"
@@ -24,13 +25,23 @@ const Page = () => {
 }
 
 const PrimaryColorSelection = () => {
+  const { toast } = useToast()
   const { updateAppearance, primaryColor } = appearanceStore()
   const [selectedColor, setSelectedColor] = useState<any>(primaryColor)
+  const [loading, setLoading] = useState<boolean>(false)
   const params = useParams()
+
   const eventId = params.eventId as string
 
   const changePrimaryColorHandler = async () => {
-    updateAppearance(eventId, selectedColor)
+    setLoading(true)
+    await updateAppearance(eventId, selectedColor, () => {
+      toast({
+        title: "Theme Successfully Changed",
+        variant: "default",
+      })
+    })
+    setLoading(false)
   }
 
   return (
@@ -68,10 +79,10 @@ const PrimaryColorSelection = () => {
 
       <div className="flex justify-end mt-16">
         <Button
-          disabled={primaryColor == selectedColor}
+          disabled={primaryColor == selectedColor || loading}
           onClick={changePrimaryColorHandler}
         >
-          Save Theme
+          {loading ? "Applying Theme" : "Save Theme"}
         </Button>
       </div>
     </div>

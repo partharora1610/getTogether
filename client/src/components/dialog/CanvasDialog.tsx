@@ -14,19 +14,16 @@ import { Input } from "../ui/input"
 import { usePathname } from "next/navigation"
 import axios from "axios"
 import canvasStore from "@/store/create-canvas-store"
-import data from "../canvas/data.json"
+import eventStore from "@/store/event-store"
+import { useToast } from "../ui/use-toast"
 
-const CanvasDialog = ({
-  addVenuePlan,
-}: {
-  addVenuePlan: React.Dispatch<
-    React.SetStateAction<{ title: string; json: string }[]>
-  >
-}) => {
+const CanvasDialog = () => {
   const [venuePlan, setVenuePlan] = React.useState<string>("")
   const { json } = canvasStore()
   const pathname = usePathname()
   const eventId = pathname.split("/")[2]
+  const { addEventFloorPlan } = eventStore()
+  const { toast } = useToast()
 
   const createVenuePlan = async () => {
     const response = await axios.post(
@@ -40,7 +37,14 @@ const CanvasDialog = ({
       }
     )
 
-    console.log(response.data.data)
+    if (response.status == 200) {
+      addEventFloorPlan(response.data.data)
+      toast({
+        title: "Venue Plan Added",
+        description: "Venue Plan has been added successfully",
+        variant: "default",
+      })
+    }
   }
 
   return (
@@ -70,13 +74,6 @@ const CanvasDialog = ({
               <div className="flex justify-end mt-6 ">
                 <Button
                   onClick={() => {
-                    addVenuePlan((prev) => [
-                      ...prev,
-                      {
-                        title: venuePlan,
-                        json: "",
-                      },
-                    ])
                     createVenuePlan()
                   }}
                 >
@@ -92,9 +89,11 @@ const CanvasDialog = ({
 }
 
 export const ViewFloorPlanCanvas = ({
-  plan: { title, json },
+  title,
+  json,
 }: {
-  plan: { title: string; json: string }
+  title: string
+  json: string
 }) => {
   return (
     <Dialog>
@@ -108,7 +107,7 @@ export const ViewFloorPlanCanvas = ({
           </DialogTitle>
           <DialogDescription>
             <div className="mx-12">
-              <Canvas create={false} loadedJson={data} />
+              <Canvas create={false} loadedJson={json} />
             </div>
           </DialogDescription>
         </DialogHeader>
