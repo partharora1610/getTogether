@@ -12,6 +12,7 @@ interface Event {
   eventHostMessage: true
   createdAt: string
   channels: any
+  startDate: string
 }
 
 type Store = {

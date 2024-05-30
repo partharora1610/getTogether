@@ -6,13 +6,20 @@ import CreatePostDialog from "@/components/dialog/CreatePostDialog"
 import RejectRSVPDialog from "@/components/dialog/RejectRSVpDialog"
 import AccepRSVPDialog from "@/components/dialog/AccepRSVPDialog"
 import { AVATARS } from "@/constants/avatars"
+import { Calendar, LocateIcon } from "lucide-react"
 
 const Page = () => {
   const { guestPosts } = eventStore()
 
   return (
     <div>
-      <div className="mt-16">
+      <div className="mt-8 pl-4">
+        <h1 className="text-2xl font-semibold mb-1">Event RSVP</h1>
+        <p className="text-base text-gray-500">
+          Confirm RSVP and share that with everyone in the event
+        </p>
+      </div>
+      <div className="mt-6">
         <RSVPCard />
       </div>
 
@@ -61,9 +68,6 @@ const FeedCard = ({
         />
         <div>
           <p className="text-lg">
-            {/* {guestName} */}
-            {/* <p>{createdAt}</p> */}
-            {/* <p>{JSON.stringify(guest)}</p> */}
             {guest.guest.name} <span>Just confirmed his presence</span>
           </p>
           <p className="text-gray-500">2 hours ago</p>
@@ -90,30 +94,64 @@ const RSVPCard = () => {
   const { event } = eventStore()
 
   return (
-    <div className="border-2 w-full border-gray-100 rounded-md flex gap-6 px-6 py-6 h-full">
-      <div className="w-full">
-        <div className="flex justify-between gap-10">
+    <div className="border-2 w-full border-gray-100 rounded-md flex gap-6 px-4 py-4 h-full">
+      <div className="">
+        <div className="flex justify-between gap-24">
           <div>
             <h1 className="text-xl font-medium mb-2">{event?.title}</h1>
             <p className="text-lg text-gray-600">{event?.description}</p>
-            {/* 
-            <h1 className="">Location</h1>
-            <p>Event Location</p>
-            <p>Add to calender</p> */}
+
+            <div className="flex gap-12 mt-6">
+              <div className="flex gap-2 cursor-pointer">
+                <LocateIcon size={20} />
+                <h1 className="">Star Road Hall</h1>
+              </div>
+              <div className="flex gap-2 cursor-pointer">
+                <Calendar size={20} />
+                <p>Add to calender</p>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <h1 className="text-3xl font-semibold">Date</h1>
-            <p>Event Date</p>
+          <div className="">
+            <h1 className="text-2xl font-semibold ">
+              {event?.startDate && formatDate(event?.startDate)}
+            </h1>
           </div>
         </div>
-        <div className="flex gap-16 mt-12 justify-end">
+        <div className="flex gap-16 mt-6 justify-end">
           <RejectRSVPDialog />
           <AccepRSVPDialog />
         </div>
       </div>
     </div>
   )
+}
+
+function formatDate(inputDate: string): string {
+  const date = new Date(inputDate)
+
+  const day = date.getDate()
+  const year = date.getFullYear()
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ]
+
+  const month = monthNames[date.getMonth()]
+
+  return `${day} ${month}, ${year}`
 }
 
 export default Page

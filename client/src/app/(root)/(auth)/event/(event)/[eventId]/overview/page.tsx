@@ -21,6 +21,7 @@ import eventStore from "@/store/event-store"
 import PollForm from "@/components/forms/PollForm"
 import CompleteGuestProfileDialog from "@/components/dialog/CompleteGuestProfileDialog"
 import appearanceStore from "@/store/appearance-store"
+import { Role } from "@/types"
 
 const Page = () => {
   const { loading } = eventStore()
@@ -38,7 +39,7 @@ const Page = () => {
 }
 
 const OverviewHeader = () => {
-  const { event } = eventStore()
+  const { event, roleType } = eventStore()
 
   return (
     <div className="border-b-2 bg-white border-gray-100 pb-12 mb-8 relative">
@@ -55,9 +56,17 @@ const OverviewHeader = () => {
         </div>
       </div>
 
+      {/* testing */}
       <div className="bg-black/30 px-4 py-4 mt-4 rounded-md cursor-pointer  absolute top-0 right-4 flex items-center justify-between">
         <CompleteGuestProfileDialog />
       </div>
+      {/* testing */}
+
+      {roleType === Role.GUEST && (
+        <div className="bg-black/30 px-4 py-4 mt-4 rounded-md cursor-pointer  absolute top-0 right-4 flex items-center justify-between">
+          <CompleteGuestProfileDialog />
+        </div>
+      )}
     </div>
   )
 }
@@ -156,12 +165,14 @@ const HostSpecialDialog = () => {
   const hoverTextClass = `hover:text-${primaryColor}`
   const hoverBorderClass = `hover:border-${primaryColor}`
 
+  const customShadow = `hover:shadow-custom-shadow-${primaryColor}`
   return (
     <div>
+      {" "}
       <Dialog>
         <DialogTrigger>
           <button
-            className={`px-4 py-2 rounded-md border border-black bg-white text-black text-sm ${hoverBorderClass}   ${hoverTextClass} hover:shadow-[4px_4px_0px_0px_rgba(220,14,99,1)] transition duration-200`}
+            className={`px-4 py-2 rounded-md border border-black bg-white text-black text-sm ${hoverBorderClass}   ${hoverTextClass} hover: ${customShadow} transition duration-200`}
           >
             Special message from the host
           </button>

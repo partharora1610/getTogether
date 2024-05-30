@@ -5,16 +5,19 @@ import { Button } from "../ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import axios from "axios"
 import { AVATARS, Avatar } from "@/constants/avatars"
+import { useParams } from "next/navigation"
 
 const CompleteGuestProfileForm = () => {
   const [selectedAvatar, setSelectedAvatar] = useState<Avatar>(AVATARS[0])
   const [nickName, setNickName] = useState<string>("")
+  const params = useParams()
+  const eventId = params.eventId as string
 
-  const updateAvatarHandler = async (avatar: any) => {
+  const updateAvatarHandler = async () => {
     const response = await axios.post(
-      "http://localhost:8000/avatars",
+      `http://localhost:8000/events/${eventId}/guests/update`,
       {
-        avatar: avatar.id,
+        avatar: selectedAvatar.id,
         nickName: nickName,
       },
       {

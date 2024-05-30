@@ -3,12 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
 import {
   Form,
   FormControl,
@@ -21,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input"
 import React from "react"
 import { Textarea } from "../ui/textarea"
-import CreateEventAccordian from "../accordian/CreateEventAccordian"
+// import CreateEventAccordian from "../accordian/CreateEventAccordian"
 import { useRouter } from "next/navigation"
 import axios from "axios"
 
@@ -31,11 +25,6 @@ const formSchema = z.object({
   startDate: z.string(),
   startTime: z.string(),
   endDate: z.string(),
-  venue: z.string(),
-  coverImage: z.string(), // image
-  sadImage: z.string(), // image
-  hostInviteVideo: z.string().optional(), // video
-  hostMessage: z.string().optional(), // text
 })
 
 const CreateEventForm = () => {
@@ -49,9 +38,6 @@ const CreateEventForm = () => {
       startDate: "",
       startTime: "",
       endDate: "",
-      venue: "",
-      coverImage: "",
-      sadImage: "",
     },
   })
 
@@ -86,7 +72,10 @@ const CreateEventForm = () => {
       <div className="grid gap-12 grid-cols-3">
         <div className="col-span-2">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col gap-8"
+            >
               <FormField
                 control={form.control}
                 name="title"
@@ -95,8 +84,8 @@ const CreateEventForm = () => {
                     <FormLabel className="text-base">Event Title</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="shadcn"
-                        className="text-lg py-2 px-4"
+                        placeholder="Enter Event Title"
+                        className="text-lg py-7 px-4"
                         {...field}
                       />
                     </FormControl>
@@ -115,7 +104,7 @@ const CreateEventForm = () => {
                       <Textarea
                         placeholder="Enter Event Descripiton"
                         {...field}
-                        className="text-lg py-2 px-4"
+                        className="text-lg py-5 px-4"
                       />
                     </FormControl>
                     <FormMessage />
@@ -133,35 +122,32 @@ const CreateEventForm = () => {
                       <FormControl>
                         <Input
                           type="date"
-                          className="text-lg py-2 px-4"
+                          className="text-lg py-7 px-4"
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>
-                        Your date of birth is used to calculate your age.
-                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="startTime"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Start Time</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="time"
+                          className="text-lg py-7 px-4"
+                          {...field}
+                        />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="startTime"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-base">Start Time</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="time"
-                          className="text-lg py-2 px-4"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
                 <FormField
                   control={form.control}
                   name="endDate"
@@ -171,97 +157,7 @@ const CreateEventForm = () => {
                       <FormControl>
                         <Input
                           type="date"
-                          className="text-lg py-2 px-4"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Your date of birth is used to calculate your age.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <FormField
-                control={form.control}
-                name="venue"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-base">Venue</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="shadcn"
-                        className="text-lg py-2 px-4"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid grid-cols-3 gap-6">
-                <FormField
-                  control={form.control}
-                  name="coverImage"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-base">
-                        Event Cover Image
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          className="text-lg py-2 px-4"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Upload an image related to the event
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="sadImage"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-base">Sad Image</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          className="text-lg py-2 px-4"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Will be used on the cancel RSVP card.{" "}
-                        <span className="underline cursor-pointer">
-                          VIEW SAMPLE
-                        </span>
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="hostInviteVideo"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-base">
-                        Host Invite Video
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          className="text-lg py-2 px-4"
+                          className="text-lg py-7 px-4"
                           {...field}
                         />
                       </FormControl>
@@ -271,39 +167,21 @@ const CreateEventForm = () => {
                 />
               </div>
 
-              <FormField
-                control={form.control}
-                name="hostMessage"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-base">Host Message</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Enter Host Message"
-                        className="text-lg py-2 px-4"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      This message will be displayed to all the guest along with
-                      the invite video.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <Button type="submit">Submit</Button>
+              <div className="flex items-center justify-end">
+                <Button className="mt-2 py-6 px-12" type="submit">
+                  Submit
+                </Button>
+              </div>
             </form>
           </Form>
         </div>
 
-        <div className="col-span-1">
+        {/* <div className="col-span-1">
           <h1 className="text-2xl font-semibold uppercase text-center text-gray-400 mb-8">
             Event Preview
           </h1>
           <CreateEventAccordian />
-        </div>
+        </div> */}
       </div>
     </div>
   )

@@ -7,33 +7,6 @@ import EventVenueForm from "@/components/forms/EventVenueForm"
 import { NegativeTag } from "@/components/tags/tags"
 import eventStore from "@/store/event-store"
 
-// const VENDORS = [
-//   {
-//     id: 1,
-//     name: "Binod Planner",
-//     service: "Type 1",
-//     contact: "Contact 1",
-//     email: "Email 1",
-//     address: "Address 1",
-//   },
-//   {
-//     id: 2,
-//     name: "Binod Catering Service",
-//     service: "Type 1",
-//     contact: "Contact 1",
-//     email: "Email 1",
-//     address: "Address 1",
-//   },
-//   {
-//     id: 2,
-//     name: "Binod Decoration Services",
-//     service: "Type 1",
-//     contact: "Contact 1",
-//     email: "Email 1",
-//     address: "Address 1",
-//   },
-// ]
-
 const Page = () => {
   const [addingVendor, setAddingVendor] = React.useState(false)
   const { vendors } = eventStore()
@@ -50,6 +23,10 @@ const Page = () => {
         <div>
           <HeadingH2 title={"Venue Details & Plan"} />
           <p>TODO:VENUE UPDATE IN THE DB</p>
+          <p>
+            Event Venue location that will be showed on the overview and rsvp
+            page
+          </p>
         </div>
 
         <div className="mt-6">

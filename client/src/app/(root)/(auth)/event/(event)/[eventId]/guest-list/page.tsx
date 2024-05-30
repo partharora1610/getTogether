@@ -14,6 +14,7 @@ export type Guest = {
   rsvpStatus: "CONFIRMED" | "PEDNING" | "DECLINED"
   plusOnes: number
 }
+
 const Page = () => {
   const { guests } = eventStore()
 
@@ -26,12 +27,17 @@ const Page = () => {
     }
   })
 
+  const totalGuest = guests.reduce(
+    (acc: number, guest: any) => acc + guest.guest.plusOnes,
+    guests.length
+  )
+
   return (
     <div>
-      <p>{JSON.stringify(guests)}</p>
+      {/* <p>{JSON.stringify(guests)}</p> */}
 
       <div className="flex gap-6 mt-10 px-10">
-        <TotalCountCard />
+        <TotalCountCard totalGuest={totalGuest} />
         <PendingInviteCard />
       </div>
       <div className="container mx-auto py-10">

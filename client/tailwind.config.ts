@@ -40,6 +40,13 @@ const config = {
     "text-[#099268]",
     "text-[#0c8599]",
     "border-[#dc0e63]",
+    "hover:shadow-custom-shadow-#dc0e63",
+    "hover:shadow-custom-shadow-#FF6B00",
+    "hover:shadow-custom-shadow-#ae3ec9",
+    "hover:shadow-custom-shadow-#f03e3e",
+    "hover:shadow-custom-shadow-#1971c2",
+    "hover:shadow-custom-shadow-#099268",
+    "hover:shadow-custom-shadow-#0c8599",
   ],
   content: [
     "./pages/**/*.{ts,tsx}",
@@ -57,6 +64,15 @@ const config = {
       },
     },
     extend: {
+      boxShadow: {
+        "custom-shadow-#dc0e63": "4px 4px 0px 0px rgba(220, 14, 99, 1)",
+        "custom-shadow-#FF6B00": "4px 4px 0px 0px rgba(255, 107, 0, 1)",
+        "custom-shadow-#ae3ec9": "4px 4px 0px 0px rgba(174, 62, 201, 1)",
+        "custom-shadow-#f03e3e": "4px 4px 0px 0px rgba(240, 62, 62, 1)",
+        "custom-shadow-#1971c2": "4px 4px 0px 0px rgba(25, 113, 194, 1)",
+        "custom-shadow-#099268": "4px 4px 0px 0px rgba(9, 146, 104, 1)",
+        "custom-shadow-#0c8599": "4px 4px 0px 0px rgba(12, 133, 153, 1)",
+      },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },

@@ -212,7 +212,7 @@ function GuestInviteTable() {
   )
 }
 
-export const TotalCountCard = () => {
+export const TotalCountCard = ({ totalGuest }: { totalGuest: string }) => {
   return (
     <Card className="border-2 border-gray-200">
       <CardHeader>
@@ -225,7 +225,7 @@ export const TotalCountCard = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex justify-between">
-        <p className="text-2xl font-semibold">169 Guest</p>
+        <p className="text-2xl font-semibold">{totalGuest} Guest</p>
         <ShareWithVendorDialog />
       </CardContent>
     </Card>

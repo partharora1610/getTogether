@@ -3,7 +3,7 @@
 import ChatInput from "@/components/shared/ChatInput"
 import { useSocket } from "@/hooks/useSocket"
 import { useParams } from "next/navigation"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import chatStore from "@/store/chat-store"
 
 const Page = () => {

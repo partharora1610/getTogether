@@ -9,26 +9,10 @@ import {
 const CreateEventAccordian = () => {
   return (
     <div>
-      <Accordion type="single" collapsible>
+      <Accordion type="single" collapsible defaultValue="basic">
         <AccordionItem value="basic">
           <AccordionTrigger className="text-lg">
             Basic Event Details
-          </AccordionTrigger>
-          <AccordionContent>
-            Yes. It adheres to the WAI-ARIA design pattern.
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="host_invite">
-          <AccordionTrigger className="text-lg">Host Invite</AccordionTrigger>
-          <AccordionContent>
-            Yes. It adheres to the WAI-ARIA design pattern.
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="media">
-          <AccordionTrigger className="text-lg">
-            Media Uploaded
           </AccordionTrigger>
           <AccordionContent>
             Yes. It adheres to the WAI-ARIA design pattern.
