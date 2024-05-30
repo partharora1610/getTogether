@@ -5,6 +5,7 @@ import eventStore from "@/store/event-store"
 import CreatePostDialog from "@/components/dialog/CreatePostDialog"
 import RejectRSVPDialog from "@/components/dialog/RejectRSVpDialog"
 import AccepRSVPDialog from "@/components/dialog/AccepRSVPDialog"
+import { AVATARS } from "@/constants/avatars"
 
 const Page = () => {
   const { guestPosts } = eventStore()
@@ -14,7 +15,6 @@ const Page = () => {
       <div className="mt-16">
         <RSVPCard />
       </div>
-      <p>{JSON.stringify(guestPosts)}</p>
 
       <div className="mt-10">
         <div className="flex justify-between">
@@ -25,8 +25,13 @@ const Page = () => {
           </div>
         </div>
         <div className="flex flex-col gap-12 justify-center items-center">
-          {Array.from({ length: 2 }).map((_, index) => (
-            <FeedCard key={index} />
+          {guestPosts.map((guest: any, index: number) => (
+            <FeedCard
+              key={index}
+              guest={guest.guest}
+              text={guest.text}
+              createdAt={guest.createdAt}
+            />
           ))}
         </div>
       </div>
@@ -34,24 +39,40 @@ const Page = () => {
   )
 }
 
-const FeedCard = () => {
+const FeedCard = ({
+  text,
+  createdAt,
+  guest,
+}: {
+  text: string
+  createdAt: string
+  guest: any
+}) => {
+  const avatar = guest.guest.avatar
+
   return (
     <div className="w-[800px] shadow-md rounded-lg px-4 py-8">
       <div className="flex gap-4 items-center">
-        <div className="w-[48px] h-[48px] bg-gray-800 rounded-md"></div>
+        <img
+          src={AVATARS[parseInt(avatar)]?.link}
+          alt="image"
+          width={40}
+          height={40}
+        />
         <div>
           <p className="text-lg">
-            Mr.Josh <span>Just confirmed his presence</span>
+            {/* {guestName} */}
+            {/* <p>{createdAt}</p> */}
+            {/* <p>{JSON.stringify(guest)}</p> */}
+            {guest.guest.name} <span>Just confirmed his presence</span>
           </p>
           <p className="text-gray-500">2 hours ago</p>
         </div>
       </div>
 
+      <p></p>
       <div className="mt-2 mb-4">
-        <p className="text-base">
-          Very excited and happy to meet you on 24th this month, lets come and
-          make this event a banger
-        </p>
+        <p className="text-base">{text}</p>
       </div>
 
       <Image

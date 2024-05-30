@@ -50,9 +50,16 @@ type Store = {
   fetchEventById: (id: string) => void
   fetchEvents: () => void
   createEvent: (event: any) => void
+
+  /// testing this
+  nickName: string
+  avatar: string
 }
 
 const eventStore = create<Store>()((set) => ({
+  nickName: "",
+  avatar: "",
+
   events: [],
   loading: false,
   event: null,
@@ -125,7 +132,11 @@ const eventStore = create<Store>()((set) => ({
       if (role === "host") {
         set({ roleType: Role.HOST })
       } else if (role === "guest") {
-        set({ roleType: Role.GUEST })
+        set({
+          roleType: Role.GUEST,
+          avatar: data.avatar,
+          nickName: data.nickName,
+        })
       } else if (role == "vendor") {
         set({ roleType: Role.VENDOR })
       }
@@ -158,6 +169,20 @@ const eventStore = create<Store>()((set) => ({
       set({ eventHostMessage: response.data.data.eventHostMessage })
       set({ channels: response.data.data.channels })
       set({ eventFloorPlan: response.data.data.eventFloorPlan })
+
+      // formatted objects
+      const guest = response.data.data.guests
+      const posts = response.data.data.guestPosts
+
+      const formattedGuestPost = posts.map((post: any) => {
+        return {
+          text: post.text,
+          createdAt: post.createdAt,
+          guest: guest.find((g: any) => g.guestId == post.guestId),
+        }
+      })
+
+      set({ guestPosts: formattedGuestPost })
     }
 
     set({ loading: false })

@@ -31,7 +31,6 @@ const Page = () => {
 
   return (
     <div className="bg-gray-50">
-      {/* <p>{roleType}</p> */}
       <OverviewHeader />
       <EventAnnouncement />
     </div>
