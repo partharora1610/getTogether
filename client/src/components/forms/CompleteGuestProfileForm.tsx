@@ -3,18 +3,19 @@ import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { AVATARS } from "@/constants"
 import axios from "axios"
+import { AVATARS, Avatar } from "@/constants/avatars"
 
 const CompleteGuestProfileForm = () => {
-  const [selectedAvatar, setSelectedAvatar] = useState(AVATARS[0])
+  const [selectedAvatar, setSelectedAvatar] = useState<Avatar>(AVATARS[0])
+  const [nickName, setNickName] = useState<string>("")
 
   const updateAvatarHandler = async (avatar: any) => {
     const response = await axios.post(
       "http://localhost:8000/avatars",
       {
-        avatar: "avatar",
-        nickName: "nickname",
+        avatar: avatar.id,
+        nickName: nickName,
       },
       {
         withCredentials: true,
@@ -34,6 +35,7 @@ const CompleteGuestProfileForm = () => {
         </Label>
         <p>Keep it funny and relateable</p>
         <Input
+          onChange={(e) => setNickName(e.target.value)}
           className="mt-2 text-base"
           placeholder="For ex: Grooms Uncle, Chacha "
         />
@@ -89,7 +91,9 @@ const CompleteGuestProfileForm = () => {
         </Tabs>
       </div>
 
-      <Button className="mt-12 w-full">Save</Button>
+      <Button className="mt-12 w-full" onClick={updateAvatarHandler}>
+        Save
+      </Button>
     </div>
   )
 }

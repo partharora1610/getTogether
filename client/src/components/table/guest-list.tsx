@@ -20,29 +20,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
-import { Guest } from "@/constants"
 import React from "react"
 import InviteGuestDialog from "../dialog/InviteGuestDialog"
-
-const columns: ColumnDef<Guest>[] = [
-  {
-    accessorKey: "serialNo",
-    header: "Serial No.",
-  },
-  {
-    accessorKey: "guestName",
-    header: "Guest Name",
-  },
-  {
-    accessorKey: "rsvpStatus",
-    header: "RSVP Status",
-  },
-
-  {
-    accessorKey: "plusOnes",
-    header: "Plus Ones",
-  },
-]
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]

@@ -1,5 +1,6 @@
 import { Calendar } from "lucide-react"
 import React from "react"
+import HostIcon from "../shared/HostIcon"
 
 const OverviewPostCard = ({
   heading,
@@ -15,7 +16,11 @@ const OverviewPostCard = ({
       <div className="">
         <div>
           <div className="flex gap-2 mb-4 items-center">
-            <div className="w-[38px] h-[38px] bg-gray-700 rounded-md"></div>
+            {/* <div className="w-[38px] h-[38px] bg-gray-700 rounded-md"></div> */}
+            <div className="text-transparent">
+              <HostIcon />
+              hello
+            </div>
             <h1 className="text-xl font-medium mb-2">{heading}</h1>
           </div>
           <p className="text-md text-gray-500">{description}</p>
