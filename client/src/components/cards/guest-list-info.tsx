@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dialog"
 
 import { Button } from "../ui/button"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import {
   ColumnDef,
@@ -45,36 +45,6 @@ const data: GuestInvite[] = [
     id: "1",
     guestName: "John Doe",
     email: "hello.com",
-  },
-  {
-    id: "m5gr84i9",
-    guestName: "Hello World",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "m5gr84i8",
-    guestName: "Hello World",
-    email: "yahoo.com",
-  },
-  {
-    id: "m5gr84i9",
-    guestName: "Hello World",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "m5gr84i8",
-    guestName: "Hello World",
-    email: "yahoo.com",
-  },
-  {
-    id: "m5gr84i9",
-    guestName: "Hello World",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "m5gr84i8",
-    guestName: "Hello World",
-    email: "yahoo.com",
   },
 ]
 
@@ -233,19 +203,27 @@ export const TotalCountCard = ({ totalGuest }: { totalGuest: string }) => {
 }
 
 export const PendingInviteCard = () => {
+  const [pendingInvite, setPendingInvite] = useState([])
+
+  useEffect(() => {
+    // backend call
+  }, [pendingInvite])
+
   return (
     <Card className="border-2 border-gray-200">
       <CardHeader>
         <CardTitle className="text-lg font-semibold">Pending Invites</CardTitle>
         <CardDescription className="mb-8">
-          Till now <span className="underline cursor-pointer">23 guest</span>{" "}
+          Till now
+          <span className="underline cursor-pointer">
+            {pendingInvite.length == 0 ? "_" : pendingInvite} guest{" "}
+          </span>
           have not accepted their invite to the event workspace
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex justify-end">
           <SendMailDialog />
-          {/* <Button className="px-4 py-1">Send Invite Email</Button> */}
         </div>
       </CardContent>
     </Card>

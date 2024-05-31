@@ -5,23 +5,24 @@ import HostIcon from "../shared/HostIcon"
 import authStore from "@/store/auth-store"
 import appearanceStore from "@/store/appearance-store"
 
-// type PollOption = {
-//   text: string
-//   count: number
-//   id: string
-// }
+type PollOption = {
+  text: string
+  count: number
+  id: string
+}
 
 const OverviewPollCard = ({
   id,
   heading,
   description,
   options,
+  date,
 }: {
   id: string
   heading: string
   description: string
-  options: any | undefined
-  // date: string
+  options: PollOption[] | undefined
+  date: string
 }) => {
   const { event } = eventStore()
   const { user } = authStore();
@@ -31,11 +32,11 @@ const OverviewPollCard = ({
     return null
   }
 
-  const optionClickHandler = async (optionId: string) => {
-    const response = await axios.put(
-      `http://localhost:8000/events/${event.id}/polls/${id}/vote`,
+  const optionClickHandler = async (optionId: any) => {
+    const response = await axios.post(
+      `http://localhost:8000/events/${optionId}/polls/${id}/vote`,
       {
-        pollOptionId: optionId,
+        count: 20,
       },
       {
         withCredentials: true,
@@ -47,13 +48,6 @@ const OverviewPollCard = ({
     }
 
     console.log(response.data)
-  }
-
-  const isOptionSelected =  (userId: string, optionSelections: any[]): boolean => {
-    if (optionSelections.some(selection => selection.userId === userId)) {
-      return true;
-    }
-    return false;
   }
 
   return (
@@ -73,7 +67,7 @@ const OverviewPollCard = ({
           <p className="text-md font-medium">Select 1 Option</p>
         </div>
         {options &&
-          options.map((option: any) => {
+          options.map((option) => {
             return (
               <div
                 className="flex gap-8 justify-between place-items-center"
@@ -93,4 +87,4 @@ const OverviewPollCard = ({
   )
 }
 
-export default OverviewPollCard;
+export default OverviewPollCard

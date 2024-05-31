@@ -17,9 +17,9 @@ const EventProvider = ({ children }: { children: React.ReactNode }) => {
     fetchAppearance(eventId)
   }, [eventId])
 
-  if (loading) {
-    return <div>Loading</div>
-  }
+  // if (loading) {
+  //   return <div>Loading</div>
+  // }
 
   return <div>{children}</div>
 }
