@@ -75,7 +75,6 @@ const EventAnnouncement = () => {
   const { eventPolls, eventPosts } = eventStore()
 
   const allPosts = [...eventPosts, ...eventPolls]
-  console.log(allPosts)
 
   allPosts.sort((a, b) => {
     const dateA = new Date(a.createdAt)
