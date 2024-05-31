@@ -2,6 +2,8 @@ import eventStore from "@/store/event-store"
 import axios from "axios"
 import React from "react"
 import HostIcon from "../shared/HostIcon"
+import authStore from "@/store/auth-store"
+import appearanceStore from "@/store/appearance-store"
 
 type PollOption = {
   text: string
@@ -23,9 +25,8 @@ const OverviewPollCard = ({
   date: string
 }) => {
   const { event } = eventStore()
-  const [selectedOption, setSelectedOption] = React.useState<string | null>(
-    null
-  )
+  const { user } = authStore();
+  const { primaryColor } = appearanceStore();
 
   if (!event) {
     return null
@@ -74,7 +75,7 @@ const OverviewPollCard = ({
                   optionClickHandler(option.id)
                 }}
               >
-                <div className="flex gap-4 items-center w-full mt-4 p-2 rounded-sm pl-4 border-2 border-gray-200 cursor-pointer">
+                <div className={`flex gap-4 items-center w-full mt-4 p-2 rounded-sm pl-4 border-2 border-gray-200 cursor-pointer ${(user && isOptionSelected(user.id, option.eventPollOptionSelection)) ? `bg-[${primaryColor}]` : ""}`}>
                   <p className="text-base">{option.text}</p>
                 </div>
                 <div className="pt-3 ">{option.count}</div>
