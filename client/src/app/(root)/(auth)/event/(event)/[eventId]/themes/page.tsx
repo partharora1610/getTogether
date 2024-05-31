@@ -17,8 +17,9 @@ const Page = () => {
       </div>
 
       <div className="flex flex-col gap-20 mt-8">
-        <PrimaryColorSelection />
         <EventPageCoverImage />
+        <PrimaryColorSelection />
+        <PrimaryFontSelection />
       </div>
     </div>
   )
@@ -104,6 +105,25 @@ const EventPageCoverImage = () => {
             Upload Image
           </button>
         </div>
+      </div>
+    </div>
+  )
+}
+
+const PrimaryFontSelection = () => {
+  return (
+    <div className="mb-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-xl font-medium">Select Primary Font</h1>
+          <p className="text-gray-500">
+            A lighter verison of the primary color will be used for backgrounds
+          </p>
+        </div>
+      </div>
+
+      <div className="flex justify-end mt-16">
+        <Button>Save Font</Button>
       </div>
     </div>
   )

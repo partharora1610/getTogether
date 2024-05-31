@@ -34,8 +34,6 @@ const Page = () => {
 
   return (
     <div>
-      {/* <p>{JSON.stringify(guests)}</p> */}
-
       <div className="flex gap-6 mt-10 px-10">
         <TotalCountCard totalGuest={totalGuest} />
         <PendingInviteCard />

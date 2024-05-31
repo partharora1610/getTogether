@@ -80,6 +80,28 @@ const SideBar = () => {
         <div>
           <div>
             <h2 className="text-lg text-gray-600 font-medium mb-4 uppercase">
+              Chat with Vendors
+            </h2>
+            <div className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md  mb-6">
+              <User2Icon size={22} />
+              <h2 className="text-lg">Rahul Catering Service</h2>
+            </div>
+            <div className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md  mb-6">
+              <User2Icon size={22} />
+              <h2 className="text-lg">Binod Planners</h2>
+            </div>
+            <div className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md  mb-6">
+              <User2Icon size={22} />
+              <h2 className="text-lg">Binod Planners</h2>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {Role.HOST == roleType && (
+        <div>
+          <div>
+            <h2 className="text-lg text-gray-600 font-medium mb-4 uppercase">
               Admin Control
             </h2>
 
@@ -134,9 +156,6 @@ const SideBar = () => {
                 </div>
               </div>
             </Link>
-          </div>
-        </div>
-      )}
 
       {Role.HOST == roleType && (
         <div>
