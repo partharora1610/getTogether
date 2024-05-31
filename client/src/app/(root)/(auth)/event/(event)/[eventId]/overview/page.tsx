@@ -105,7 +105,7 @@ const EventAnnouncement = () => {
                   id={post.id}
                   heading={post.heading}
                   description={post.description}
-                  date={post.date}
+                  // date={post.date}
                   options={post.options}
                 />
               )

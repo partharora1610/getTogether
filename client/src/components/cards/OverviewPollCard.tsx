@@ -1,41 +1,42 @@
 import eventStore from "@/store/event-store"
 import axios from "axios"
 import React from "react"
+import { useState } from "react"
 import HostIcon from "../shared/HostIcon"
+import authStore from "@/store/auth-store"
+import { boolean } from "zod"
 
-type PollOption = {
-  text: string
-  count: number
-  id: string
-}
+// type PollOption = {
+//   text: string
+//   count: number
+//   id: string
+// }
 
 const OverviewPollCard = ({
   id,
   heading,
   description,
   options,
-  date,
 }: {
   id: string
   heading: string
   description: string
-  options: PollOption[] | undefined
-  date: string
+  options: any | undefined
+  // date: string
 }) => {
   const { event } = eventStore()
-  const [selectedOption, setSelectedOption] = React.useState<string | null>(
-    null
-  )
+  const { user } = authStore();
+  console.log("Option", options);
 
   if (!event) {
     return null
   }
 
-  const optionClickHandler = async (optionId: any) => {
-    const response = await axios.post(
-      `http://localhost:8000/events/${optionId}/polls/${id}/vote`,
+  const optionClickHandler = async (optionId: string) => {
+    const response = await axios.put(
+      `http://localhost:8000/events/${event.id}/polls/${id}/vote`,
       {
-        count: 20,
+        pollOptionId: optionId,
       },
       {
         withCredentials: true,
@@ -47,6 +48,13 @@ const OverviewPollCard = ({
     }
 
     console.log(response.data)
+  }
+
+  const isOptionSelected =  (userId: string, optionSelections: any[]): boolean => {
+    if (optionSelections.some(selection => selection.userId === userId)) {
+      return true;
+    }
+    return false;
   }
 
   return (
@@ -66,7 +74,7 @@ const OverviewPollCard = ({
           <p className="text-md font-medium">Select 1 Option</p>
         </div>
         {options &&
-          options.map((option) => {
+          options.map((option: any) => {
             return (
               <div
                 className="flex gap-8 justify-between place-items-center"
@@ -74,7 +82,7 @@ const OverviewPollCard = ({
                   optionClickHandler(option.id)
                 }}
               >
-                <div className="flex gap-4 items-center w-full mt-4 p-2 rounded-sm pl-4 border-2 border-gray-200 cursor-pointer">
+                <div className={`flex gap-4 items-center w-full mt-4 p-2 rounded-sm pl-4 border-2 border-gray-200 cursor-pointer ${(user && isOptionSelected(user.id, option.eventPollOptionSelection)) ? "bg-red-100" : ""}`}>
                   <p className="text-base">{option.text}</p>
                 </div>
                 <div className="pt-3 ">{option.count}</div>
@@ -86,4 +94,4 @@ const OverviewPollCard = ({
   )
 }
 
-export default OverviewPollCard
+export default OverviewPollCard;
