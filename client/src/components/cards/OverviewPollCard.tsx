@@ -1,10 +1,8 @@
 import eventStore from "@/store/event-store"
 import axios from "axios"
 import React from "react"
-import { useState } from "react"
 import HostIcon from "../shared/HostIcon"
 import authStore from "@/store/auth-store"
-import { boolean } from "zod"
 
 // type PollOption = {
 //   text: string
