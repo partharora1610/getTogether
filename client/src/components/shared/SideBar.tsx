@@ -57,7 +57,7 @@ const SideBar = () => {
           {Role.HOST == roleType && <AddChannelDialog eventId={eventId} />}
 
           <div className="flex flex-col gap-6">
-            {event?.channels?.map((channel: any) => (
+            {event?.channels?.filter((channel: any) => channel.channelType != "DIRECT").map((channel: any) => (
               <Link href={`/event/${eventId}/${channel.id}`}>
                 <div
                   key={channel.id}
@@ -144,21 +144,44 @@ const SideBar = () => {
             <h2 className="text-lg text-gray-600 font-medium mb-4 uppercase">
               Chat with Vendors
             </h2>
-            <div className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md  mb-6">
-              <User2Icon size={22} />
-              <h2 className="text-lg">Rahul Catering Service</h2>
-            </div>
-            <div className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md  mb-6">
-              <User2Icon size={22} />
-              <h2 className="text-lg">Binod Planners</h2>
-            </div>
-            <div className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md  mb-6">
-              <User2Icon size={22} />
-              <h2 className="text-lg">Binod Planners</h2>
+            <div>
+            {
+              event?.channels?.filter((channel: any) => channel.channelType == "DIRECT").map((channel: any) => (
+                <Link href={`/event/${eventId}/${channel.id}`}>
+                <div className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md  mb-6">
+                  <User2Icon size={22} />
+                  <h2 className="text-lg">{channel.name}</h2>
+                </div>
+                </Link>
+              ))
+            }
             </div>
           </div>
         </div>
       )}
+
+      {Role.VENDOR == roleType && (
+        <div>
+          <div>
+            <h2 className="text-lg text-gray-600 font-medium mb-4 uppercase">
+              Chat with Host
+            </h2>
+            <div>
+            {
+              event?.channels?.filter((channel: any) => channel.channelType == "DIRECT").map((channel: any) => (
+                <Link href={`/event/${eventId}/${channel.id}`}>
+                <div className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md  mb-6">
+                  <User2Icon size={22} />
+                  <h2 className="text-lg">Host</h2>
+                </div>
+                </Link>
+              ))
+            }
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }
