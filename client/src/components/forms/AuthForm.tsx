@@ -1,20 +1,19 @@
 "use client"
 
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { useGoogleLogin } from "@react-oauth/google"
+import { OverridableTokenClientConfig, useGoogleLogin } from "@react-oauth/google"
 import { useRouter, useSearchParams } from "next/navigation"
 import authStore from "@/store/auth-store"
 
-export default function AuthForm() {
+type LoginClickHandler = (overrideConfig?: OverridableTokenClientConfig) => void;
+
+export default function GoogleLogin() {
   const { login } = authStore()
   const params = useSearchParams()
   const callbackUrl = params.get("callbackUrl")
 
   const router = useRouter()
 
-  const loginClickHandler = useGoogleLogin({
+  const loginClickHandler: LoginClickHandler = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       console.log("Google login success:", tokenResponse.access_token)
       const flag = await login({ token: tokenResponse.access_token })
@@ -33,95 +32,33 @@ export default function AuthForm() {
     onError: (err) => {
       console.log("Google login error:", err)
     },
-  })
+  });
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
-      <div className="bg-gray-900 text-white flex flex-col items-center justify-center p-8 lg:p-12">
-        <div className="max-w-md space-y-4">
-          <div className="flex items-center space-x-2">
-            <div>
-              <MountainIcon className="h-8 w-8" />
-              <h1 className="text-2xl font-bold">getTogether</h1>
-              <div>
-                <p className="mt-2">by binoddev</p>
-              </div>
-            </div>
-          </div>
-          <p className="text-gray-400">Manage your events at one place</p>
-        </div>
-      </div>
-      <div className="flex items-center justify-center p-8 lg:p-12">
-        <div className="max-w-md space-y-4">
-          <h2 className="text-2xl font-bold">Sign in</h2>
-          <form className="space-y-4">
-            <Input placeholder="Email" type="email" />
-            <Input placeholder="Password" type="password" />
-            <Button
-              className="w-full"
-              variant="outline"
-              onClick={async (e) => {
-                e.preventDefault()
-                loginClickHandler()
-              }}
-            >
-              <ChromeIcon className="mr-2 h-4 wc-4" />
-              Sign in with Google
-            </Button>
-            <div className="text-right">
-              <Link className="text-sm text-gray-500 hover:underline" href="#">
-                Forgot password?
-              </Link>
-            </div>
-          </form>
-        </div>
-      </div>
+    <div className="min-w-screen min-h-screen flex items-center justify-center">
+      <GoogleLoginButton loginClickHandler={loginClickHandler} />
     </div>
-  )
+  );
+
 }
 
-function ChromeIcon(props: any) {
+const GoogleLoginButton = ({ loginClickHandler }: { loginClickHandler: LoginClickHandler }) => {
   return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <circle cx="12" cy="12" r="4" />
-      <line x1="21.17" x2="12" y1="8" y2="8" />
-      <line x1="3.95" x2="8.54" y1="6.06" y2="14" />
-      <line x1="10.88" x2="15.46" y1="21.94" y2="14" />
-    </svg>
-  )
-}
-
-function MountainIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
-    </svg>
-  )
-}
-
-// const { login } = authStore()
-// const url =
-//   "https://accounts.google.com/o/oauth2/v2/auth?client_id=403568051053-ue6i1784hhl08q4ujgtf6c5u2ov4n7t7.apps.googleusercontent.com&redirect_uri=http://localhost:3000/api/auth/callback/google&response_type=code&scope=email%20profile&access_type=offline&prompt=consent"
+    <button 
+    onClick={() => loginClickHandler()}
+    className="flex items-center px-6 py-3 bg-white text-black font-semibold rounded-full shadow-lg hover:bg-white/60 transition-colors duration-300">
+      <svg
+        className="w-10 h-8 mr-2"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 48 48"
+        fill="currentColor"
+      >
+        <path d="M24 9.5c3.66 0 6.26 1.57 7.7 2.9l5.65-5.66C33.3 3.26 29 1.5 24 1.5 14.87 1.5 7.23 7.77 5.09 16.31l6.92 5.32C13.68 15.23 18.4 9.5 24 9.5z" fill="#EA4335" />
+        <path d="M46.5 24.5c0-1.44-.12-2.81-.34-4.16H24v7.91h12.7c-.56 3.1-2.17 5.73-4.58 7.5l7.14 5.52c4.17-3.85 6.54-9.52 6.54-16.77z" fill="#4285F4" />
+        <path d="M11.01 28.22c-1.25-.7-2.34-1.64-3.21-2.71l-6.92 5.32c1.97 3.92 5.21 6.91 9.14 8.61l7.14-5.52c-2.36-.7-4.4-1.88-6.15-3.39z" fill="#FBBC05" />
+        <path d="M24 46.5c5.4 0 10-1.75 13.36-4.74l-7.14-5.52c-2.03 1.36-4.6 2.2-7.25 2.2-5.68 0-10.5-3.7-12.25-8.74l-6.92 5.32C7.23 40.23 14.87 46.5 24 46.5z" fill="#34A853" />
+      </svg>
+      <span>Sign in with Google</span>
+    </button>
+  );
+};

@@ -7,6 +7,7 @@ interface Event {
   title: string
   description: string
   guests: any
+  vendors: any
   eventPosts: any
   eventPolls: any
   eventHostMessage: true
