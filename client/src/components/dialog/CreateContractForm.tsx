@@ -62,9 +62,13 @@ const CreateContractForm = ({ vendorId }: { vendorId: string }) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <button className="px-4 py-2 text-black backdrop-blur-sm border border-black rounded-md hover:shadow-[0px_0px_4px_4px_rgba(0,0,0,0.1)] bg-white/[0.2] text-sm transition duration-200">
+        {/* <button className="px-4 py-2 text-black backdrop-blur-sm border border-black rounded-md hover:shadow-[0px_0px_4px_4px_rgba(0,0,0,0.1)] bg-white/[0.2] text-sm transition duration-200">
           Switch Event
-        </button>
+        </button> */}
+
+        <Button size="sm" variant="outline">
+          Create Contract
+        </Button>
       </DialogTrigger>
       <DialogContent className="max-w-[80%]">
         <DialogHeader>
@@ -78,7 +82,7 @@ const CreateContractForm = ({ vendorId }: { vendorId: string }) => {
                   <div className="flex flex-col justify-between h-full">
                     <ContractForm />
                     <Button
-                      disabled={!isValid}
+                      // disabled={!isValid}
                       size="lg"
                       onClick={handleCreateContract}
                     >
@@ -612,9 +616,13 @@ export const ContractViewOnly = ({ contract }: { contract: any }) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <button className="px-4 py-2 text-black backdrop-blur-sm border border-black rounded-md hover:shadow-[0px_0px_4px_4px_rgba(0,0,0,0.1)] bg-white/[0.2] text-sm transition duration-200">
+        {/* <button className="px-4 py-2 text-black backdrop-blur-sm border border-black rounded-md hover:shadow-[0px_0px_4px_4px_rgba(0,0,0,0.1)] bg-white/[0.2] text-sm transition duration-200">
           View Contract
-        </button>
+        </button> */}
+
+        <Button size="sm" variant="outline">
+          View Contract
+        </Button>
       </DialogTrigger>
       <DialogContent className="max-w-3xl">
         <DialogHeader>
