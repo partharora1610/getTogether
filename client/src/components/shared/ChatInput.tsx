@@ -4,11 +4,12 @@ import { Send } from "lucide-react"
 import { Button } from "../ui/button"
 import { Textarea } from "../ui/textarea"
 import { useRef } from "react"
-import chatStore from "@/store/chat-store"
+import { formatMessage } from "@/store/chat-store"
 import socket from "@/lib/socket"
 import { useParams } from "next/navigation"
 import eventStore from "@/store/event-store"
 import { ROOM_SOCKET } from "@/constants/socket.route"
+import axios from "axios"
 
 interface ChatInputProps {
   isDisabled?: boolean
@@ -17,8 +18,26 @@ interface ChatInputProps {
 const ChatInput = ({ isDisabled }: ChatInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const { eventId, channelId } = useParams()
-  const { sendMessage } = chatStore()
   const { currentRole } = eventStore()
+
+  const sendMessage = async (message: string, roleId: string, eventId: string, channelId: string) => {
+    const response = await axios.post(
+      `http://localhost:8000/events/${eventId}/channels/${channelId}/messages`,
+      {
+        message,
+        roleId,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 200) {
+      return formatMessage(response.data.data);
+    }
+
+    return undefined;
+  }
 
   const handleSendMessage = async () => {
     const message = textareaRef.current?.value
@@ -28,21 +47,14 @@ const ChatInput = ({ isDisabled }: ChatInputProps) => {
     }
 
     if (message && currentRole) {
-      socket.emit(ROOM_SOCKET.CHANNEL_SEND_MESSAGE, {
-        msg: {
-          message: message,
-          avatar: "2",
-          nickName: "",
-          name: "",
-        },
-      })
-      sendMessage({
-        message: message,
-        roleId: currentRole.id as string,
-        eventId: eventId as string,
-        channelId: channelId as string,
-      })
-      textareaRef.current.value = ""
+      const msg = await sendMessage(message, currentRole.id, eventId as string, channelId as string);
+      if (msg) {
+        socket.emit(ROOM_SOCKET.CHANNEL_SEND_MESSAGE, { msg });
+        textareaRef.current.value = ""
+      } else {
+        alert("Something went wrong");
+      }
+      
     }
   }
 
