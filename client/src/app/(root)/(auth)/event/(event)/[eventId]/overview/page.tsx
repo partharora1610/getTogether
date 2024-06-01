@@ -56,12 +56,6 @@ const OverviewHeader = () => {
         </div>
       </div>
 
-      {/* testing */}
-      <div className="bg-black/30 px-4 py-4 mt-4 rounded-md cursor-pointer  absolute top-0 right-4 flex items-center justify-between">
-        <CompleteGuestProfileDialog />
-      </div>
-      {/* testing */}
-
       {roleType === Role.GUEST && (
         <div className="bg-black/30 px-4 py-4 mt-4 rounded-md cursor-pointer  absolute top-0 right-4 flex items-center justify-between">
           <CompleteGuestProfileDialog />
@@ -167,7 +161,6 @@ const HostSpecialDialog = () => {
   const customShadow = `hover:shadow-custom-shadow-${primaryColor}`
   return (
     <div>
-      {" "}
       <Dialog>
         <DialogTrigger>
           <button

@@ -43,7 +43,19 @@ const chatStore = create<Store>((set) => ({
     )
 
     if (response.status === 200) {
-      set({ messages: response.data.data })
+      const messages = response.data.data
+
+      const formattedMessages = messages.map((message: any) => {
+        return {
+          message: message.message,
+          timestamp: new Date(message.timestamp),
+          senderAvatar: message.sender.guest?.avatar,
+          senderNickName: message.sender.guest?.nickName,
+          senderName: message.sender.guest?.name,
+        }
+      })
+
+      set({ messages: formattedMessages })
     }
   },
 
@@ -59,7 +71,7 @@ const chatStore = create<Store>((set) => ({
       }
     )
 
-    if (response.status === 201) {
+    if (response.status === 200) {
       set((state) => ({ messages: [...state.messages, response.data.data] }))
     }
   },
