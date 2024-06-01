@@ -28,7 +28,14 @@ const ChatInput = ({ isDisabled }: ChatInputProps) => {
     }
 
     if (message && currentRole) {
-      socket.emit(ROOM_SOCKET.CHANNEL_SEND_MESSAGE, { msg: message })
+      socket.emit(ROOM_SOCKET.CHANNEL_SEND_MESSAGE, {
+        msg: {
+          message: message,
+          avatar: "2",
+          nickName: "",
+          name: "",
+        },
+      })
       sendMessage({
         message: message,
         roleId: currentRole.id as string,

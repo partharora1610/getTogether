@@ -2,7 +2,7 @@
 import React from "react"
 import { Button } from "@/components/ui/button"
 import AddVendorForm from "@/components/forms/AddVendorForm"
-import { NegativeTag } from "@/components/tags/tags"
+import { NegativeTag, NeutralTag, PositiveTag } from "@/components/tags/tags"
 import CreateContractForm, {
   ContractViewOnly,
 } from "@/components/dialog/CreateContractForm"
@@ -119,7 +119,14 @@ const VendorCard = ({
               </p>
             </div>
             <div>
-              <NegativeTag text={"Contract Pending"} />
+              {contract == null && <NeutralTag text={"No Contract"} />}
+              {contract && contract.status == "SIGNED_BY_HOST" && (
+                <NegativeTag text={"Contract Pending"} />
+              )}
+
+              {contract && contract.status == "SIGNED_BY_BOTH" && (
+                <PositiveTag text={"Contract Signed"} />
+              )}
             </div>
           </div>
         </div>
@@ -133,10 +140,6 @@ const VendorCard = ({
           ) : (
             <CreateContractForm vendorId={vendorId} />
           )}
-
-          <Button size="sm" variant="outline">
-            Send Contract Reminder
-          </Button>
         </div>
       </div>
     </div>

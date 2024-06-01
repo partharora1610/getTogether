@@ -8,7 +8,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import eventStore from "@/store/event-store"
-// import { guests } from "@/constants"
 import appearanceStore from "@/store/appearance-store"
 
 const RightBar = () => {
@@ -18,37 +17,6 @@ const RightBar = () => {
     </div>
   )
 }
-
-// const GUESTS = [
-//   {
-//     name: "Mr Mukesh Bansal",
-//     rsvp: true,
-//   },
-//   {
-//     name: "Mr Nitin kamath",
-//     rsvp: false,
-//   },
-//   {
-//     name: "Wedding Venue Service",
-//     rsvp: true,
-//   },
-//   {
-//     name: "Mr Mukesh Bansal",
-//     rsvp: true,
-//   },
-//   {
-//     name: "Mr Nitin kamath",
-//     rsvp: false,
-//   },
-//   {
-//     name: "Wedding Venue Service",
-//     rsvp: true,
-//   },
-//   {
-//     name: "Mr Mukesh Bansal",
-//     rsvp: true,
-//   },
-// ]
 
 const GuestList = () => {
   const { event, loading } = eventStore()
