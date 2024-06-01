@@ -22,6 +22,8 @@ import { Button } from "../ui/button"
 import axios from "axios"
 import { useToast } from "../ui/use-toast"
 import { useParams } from "next/navigation"
+import { Role } from "@/types"
+import eventStore from "@/store/event-store"
 
 const CreateContractForm = ({ vendorId }: { vendorId: string }) => {
   const { isValid, clearStore, getDataObject } = contractStore()
@@ -588,6 +590,9 @@ const CancellationPolicyForm = () => {
 }
 
 export const ContractViewOnly = ({ contract }: { contract: any }) => {
+  const { roleType } = eventStore()
+  const { toast } = useToast()
+
   const {
     clientEmail,
     clientName,
@@ -609,13 +614,33 @@ export const ContractViewOnly = ({ contract }: { contract: any }) => {
     cancellationPolicyVendor,
   } = JSON.parse(contract.contractData)
 
+  const onAcceptContract = async () => {
+    const response = await axios.put(
+      `http://localhost:8000/events/${contract.eventId}/contracts/${contract.id}/status`,
+      {},
+      {
+        withCredentials: true,
+      }
+    )
+
+    if (response.status === 200) {
+      toast({
+        title: "Contract Accepted",
+        description: "Contract has been accepted successfully",
+        variant: "default",
+      })
+    } else {
+      toast({
+        title: "Error",
+        description: "An error occurred while accepting the contract",
+        variant: "destructive",
+      })
+    }
+  }
+
   return (
     <Dialog>
       <DialogTrigger>
-        {/* <button className="px-4 py-2 text-black backdrop-blur-sm border border-black rounded-md hover:shadow-[0px_0px_4px_4px_rgba(0,0,0,0.1)] bg-white/[0.2] text-sm transition duration-200">
-          View Contract
-        </button> */}
-
         <Button size="sm" variant="outline">
           View Contract
         </Button>
@@ -624,157 +649,174 @@ export const ContractViewOnly = ({ contract }: { contract: any }) => {
         <DialogHeader>
           <DialogTitle className="mb-4 text-xl">View Contract</DialogTitle>
           <DialogDescription>
-            <ScrollArea className="h-[900px] border-2 border-gray-100 rounded-md px-4 py-4 text-lg">
-              <div>
-                <div className="mb-16">
-                  <h3 className="text-gray-900 text-xl mb-2 font-medium bg-blue-100 p-2">
-                    Client Details
-                  </h3>
-                  <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      <span className="font-semibold">Name:</span> {clientName}
-                    </div>
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      <span className="font-semibold">Phone:</span>{" "}
-                      {clientPhone}
-                    </div>
-                    <div className="flex flex-col  gap-2 text-gray-800">
-                      <span className="font-semibold">Email:</span>{" "}
-                      {clientEmail}
+            <div>
+              <ScrollArea className="h-[900px] border-2 border-gray-100 rounded-md px-4 py-4 text-lg">
+                <div>
+                  <div className="mb-16">
+                    <h3 className="text-gray-900 text-xl mb-2 font-medium bg-blue-100 p-2">
+                      Client Details
+                    </h3>
+                    <div className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        <span className="font-semibold">Name:</span>{" "}
+                        {clientName}
+                      </div>
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        <span className="font-semibold">Phone:</span>{" "}
+                        {clientPhone}
+                      </div>
+                      <div className="flex flex-col  gap-2 text-gray-800">
+                        <span className="font-semibold">Email:</span>{" "}
+                        {clientEmail}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="mb-16">
-                  <h3 className="text-gray-900 text-xl mb-2 font-medium bg-blue-100 p-2">
-                    Vendor Details
-                  </h3>
-                  <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      <span className="font-semibold">Business Name:</span>{" "}
-                      {vendorBusinessName}
-                    </div>
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      <span className="font-semibold">Contact Person:</span>{" "}
-                      {vendorContactPerson}
-                    </div>
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      <span className="font-semibold">Address:</span>{" "}
-                      {vendorAddress}
-                    </div>
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      <span className="font-semibold">Phone Number:</span>{" "}
-                      {vendorPhoneNumber}
-                    </div>
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      <span className="font-semibold">Email:</span>{" "}
-                      {vendorEmail}
+                  <div className="mb-16">
+                    <h3 className="text-gray-900 text-xl mb-2 font-medium bg-blue-100 p-2">
+                      Vendor Details
+                    </h3>
+                    <div className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        <span className="font-semibold">Business Name:</span>{" "}
+                        {vendorBusinessName}
+                      </div>
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        <span className="font-semibold">Contact Person:</span>{" "}
+                        {vendorContactPerson}
+                      </div>
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        <span className="font-semibold">Address:</span>{" "}
+                        {vendorAddress}
+                      </div>
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        <span className="font-semibold">Phone Number:</span>{" "}
+                        {vendorPhoneNumber}
+                      </div>
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        <span className="font-semibold">Email:</span>{" "}
+                        {vendorEmail}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="mb-16">
-                  <h3 className="text-gray-900 text-xl mb-2 font-medium bg-blue-100 p-2">
-                    Event Details
-                  </h3>
-                  <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      <span className="font-semibold">Venue:</span> {eventVenue}
-                    </div>
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      <span className="font-semibold">Venue Address:</span>{" "}
-                      {eventVenueAddress}
-                    </div>
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      <span className="font-semibold">Date:</span> {eventDate}
-                    </div>
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      <span className="font-semibold">Time:</span> {eventTime}
+                  <div className="mb-16">
+                    <h3 className="text-gray-900 text-xl mb-2 font-medium bg-blue-100 p-2">
+                      Event Details
+                    </h3>
+                    <div className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        <span className="font-semibold">Venue:</span>{" "}
+                        {eventVenue}
+                      </div>
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        <span className="font-semibold">Venue Address:</span>{" "}
+                        {eventVenueAddress}
+                      </div>
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        <span className="font-semibold">Date:</span> {eventDate}
+                      </div>
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        <span className="font-semibold">Time:</span> {eventTime}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="mb-16">
-                  <h3 className="text-gray-900 text-xl mb-2 bg-blue-100 p-2 font-medium">
-                    Services
-                  </h3>
-                  <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      {services}
+                  <div className="mb-16">
+                    <h3 className="text-gray-900 text-xl mb-2 bg-blue-100 p-2 font-medium">
+                      Services
+                    </h3>
+                    <div className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        {services}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="mb-16">
-                  <h3 className="text-gray-900 text-xl mb-2 font-medium bg-blue-100 p-2">
-                    Payment Terms
-                  </h3>
-                  <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      <span className="font-semibold">Total:</span>{" "}
-                      {paymentTotal}
-                    </div>
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      <span className="font-semibold">Method:</span>{" "}
-                      {paymentMethod}
-                    </div>
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      <span className="font-semibold">Schedule:</span>{" "}
-                      {paymentSchedule}
-                    </div>
-                  </div>
-                </div>
-                <div className="mb-16">
-                  <h3 className="text-gray-900 text-xl mb-2 font-medium bg-blue-100 p-2">
-                    Cancellation Policy
-                  </h3>
-                  <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      <span className="font-semibold">Client:</span>{" "}
-                      {cancellationPolicyClient}
-                    </div>
-                    <div className="flex flex-col gap-2 text-gray-800">
-                      <span className="font-semibold">Vendor:</span>{" "}
-                      {cancellationPolicyVendor}
+                  <div className="mb-16">
+                    <h3 className="text-gray-900 text-xl mb-2 font-medium bg-blue-100 p-2">
+                      Payment Terms
+                    </h3>
+                    <div className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        <span className="font-semibold">Total:</span>{" "}
+                        {paymentTotal}
+                      </div>
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        <span className="font-semibold">Method:</span>{" "}
+                        {paymentMethod}
+                      </div>
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        <span className="font-semibold">Schedule:</span>{" "}
+                        {paymentSchedule}
+                      </div>
                     </div>
                   </div>
-                </div>
+                  <div className="mb-16">
+                    <h3 className="text-gray-900 text-xl mb-2 font-medium bg-blue-100 p-2">
+                      Cancellation Policy
+                    </h3>
+                    <div className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        <span className="font-semibold">Client:</span>{" "}
+                        {cancellationPolicyClient}
+                      </div>
+                      <div className="flex flex-col gap-2 text-gray-800">
+                        <span className="font-semibold">Vendor:</span>{" "}
+                        {cancellationPolicyVendor}
+                      </div>
+                    </div>
+                  </div>
 
-                <div className="mb-16">
-                  <h3 className="text-gray-900 text-xl mb-2 font-medium bg-blue-100 p-2">
-                    Liability
-                  </h3>
-                  <div className="flex flex-col gap-4">
-                    The Vendor shall not be liable for any damages, including
-                    but not limited to, property damage or personal injury that
-                    occur at the Event Venue. The Client agrees to indemnify and
-                    hold harmless the Vendor from any and all claims, damages,
-                    or expenses arising from the Event.
-                    <br />
-                    <br />
-                    <span className="font-bold">Force Majeure</span> Neither
-                    party shall be liable for any failure or delay in performing
-                    their obligations under this Contract if such failure or
-                    delay is caused by circumstances beyond their reasonable
-                    control, including but not limited to, acts of God, war,
-                    pandemic, or natural disasters.
-                    <br />
-                    <br />
-                    <span className="font-bold">Govering Law</span> This
-                    Contract shall be governed by and construed in accordance
-                    with the laws of the State of
-                    <br />
-                    <br />
-                    <span className="font-bold">Entire Agreement </span>
-                    This Contract constitutes the entire agreement between the
-                    parties and supersedes all prior agreements,
-                    representations, and understandings of the parties. Any
-                    amendments or modifications to this Contract must be in
-                    writing and signed by both parties.
+                  <div className="mb-16">
+                    <h3 className="text-gray-900 text-xl mb-2 font-medium bg-blue-100 p-2">
+                      Liability
+                    </h3>
+                    <div className="flex flex-col gap-4">
+                      The Vendor shall not be liable for any damages, including
+                      but not limited to, property damage or personal injury
+                      that occur at the Event Venue. The Client agrees to
+                      indemnify and hold harmless the Vendor from any and all
+                      claims, damages, or expenses arising from the Event.
+                      <br />
+                      <br />
+                      <span className="font-bold">Force Majeure</span> Neither
+                      party shall be liable for any failure or delay in
+                      performing their obligations under this Contract if such
+                      failure or delay is caused by circumstances beyond their
+                      reasonable control, including but not limited to, acts of
+                      God, war, pandemic, or natural disasters.
+                      <br />
+                      <br />
+                      <span className="font-bold">Govering Law</span> This
+                      Contract shall be governed by and construed in accordance
+                      with the laws of the State of
+                      <br />
+                      <br />
+                      <span className="font-bold">Entire Agreement </span>
+                      This Contract constitutes the entire agreement between the
+                      parties and supersedes all prior agreements,
+                      representations, and understandings of the parties. Any
+                      amendments or modifications to this Contract must be in
+                      writing and signed by both parties.
+                    </div>
                   </div>
                 </div>
-              </div>
-            </ScrollArea>
+              </ScrollArea>
+              {Role.VENDOR == roleType && (
+                <div className="flex mt-4">
+                  <Button
+                    disabled={contract.status == "SIGNED_BY_BOTH"}
+                    onClick={onAcceptContract}
+                    className="p-4 w-full py-6"
+                  >
+                    {contract.status == "SIGNED_BY_BOTH"
+                      ? "Aleady Side By Both Parties"
+                      : "Accept Contract"}
+                  </Button>
+                </div>
+              )}
+            </div>
           </DialogDescription>
         </DialogHeader>
       </DialogContent>
