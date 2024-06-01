@@ -25,11 +25,7 @@ const Page = () => {
       )
 
       if (response.status == 200) {
-        const allContracts = response.data.data.vendors.map(
-          (vendor: any) => vendor.contract
-        )
-
-        setContracts(allContracts)
+        setContracts(response.data.data.contract)
       } else {
         toast({
           title: "Contracts fetch failed",
@@ -56,9 +52,7 @@ const Page = () => {
       </div>
 
       <div className="flex flex-wrap gap-8">
-        {contracts.map((contract: any) => (
-          <ContractCard key={contract.id} contract={contract} />
-        ))}
+        <ContractCard key={contracts.id} contract={contracts} />
       </div>
     </div>
   )
