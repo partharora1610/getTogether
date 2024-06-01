@@ -13,6 +13,7 @@ import { Button } from "../ui/button"
 import { Label } from "@radix-ui/react-label"
 import eventStore from "@/store/event-store"
 import { Input } from "../ui/input"
+import HostIcon from "../shared/HostIcon"
 
 const AccepRSVPDialog = () => {
   const { primaryColor } = appearanceStore()
@@ -61,7 +62,9 @@ const AccepRSVPDialog = () => {
 
           <DialogDescription>
             <div className="text-base mb-10 flex items-center gap-4 ">
-              <div className="min-w-[40px] h-[40px] bg-gray-800 rounded-md"></div>
+              <div className="min-w-[60px] h-[60px] bg-gray-50 rounded-md">
+                <HostIcon />
+              </div>
               <div className="text-gray-900">
                 Thankyou so much for confirming you presence, lets make this
                 event a special one for everyone

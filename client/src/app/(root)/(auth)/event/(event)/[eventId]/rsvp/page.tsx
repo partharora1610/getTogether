@@ -7,6 +7,11 @@ import RejectRSVPDialog from "@/components/dialog/RejectRSVpDialog"
 import AccepRSVPDialog from "@/components/dialog/AccepRSVPDialog"
 import { AVATARS } from "@/constants/avatars"
 import { Calendar, LocateIcon } from "lucide-react"
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
 
 const Page = () => {
   const { guestPosts } = eventStore()
@@ -91,7 +96,7 @@ const FeedCard = ({
 }
 
 const RSVPCard = () => {
-  const { event } = eventStore()
+  const { event, venue } = eventStore()
 
   return (
     <div className="border-2 w-full border-gray-100 rounded-md flex gap-6 px-4 py-4 h-full">
@@ -103,8 +108,23 @@ const RSVPCard = () => {
 
             <div className="flex gap-12 mt-6">
               <div className="flex gap-2 cursor-pointer">
-                <LocateIcon size={20} />
-                <h1 className="">Star Road Hall</h1>
+                <HoverCard>
+                  <HoverCardTrigger>
+                    <div className="flex gap-2">
+                      <LocateIcon size={20} />
+                      <h1 className="">{venue.name}</h1>
+                    </div>
+                  </HoverCardTrigger>
+                  <HoverCardContent>
+                    <div className="">
+                      <h1 className="font-semibold">{venue.name}</h1>
+                      <h1 className="text-gray-600">{venue.address}</h1>
+                      <h1 className="text-gray-600">
+                        {venue.state} , {venue.city} , {venue.zipCode}
+                      </h1>
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
               </div>
               <div className="flex gap-2 cursor-pointer">
                 <Calendar size={20} />

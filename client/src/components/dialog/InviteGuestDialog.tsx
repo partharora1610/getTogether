@@ -17,11 +17,14 @@ import { useEffect, useState } from "react"
 import { Textarea } from "../ui/textarea"
 import { ScrollArea } from "../ui/scroll-area"
 import axios from "axios"
+import appearanceStore from "@/store/appearance-store"
 
 const InviteGuestDialog = () => {
   const [email, setEmail] = useState<string>("")
   const [name, setName] = useState<string>("")
   const { eventId } = useParams() as { eventId: string }
+  const { primaryColor } = appearanceStore()
+  const textClass = `text-[${primaryColor}]`
 
   const inviteGuestHandler = async () => {
     const response = await axios.post(
@@ -39,7 +42,11 @@ const InviteGuestDialog = () => {
 
   return (
     <Dialog>
-      <DialogTrigger>Invite Guest</DialogTrigger>
+      <DialogTrigger
+        className={`${textClass} font-semibold hover:underline cursor-pointer`}
+      >
+        Invite Guest
+      </DialogTrigger>
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="text-xl mb-4">

@@ -10,6 +10,7 @@ import axios from "axios"
 import { Button } from "../ui/button"
 import Image from "next/image"
 import eventStore from "@/store/event-store"
+import HostIcon from "../shared/HostIcon"
 
 const RejectRSVPDialog = () => {
   const { event } = eventStore()
@@ -43,12 +44,10 @@ const RejectRSVPDialog = () => {
             Are you absolutely sure?
           </DialogTitle>
           <DialogDescription>
-            {/* <p className="text-base mb-8">
-                  If you are not sure about your presence, you can always confirm
-                </p> */}
-
             <div className="flex gap-4 items-center mb-8 mt-2">
-              <div className="min-w-[40px] h-[40px] bg-gray-800 rounded-md"></div>
+              <div className="min-w-[60px] h-[60px] bg-gray-50 rounded-md">
+                <HostIcon />
+              </div>
               <div className="text-base">
                 I will be very sad if you dont make it. If you are not sure
                 about your presence, you can always confirm

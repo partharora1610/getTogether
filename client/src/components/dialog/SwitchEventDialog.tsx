@@ -1,5 +1,4 @@
 "use client"
-
 import {
   Dialog,
   DialogContent,
@@ -8,12 +7,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import appearanceStore from "@/store/appearance-store"
 import eventStore from "@/store/event-store"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
 const SwitchEventDialog = () => {
   const router = useRouter()
+  const { primaryColor } = appearanceStore()
+
+  const textClass = `text-[${primaryColor}]`
+  const borderClass = `border-[${primaryColor}]`
+  const hoverTextClass = `hover:text-${primaryColor}`
+  const hoverBorderClass = `hover:border-${primaryColor}`
+  const bgClass = `bg-[${primaryColor}]/10`
+
   const { fetchEvents, events, loading } = eventStore()
 
   useEffect(() => {
@@ -36,19 +45,21 @@ const SwitchEventDialog = () => {
             <div className="flex flex-col gap-12">
               {events.map((event) => {
                 return (
-                  <div className="flex justify-between items-start gap-4">
+                  <div className="flex justify-between items-center  gap-4">
                     <div>
                       <h1 className="text-lg font-medium text-black">
                         {event.title}
                       </h1>
-                      <p className="text-base">{event.description}</p>
+                      <p className="text-base">
+                        {truncateText(event.description, 90)}
+                      </p>
                     </div>
                     <div>
                       <button
                         onClick={() => {
                           router.push(`/event/${event.id}/overview`)
                         }}
-                        className="bg-primary-400/5 text-primary-400 px-4 py-2 rounded-md hover:bg-primary-400/10"
+                        className={`${bgClass} ${textClass} font-medium px-4 py-2 rounded-md`}
                       >
                         Switch
                       </button>
@@ -56,12 +67,32 @@ const SwitchEventDialog = () => {
                   </div>
                 )
               })}
+
+              <div className="flex justify-end">
+                <Link href="/event/create">
+                  <button
+                    onClick={() => {
+                      router.push("/event/create")
+                    }}
+                    className={` ${textClass} ${borderClass} ${hoverTextClass} ${hoverBorderClass} hover:underline font-medium px-4 py-2 rounded-md`}
+                  >
+                    Create New Event
+                  </button>
+                </Link>
+              </div>
             </div>
           </DialogDescription>
         </DialogHeader>
       </DialogContent>
     </Dialog>
   )
+}
+
+function truncateText(text: string, maxLength: number) {
+  if (text.length <= maxLength) {
+    return text
+  }
+  return text.substring(0, maxLength) + "..."
 }
 
 export default SwitchEventDialog
