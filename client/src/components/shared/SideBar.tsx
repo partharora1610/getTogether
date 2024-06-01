@@ -33,6 +33,10 @@ const SideBar = () => {
   const bgClass = `bg-[${primaryColor}]/10 `
   const textClass = `text-[${primaryColor}]`
 
+  const vendorsChannels = event?.channels?.filter(
+    (channel: any) => channel.channelType == "DIRECT"
+  )
+
   return (
     <div>
       {(Role.HOST == roleType || Role.GUEST == roleType) && (
@@ -89,27 +93,30 @@ const SideBar = () => {
         </div>
       )}
 
-      {Role.HOST == roleType && (
-        <div>
+      {Role.HOST == roleType &&
+        vendorsChannels &&
+        vendorsChannels.length != 0 && (
           <div>
-            <h2 className="text-lg text-gray-600 font-medium mb-4 uppercase">
-              Chat with Vendors
-            </h2>
             <div>
-              {event?.channels
-                ?.filter((channel: any) => channel.channelType == "DIRECT")
-                .map((channel: any) => (
-                  <Link href={`/event/${eventId}/${channel.id}`}>
-                    <div className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md  mb-6">
-                      <User2Icon size={22} />
-                      <h2 className="text-lg">{channel.name}</h2>
-                    </div>
-                  </Link>
-                ))}
+              <div className="mb-10">
+                <h2 className="text-lg text-gray-600 font-medium uppercase">
+                  Chat with Vendors
+                </h2>
+              </div>
+              <div>
+                {vendorsChannels &&
+                  vendorsChannels.map((channel: any) => (
+                    <Link href={`/event/${eventId}/${channel.id}`}>
+                      <div className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md  mb-6">
+                        <User2Icon size={22} />
+                        <h2 className="text-lg">{channel.name}</h2>
+                      </div>
+                    </Link>
+                  ))}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
       {Role.VENDOR == roleType && (
         <div>

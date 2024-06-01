@@ -135,7 +135,6 @@ const HostMessageForm = () => {
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-1">
           <Label className="text-base">Message</Label>
-          <p>{message}</p>
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
@@ -155,12 +154,7 @@ const HostMessageForm = () => {
       </div>
 
       <div className="flex justify-end mt-8">
-        <Button
-          disabled={eventHostMessage.message == message}
-          variant="default"
-          className=""
-          onClick={onSubmit}
-        >
+        <Button variant="default" className="" onClick={onSubmit}>
           {eventHostMessage == null
             ? "Add Host Message"
             : "Update Host Message"}

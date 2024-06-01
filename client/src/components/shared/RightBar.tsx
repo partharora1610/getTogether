@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/tooltip"
 import eventStore from "@/store/event-store"
 import appearanceStore from "@/store/appearance-store"
+import { useParams } from "next/navigation"
+import Link from "next/link"
 
 const RightBar = () => {
   return (
@@ -22,6 +24,8 @@ const GuestList = () => {
   const { event, loading } = eventStore()
   const { primaryColor } = appearanceStore()
   const textClass = `text-[${primaryColor}]`
+  const params = useParams()
+  const eventId = params.eventId as string
 
   if (loading) {
     return <div>Loading...</div>
@@ -36,9 +40,13 @@ const GuestList = () => {
             ({event?.guests.length} guests)
           </p>
         </div>
-        <div className={`${textClass} font-semibold underline cursor-pointer`}>
-          Manage
-        </div>
+        <Link href={`/event/${eventId}/guest-list`}>
+          <div
+            className={`${textClass} font-semibold underline cursor-pointer`}
+          >
+            Manage
+          </div>
+        </Link>
       </div>
       {/* <p>{JSON.stringify(event?.guests)}</p> */}
 
