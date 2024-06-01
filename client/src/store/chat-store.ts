@@ -1,37 +1,37 @@
 import { create } from "zustand"
 import axios from "axios"
 
-// export type Message = {
-//   id: string
-//   message: string
-//   timestamp: Date
-//   channelId: string
-//   senderId: string
-// }
+type Message = {
+  message: string,
+  timestamp: Date;
+  senderAvatar: number;
+  senderNickName: string;
+  senderName: string;
+}
+
+export const formatMessage = (message: any): Message => {
+  return {
+    message: message.message,
+    timestamp: new Date(message.timestamp),
+    senderAvatar: message.sender?.guest?.avatar,
+    senderNickName: message.sender?.guest?.nickName,
+    senderName: message.sender?.guest?.name,
+  };
+}
 
 type Store = {
-  messages: any[]
-  updateMesages: (message: any) => void
+  messages: Message[]
+  updateMessages: ({ message }: { message: any }) => void
 
   fetchMessages: (eventId: string, channelId: string) => void
-  sendMessage: ({
-    message,
-    roleId,
-    eventId,
-    channelId,
-  }: {
-    message: string
-    roleId: string
-    eventId: string
-    channelId: string
-  }) => void
 }
 
 const chatStore = create<Store>((set) => ({
   messages: [],
 
-  updateMesages: (message) => {
-    set((state) => ({ messages: [...state.messages, message] }))
+  updateMessages: ({ message }) => {
+    const formattedMessage = formatMessage(message);
+    set((state) => ({ messages: [...state.messages, formattedMessage] }))
   },
 
   fetchMessages: async (eventId: string, channelId: string) => {
@@ -46,35 +46,13 @@ const chatStore = create<Store>((set) => ({
       const messages = response.data.data
 
       const formattedMessages = messages.map((message: any) => {
-        return {
-          message: message.message,
-          timestamp: new Date(message.timestamp),
-          senderAvatar: message.sender.guest?.avatar,
-          senderNickName: message.sender.guest?.nickName,
-          senderName: message.sender.guest?.name,
-        }
+        return formatMessage(message);
       })
 
       set({ messages: formattedMessages })
     }
   },
 
-  sendMessage: async ({ message, roleId, eventId, channelId }) => {
-    const response = await axios.post(
-      `http://localhost:8000/events/${eventId}/channels/${channelId}/messages`,
-      {
-        message,
-        roleId,
-      },
-      {
-        withCredentials: true,
-      }
-    )
-
-    if (response.status === 200) {
-      set((state) => ({ messages: [...state.messages, response.data.data] }))
-    }
-  },
 }))
 
 export default chatStore

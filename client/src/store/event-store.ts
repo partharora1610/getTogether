@@ -139,7 +139,7 @@ const eventStore = create<Store>()((set) => ({
           avatar: data.avatar,
           nickName: data.nickName,
         })
-      } else if (role == "vendor") {
+      } else if (role === "vendor") {
         set({ roleType: Role.VENDOR })
       }
     }
