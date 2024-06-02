@@ -36,7 +36,7 @@ const chatStore = create<Store>((set) => ({
 
   fetchMessages: async (eventId: string, channelId: string) => {
     const response = await axios.get(
-      `https://fueled-41xn.onrender.com:8000/events/${eventId}/channels/${channelId}/messages`,
+      `https://fueled-41xn.onrender.com/events/${eventId}/channels/${channelId}/messages`,
       {
         withCredentials: true,
       }

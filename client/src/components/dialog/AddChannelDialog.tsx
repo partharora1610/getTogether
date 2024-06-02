@@ -29,7 +29,7 @@ const AddChannelDialog = ({ eventId }: { eventId: string }) => {
 
   async function createChannel() {
     await axios.post(
-      `https://fueled-41xn.onrender.com:8000/events/${eventId}/channels/create`,
+      `https://fueled-41xn.onrender.com/events/${eventId}/channels/create`,
       {
         name: channelName,
         channelType: channelType,

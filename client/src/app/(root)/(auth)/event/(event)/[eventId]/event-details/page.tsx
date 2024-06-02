@@ -79,7 +79,7 @@ const HostMessageForm = () => {
 
     if (eventHostMessage == null) {
       const response = await axios.post(
-        `https://fueled-41xn.onrender.com:8000/events/${eventId}/host-message`,
+        `https://fueled-41xn.onrender.com/events/${eventId}/host-message`,
         {
           message,
         },
@@ -104,7 +104,7 @@ const HostMessageForm = () => {
       }
     } else {
       const response = await axios.put(
-        `https://fueled-41xn.onrender.com:8000/events/${eventId}/host-message`,
+        `https://fueled-41xn.onrender.com/events/${eventId}/host-message`,
         {
           message,
         },

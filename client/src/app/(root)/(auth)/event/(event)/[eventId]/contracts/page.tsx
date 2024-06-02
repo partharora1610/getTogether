@@ -18,7 +18,7 @@ const Page = () => {
     const fetchContracts = async () => {
       setLoading(true)
       const response = await axios.get(
-        `https://fueled-41xn.onrender.com:8000/events/${eventId}/contracts/all`,
+        `https://fueled-41xn.onrender.com/events/${eventId}/contracts/all`,
         {
           withCredentials: true,
         }

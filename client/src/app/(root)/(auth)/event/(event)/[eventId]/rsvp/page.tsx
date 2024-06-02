@@ -143,7 +143,7 @@ const RSVPCard = () => {
   const addToCalender = async () => {
     if (!hasAccess) {
       const response = await axios.post(
-        "https://fueled-41xn.onrender.com:8000/auth/calender/url",
+        "https://fueled-41xn.onrender.com/auth/calender/url",
         {
           eventId: event?.id,
         },
@@ -158,7 +158,7 @@ const RSVPCard = () => {
       router.push(url)
     } else {
       const response = await axios.post(
-        "https://fueled-41xn.onrender.com:8000/auth/calender/addEvent",
+        "https://fueled-41xn.onrender.com/auth/calender/addEvent",
         {
           summary: event?.title,
           description: event?.description,

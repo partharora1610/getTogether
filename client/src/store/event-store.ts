@@ -122,7 +122,7 @@ const eventStore = create<Store>()((set) => ({
     set({ loading: true })
 
     const response = await axios.get(
-      "https://fueled-41xn.onrender.com:8000/events/all",
+      "https://fueled-41xn.onrender.com/events/all",
       {
         withCredentials: true,
       }
@@ -137,7 +137,7 @@ const eventStore = create<Store>()((set) => ({
 
   fetchUserRole: async (eventId) => {
     const response = await axios.get(
-      `https://fueled-41xn.onrender.com:8000/events/${eventId}/role`,
+      `https://fueled-41xn.onrender.com/events/${eventId}/role`,
       {
         withCredentials: true,
       }
@@ -172,7 +172,7 @@ const eventStore = create<Store>()((set) => ({
     set({ loading: true })
 
     const response = await axios.get(
-      `https://fueled-41xn.onrender.com:8000/events/${id}`,
+      `https://fueled-41xn.onrender.com/events/${id}`,
       {
         withCredentials: true,
       }

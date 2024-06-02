@@ -45,7 +45,7 @@ const CreateEventForm = () => {
     const { title, description, startDate, endDate, startTime } = values
 
     const response = await axios.post(
-      "https://fueled-41xn.onrender.com:8000/events",
+      "https://fueled-41xn.onrender.com/events",
       {
         title,
         description,

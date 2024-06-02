@@ -41,7 +41,7 @@ const AddVendorForm = () => {
     const { vendorName, email } = values
 
     const response = await axios.post(
-      `https://fueled-41xn.onrender.com:8000/events/${eventId}/invite/vendor`,
+      `https://fueled-41xn.onrender.com/events/${eventId}/invite/vendor`,
       {
         name: vendorName,
         email,

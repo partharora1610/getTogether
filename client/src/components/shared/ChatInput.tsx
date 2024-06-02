@@ -27,7 +27,7 @@ const ChatInput = ({ isDisabled }: ChatInputProps) => {
     channelId: string
   ) => {
     const response = await axios.post(
-      `https://fueled-41xn.onrender.com:8000/events/${eventId}/channels/${channelId}/messages`,
+      `https://fueled-41xn.onrender.com/events/${eventId}/channels/${channelId}/messages`,
       {
         message,
         roleId,

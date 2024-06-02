@@ -21,7 +21,7 @@ const RejectRSVPDialog = () => {
     }
 
     const response = await axios.post(
-      `https://fueled-41xn.onrender.com:8000/events/${event.id}/rsvp/decline`,
+      `https://fueled-41xn.onrender.com/events/${event.id}/rsvp/decline`,
       {},
       {
         withCredentials: true,

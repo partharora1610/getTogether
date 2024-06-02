@@ -28,7 +28,7 @@ const OverviewPollCard = ({
 
   const optionClickHandler = async (optionId: string) => {
     const response = await axios.put(
-      `https://fueled-41xn.onrender.com:8000/events/${event.id}/polls/${id}/vote`,
+      `https://fueled-41xn.onrender.com/events/${event.id}/polls/${id}/vote`,
       {
         pollOptionId: optionId,
       },
