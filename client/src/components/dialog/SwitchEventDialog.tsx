@@ -43,9 +43,12 @@ const SwitchEventDialog = () => {
             {loading ? <div>Loading...</div> : null}
 
             <div className="flex flex-col gap-12">
-              {events.map((event) => {
+              {events.map((event: any, index: number) => {
                 return (
-                  <div className="flex justify-between items-center  gap-4">
+                  <div
+                    key={index}
+                    className="flex justify-between items-center  gap-4"
+                  >
                     <div>
                       <h1 className="text-lg font-medium text-black">
                         {event.title}

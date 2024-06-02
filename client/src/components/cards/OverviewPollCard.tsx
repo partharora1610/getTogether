@@ -78,9 +78,10 @@ const OverviewPollCard = ({
         </div>
 
         {options &&
-          options.map((option: any) => {
+          options.map((option: any, index: number) => {
             return (
               <div
+                key={index}
                 className="flex gap-8 justify-between place-items-center"
                 onClick={() => {
                   optionClickHandler(option.id)

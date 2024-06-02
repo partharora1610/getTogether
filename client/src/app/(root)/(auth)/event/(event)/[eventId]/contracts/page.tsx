@@ -38,7 +38,7 @@ const Page = () => {
     }
 
     fetchContracts()
-  }, [])
+  }, [eventId, toast])
 
   if (loading) {
     return <div>Loading...</div>

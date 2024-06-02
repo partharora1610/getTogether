@@ -56,7 +56,7 @@ const RejectRSVPDialog = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-center  mb-4">
+            <div className="flex items-center justify-center mb-4">
               <Image
                 src="/images.jpeg"
                 alt="service_headers"
@@ -65,9 +65,9 @@ const RejectRSVPDialog = () => {
               />
             </div>
 
-            <div className="flex gap-8 mt-16 justify-end ">
+            <div className="flex gap-8 mt-16 justify-end">
               <Button className="px-12 py-4" onClick={rsvpDeclineHandler}>
-                Yes, I'm sure
+                Yes, Im sure
               </Button>
             </div>
           </DialogDescription>

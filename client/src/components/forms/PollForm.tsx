@@ -203,9 +203,12 @@ const PollForm = ({ eventId }: { eventId: string }) => {
               </div>
 
               <p className="text-base">{form.getValues().description}</p>
-              {pollOptions.map((option) => {
+              {pollOptions.map((option: any) => {
                 return (
-                  <div className="flex gap-4 items-center mt-4 p-2 rounded-sm pl-4 border-2 border-gray-200 cursor-pointer">
+                  <div
+                    key={option.id}
+                    className="flex gap-4 items-center mt-4 p-2 rounded-sm pl-4 border-2 border-gray-200 cursor-pointer"
+                  >
                     <p className="text-base">{option}</p>
                   </div>
                 )

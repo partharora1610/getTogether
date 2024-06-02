@@ -7,9 +7,14 @@ import CreatePostDialog from "@/components/dialog/CreatePostDialog"
 import RejectRSVPDialog from "@/components/dialog/RejectRSVpDialog"
 import AccepRSVPDialog from "@/components/dialog/AccepRSVPDialog"
 import { AVATARS } from "@/constants/avatars"
-import { Calendar, CheckCircle2Icon, LocateIcon, LucideBatteryWarning } from "lucide-react"
+import {
+  Calendar,
+  CheckCircle2Icon,
+  LocateIcon,
+  LucideBatteryWarning,
+} from "lucide-react"
 import axios from "axios"
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"
 import accessStore from "@/store/access-store"
 import authStore from "@/store/auth-store"
 import { toast } from "@/components/ui/use-toast"
@@ -22,7 +27,7 @@ import { Role } from "@/types"
 import appearanceStore from "@/store/appearance-store"
 
 const Page = () => {
-  const { guestPosts } = eventStore();
+  const { guestPosts } = eventStore()
   return (
     <div>
       <div className="mt-8 pl-4">
@@ -115,58 +120,63 @@ function convertToDDMM(dateStr: string): string {
 }
 
 const RSVPCard = () => {
-  const { event } = eventStore();
-  const router = useRouter();
-  const { user } = authStore();
-  const { hasAccess, setHasAccess } = accessStore();
-  const [ isAddToCalendarCallable, setIsAddToCalendarCallable ] = useState<boolean>(false);
-  const { event, venue, roleType, rsvp, currentRole } = eventStore();
-  const { primaryColor } = appearanceStore();
-  const textClass = `text-[${primaryColor}]`;
-  const guestRSVP = rsvp.find((r: any) => r.guestId === currentRole.id);
+  const router = useRouter()
+  const { user } = authStore()
+  const { hasAccess, setHasAccess } = accessStore()
+  const [isAddToCalendarCallable, setIsAddToCalendarCallable] =
+    useState<boolean>(false)
+  const { event, venue, roleType, rsvp, currentRole } = eventStore()
+  const { primaryColor } = appearanceStore()
+  const textClass = `text-[${primaryColor}]`
+  const guestRSVP = rsvp.find((r: any) => r.guestId === currentRole.id)
 
   useEffect(() => {
-    setHasAccess(user.hasGivenCalendarAccess);
-  }, [user.hasGivenCalendarAccess]);
+    setHasAccess(user.hasGivenCalendarAccess)
+  }, [user.hasGivenCalendarAccess])
 
   useEffect(() => {
     if (event) {
-      setIsAddToCalendarCallable(true);
+      setIsAddToCalendarCallable(true)
     }
-  }, [event]);
- 
-  const addToCalender = async () => {
+  }, [event])
 
+  const addToCalender = async () => {
     if (!hasAccess) {
-      const response = await axios.post('http://localhost:8000/auth/calender/url', {
-        eventId: event?.id,
-      }, {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        "http://localhost:8000/auth/calender/url",
+        {
+          eventId: event?.id,
+        },
+        {
+          withCredentials: true,
+        }
+      )
       if (response.status == 200) {
-        setHasAccess(true);
+        setHasAccess(true)
       }
-      const { url } = response.data;
-      router.push(url);
+      const { url } = response.data
+      router.push(url)
     } else {
-      const response = await axios.post('http://localhost:8000/auth/calender/addEvent', {
-        summary: event?.title,
-        description: event?.description,
-        start: event?.startDate,
-        end: event?.startDate,   
-      }, {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        "http://localhost:8000/auth/calender/addEvent",
+        {
+          summary: event?.title,
+          description: event?.description,
+          start: event?.startDate,
+          end: event?.startDate,
+        },
+        {
+          withCredentials: true,
+        }
+      )
 
       if (response.status == 200) {
         toast({
           title: "Event added to Calendar",
           variant: "default",
-        });
+        })
       }
-
     }
-
   }
 
   return (
@@ -201,21 +211,19 @@ const RSVPCard = () => {
                   </HoverCardContent>
                 </HoverCard>
               </div>
-              <div 
-              onClick={() => {
-                isAddToCalendarCallable && addToCalender()
-              }
-            }
-              className="flex gap-2 cursor-pointer">
+              <div
+                onClick={() => {
+                  isAddToCalendarCallable && addToCalender()
+                }}
+                className="flex gap-2 cursor-pointer"
+              >
                 <Calendar size={20} />
                 <p>Add to calender</p>
-                {
-                  hasAccess ? (
-                  <CheckCircle2Icon size={25} className="text-green-500"/>
-                  ): (
-                  <LucideBatteryWarning size={25} className="text-red-500"/>
-                  )
-                }
+                {hasAccess ? (
+                  <CheckCircle2Icon size={25} className="text-green-500" />
+                ) : (
+                  <LucideBatteryWarning size={25} className="text-red-500" />
+                )}
               </div>
             </div>
           </div>

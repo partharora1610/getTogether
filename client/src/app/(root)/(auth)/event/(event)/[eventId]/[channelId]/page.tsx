@@ -17,11 +17,11 @@ const Page = () => {
     channelId: string
   }
 
-  useSocket();
+  useSocket()
 
   useEffect(() => {
     fetchMessages(eventId, channelId)
-  }, [eventId, channelId]);
+  }, [eventId, channelId])
 
   return (
     <div className="relative min-h-full bg-zinc-50 flex-col justify-between gap-2">
@@ -56,11 +56,10 @@ const ChatContainerHeader = () => {
   )
 }
 
-const ChatItem = ({ message, avatar, nickName, name, id, createdAt }: any) => {
-  console.log(avatar);
+const ChatItem = ({ message, avatar, nickName, name }: any) => {
   const avatarSrc = AVATARS[parseInt(avatar)]?.link
   if (!nickName) {
-    nickName = name;
+    nickName = name
   }
 
   return (
@@ -86,28 +85,16 @@ const ChatItem = ({ message, avatar, nickName, name, id, createdAt }: any) => {
 
 export default Page
 
-const ChatDateDivider = ({ date }: { date: string }) => {
-  return (
-    <div className="my-6">
-      <div className="flex gap-8 items-center justify-between">
-        <div className="h-[1px] w-full bg-gray-400"></div>
-        <p className="min-w-fit text-center">{date}</p>
-        <div className="h-[1px] w-full bg-gray-400"></div>
-      </div>
-    </div>
-  )
-}
-
 const ChatContainer = () => {
-  const { messages } = chatStore();
+  const { messages } = chatStore()
 
   return (
     <div className="mt-10 flex flex-col gap-4 mx-8">
-      {messages.map((m) => {
+      {messages.map((m, index) => {
         const { message, senderNickName, senderAvatar, senderName } = m
 
         return (
-          <div>
+          <div key={index}>
             <ChatItem
               message={message}
               avatar={senderAvatar}

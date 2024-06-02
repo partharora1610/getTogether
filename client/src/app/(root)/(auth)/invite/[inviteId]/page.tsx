@@ -5,7 +5,7 @@ import axios from "axios"
 import { useParams, useRouter } from "next/navigation"
 import { useSearchParams } from "next/navigation"
 
-const page = () => {
+const Page = () => {
   const router = useRouter()
   const { inviteId } = useParams()
   const searchParams = useSearchParams()
@@ -24,8 +24,6 @@ const page = () => {
     if (response.status === 200) {
       router.push(`/event/${eventId}/overview`)
     }
-
-    console.log(response)
   }
 
   return (
@@ -40,4 +38,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

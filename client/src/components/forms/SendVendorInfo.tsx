@@ -64,9 +64,9 @@ const SendVendorInfo = () => {
               </FormItem>
             )}
           />
-          {ALLVENDORS.map((vendor) => {
+          {ALLVENDORS.map((vendor: any, index: number) => {
             return (
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center" key={index}>
                 <label>{vendor.name}</label>
                 <Switch
                   value={vendor.id}

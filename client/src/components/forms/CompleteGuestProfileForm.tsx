@@ -62,6 +62,7 @@ const CompleteGuestProfileForm = () => {
             <div className="flex flex-wrap gap-8 mt-4">
               {AVATARS.map((avatar) => (
                 <div
+                  key={avatar.id}
                   className={`p-2 rounded-full border-2 border-transparent ${
                     avatar.name == selectedAvatar.name
                       ? "border-2 border-l-gray-800 border-t-gray-800"

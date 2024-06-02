@@ -66,8 +66,9 @@ const PrimaryColorSelection = () => {
       </div>
 
       <div className="mt-4 flex flex-wrap gap-20">
-        {PRIMARYCOLOR.map((color) => (
+        {PRIMARYCOLOR.map((color: any, index: number) => (
           <div
+            key={index}
             onClick={() => setSelectedColor(color.color)}
             className={`flex gap-2 items-center border-2 border-transparent cursor-pointer p-2 rounded-md ${
               color.color == selectedColor ? "border-gray-600" : ""

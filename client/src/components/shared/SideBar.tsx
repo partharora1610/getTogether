@@ -3,11 +3,7 @@ import Link from "next/link"
 import {
   LucideHome,
   MonitorSpeakerIcon,
-  Notebook,
-  NotebookIcon,
   NotebookPenIcon,
-  Pen,
-  Sheet,
   TicketIcon,
   User2Icon,
 } from "lucide-react"
@@ -78,8 +74,8 @@ const SideBar = () => {
           <div className="flex flex-col gap-6">
             {event?.channels
               ?.filter((channel: any) => channel.channelType != "DIRECT")
-              .map((channel: any) => (
-                <Link href={`/event/${eventId}/${channel.id}`}>
+              .map((channel: any, index: number) => (
+                <Link key={index} href={`/event/${eventId}/${channel.id}`}>
                   <div
                     key={channel.id}
                     className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
@@ -109,8 +105,8 @@ const SideBar = () => {
               </div>
               <div>
                 {vendorsChannels &&
-                  vendorsChannels.map((channel: any) => (
-                    <Link href={`/event/${eventId}/${channel.id}`}>
+                  vendorsChannels.map((channel: any, index: number) => (
+                    <Link key={index} href={`/event/${eventId}/${channel.id}`}>
                       <div className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md  mb-6">
                         <User2Icon size={22} />
                         <h2 className="text-lg">{channel.name}</h2>
@@ -131,9 +127,8 @@ const SideBar = () => {
             <div>
               {event?.channels
                 ?.filter((channel: any) => channel.channelType == "DIRECT")
-                .map((channel: any) => (
-                  <Link href={`/event/${eventId}/${channel.id}`}>
-                    {/* <div className="flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-md  mb-6"> */}
+                .map((channel: any, index: number) => (
+                  <Link key={index} href={`/event/${eventId}/${channel.id}`}>
                     <div
                       className={`flex items-center gap-4 px-5 py-4 cursor-pointer  rounded-xl mb-6 ${
                         lastPath === channel.id
