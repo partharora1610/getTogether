@@ -23,8 +23,8 @@ const CanvasDialog = () => {
   const { json } = canvasStore()
   const pathname = usePathname()
   const eventId = pathname.split("/")[2]
-  const { addEventFloorPlan } = eventStore()
-  const { toast } = useToast()
+  const { addEventFloorPlan } = eventStore();
+  const { toast } = useToast();
 
   const createVenuePlan = async () => {
     const response = await axios.post(

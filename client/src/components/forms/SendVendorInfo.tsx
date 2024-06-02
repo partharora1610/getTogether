@@ -33,7 +33,7 @@ const SendVendorInfo = () => {
     defaultValues: {
       message: "",
     },
-  })
+  });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const obj = {

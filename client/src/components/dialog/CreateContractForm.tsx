@@ -44,7 +44,7 @@ const CreateContractForm = ({ vendorId }: { vendorId: string }) => {
       {
         withCredentials: true,
       }
-    )
+    );
 
     if (response.status === 200) {
       toast({

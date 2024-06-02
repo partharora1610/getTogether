@@ -14,6 +14,7 @@ import { Label } from "@radix-ui/react-label"
 import eventStore from "@/store/event-store"
 import { Input } from "../ui/input"
 import HostIcon from "../shared/HostIcon"
+import { toast } from "../ui/use-toast"
 
 const AccepRSVPDialog = () => {
   const { primaryColor } = appearanceStore()
@@ -39,7 +40,10 @@ const AccepRSVPDialog = () => {
     )
 
     if (response.status === 200) {
-      console.log("RSVP Confirmed")
+      toast({
+        title: "RSVP Confirmed",
+        variant: "default",
+      });
     }
   }
 

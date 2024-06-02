@@ -93,7 +93,7 @@ const ChatInput = ({ isDisabled }: ChatInputProps) => {
                 type="submit"
                 onClick={() => {
                   textareaRef.current?.focus()
-                  handleSendMessage()
+                  handleSendMessage();
                 }}
               >
                 <Send className="h-4 w-4" />

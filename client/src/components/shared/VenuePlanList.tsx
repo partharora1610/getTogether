@@ -20,7 +20,7 @@ const VenuePlanList = () => {
             json={venuePlan.floorPlanJson}
             key={venuePlan.id}
           />
-        )
+        );
       })}
 
       <CanvasDialog />

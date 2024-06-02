@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import axios from "axios"
 import { AVATARS, Avatar } from "@/constants/avatars"
 import { useParams } from "next/navigation"
+import { toast } from "../ui/use-toast"
 
 const CompleteGuestProfileForm = () => {
   const [selectedAvatar, setSelectedAvatar] = useState<Avatar>(AVATARS[0])
@@ -26,7 +27,10 @@ const CompleteGuestProfileForm = () => {
     )
 
     if (response.status == 200) {
-      console.log("Avatar updated successfully")
+      toast({
+        title: "Avatar updated successfully",
+        variant: "default",
+      });
     }
   }
 
