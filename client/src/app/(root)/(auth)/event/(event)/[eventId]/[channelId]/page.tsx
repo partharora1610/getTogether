@@ -7,6 +7,8 @@ import React, { useEffect } from "react"
 import chatStore from "@/store/chat-store"
 import { AVATARS } from "@/constants/avatars"
 import HostIcon from "@/components/shared/HostIcon"
+import eventStore from "@/store/event-store"
+import { Role } from "@/types"
 
 const Page = () => {
   const { fetchMessages } = chatStore()
@@ -57,11 +59,16 @@ const ChatContainerHeader = () => {
 }
 
 const ChatItem = ({ message, avatar, nickName, name }: any) => {
-  const avatarSrc = AVATARS[parseInt(avatar)]?.link
-  if (!nickName) {
-    nickName = name
-  }
+  const { roleType } = eventStore();
 
+  const avatarSrc = AVATARS[parseInt(avatar)]?.link
+
+  if (roleType === Role.VENDOR) {
+    nickName = "VENDOR";
+  } else if (roleType === Role.GUEST && !nickName) {
+    nickName = name;
+  }
+  
   return (
     <div className="flex shadow w-3/4 p-2 my-2 gap-4 rounded-lg items-start bg-white">
       {!avatar ? (
