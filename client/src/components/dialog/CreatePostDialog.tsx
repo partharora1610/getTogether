@@ -30,7 +30,7 @@ const CreatePostDialog = () => {
 
   const createPostHandler = async () => {
     const response = await axios.post(
-      `http://localhost:8000/events/${eventId}/guest-post`,
+      `https://fueled-41xn.onrender.com:8000/events/${eventId}/guest-post`,
       {
         text,
       },

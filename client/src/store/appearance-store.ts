@@ -15,7 +15,7 @@ const appearanceStore = create<Store>((set) => ({
 
   updateAppearance: async (eventId, primaryColor, cb) => {
     const response = await axios.post(
-      `http://localhost:8000/events/${eventId}/theme`,
+      `https://fueled-41xn.onrender.com:8000/events/${eventId}/theme`,
       {
         primaryColor,
         textColor: "",
@@ -36,7 +36,7 @@ const appearanceStore = create<Store>((set) => ({
 
   fetchAppearance: async (eventId) => {
     const response = await axios.get(
-      `http://localhost:8000/events/${eventId}/theme`,
+      `https://fueled-41xn.onrender.com:8000/events/${eventId}/theme`,
       {
         withCredentials: true,
       }

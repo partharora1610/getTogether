@@ -27,7 +27,7 @@ const authStore = create<Store>()((set) => ({
   login: async ({ token }: { token: string }) => {
     console.log("token", token)
     const { data } = await axios.post(
-      "http://localhost:8000/auth/google",
+      "https://fueled-41xn.onrender.com:8000/auth/google",
       {
         token: token,
       },
@@ -45,7 +45,7 @@ const authStore = create<Store>()((set) => ({
   },
 
   logout: async () => {
-    await axios.get("http://localhost:8000/user/logout", {
+    await axios.get("https://fueled-41xn.onrender.com:8000/user/logout", {
       withCredentials: true,
     })
     set({ user: null, isAuthenticated: false })

@@ -20,9 +20,14 @@ const ChatInput = ({ isDisabled }: ChatInputProps) => {
   const { eventId, channelId } = useParams()
   const { currentRole } = eventStore()
 
-  const sendMessage = async (message: string, roleId: string, eventId: string, channelId: string) => {
+  const sendMessage = async (
+    message: string,
+    roleId: string,
+    eventId: string,
+    channelId: string
+  ) => {
     const response = await axios.post(
-      `http://localhost:8000/events/${eventId}/channels/${channelId}/messages`,
+      `https://fueled-41xn.onrender.com:8000/events/${eventId}/channels/${channelId}/messages`,
       {
         message,
         roleId,
@@ -30,13 +35,13 @@ const ChatInput = ({ isDisabled }: ChatInputProps) => {
       {
         withCredentials: true,
       }
-    );
+    )
 
     if (response.status === 200) {
-      return formatMessage(response.data.data);
+      return formatMessage(response.data.data)
     }
 
-    return undefined;
+    return undefined
   }
 
   const handleSendMessage = async () => {
@@ -47,14 +52,18 @@ const ChatInput = ({ isDisabled }: ChatInputProps) => {
     }
 
     if (message && currentRole) {
-      const msg = await sendMessage(message, currentRole.id, eventId as string, channelId as string);
+      const msg = await sendMessage(
+        message,
+        currentRole.id,
+        eventId as string,
+        channelId as string
+      )
       if (msg) {
-        socket.emit(ROOM_SOCKET.CHANNEL_SEND_MESSAGE, { msg });
+        socket.emit(ROOM_SOCKET.CHANNEL_SEND_MESSAGE, { msg })
         textareaRef.current.value = ""
       } else {
-        alert("Something went wrong");
+        alert("Something went wrong")
       }
-      
     }
   }
 

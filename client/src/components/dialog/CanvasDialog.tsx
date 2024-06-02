@@ -28,7 +28,7 @@ const CanvasDialog = () => {
 
   const createVenuePlan = async () => {
     const response = await axios.post(
-      `http://localhost:8000/events/${eventId}/venue`,
+      `https://fueled-41xn.onrender.com:8000/events/${eventId}/venue`,
       {
         title: venuePlan,
         json: json,

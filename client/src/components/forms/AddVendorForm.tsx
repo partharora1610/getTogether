@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -41,7 +41,7 @@ const AddVendorForm = () => {
     const { vendorName, email } = values
 
     const response = await axios.post(
-      `http://localhost:8000/events/${eventId}/invite/vendor`,
+      `https://fueled-41xn.onrender.com:8000/events/${eventId}/invite/vendor`,
       {
         name: vendorName,
         email,

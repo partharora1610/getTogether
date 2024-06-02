@@ -2,11 +2,11 @@ import { create } from "zustand"
 import axios from "axios"
 
 type Message = {
-  message: string,
-  timestamp: Date;
-  senderAvatar: number;
-  senderNickName: string;
-  senderName: string;
+  message: string
+  timestamp: Date
+  senderAvatar: number
+  senderNickName: string
+  senderName: string
 }
 
 export const formatMessage = (message: any): Message => {
@@ -16,7 +16,7 @@ export const formatMessage = (message: any): Message => {
     senderAvatar: message.sender?.guest?.avatar,
     senderNickName: message.sender?.guest?.nickName,
     senderName: message.sender?.guest?.name,
-  };
+  }
 }
 
 type Store = {
@@ -30,13 +30,13 @@ const chatStore = create<Store>((set) => ({
   messages: [],
 
   updateMessages: ({ message }) => {
-    const formattedMessage = formatMessage(message);
+    const formattedMessage = formatMessage(message)
     set((state) => ({ messages: [...state.messages, formattedMessage] }))
   },
 
   fetchMessages: async (eventId: string, channelId: string) => {
     const response = await axios.get(
-      `http://localhost:8000/events/${eventId}/channels/${channelId}/messages`,
+      `https://fueled-41xn.onrender.com:8000/events/${eventId}/channels/${channelId}/messages`,
       {
         withCredentials: true,
       }
@@ -46,13 +46,12 @@ const chatStore = create<Store>((set) => ({
       const messages = response.data.data
 
       const formattedMessages = messages.map((message: any) => {
-        return formatMessage(message);
+        return formatMessage(message)
       })
 
       set({ messages: formattedMessages })
     }
   },
-
 }))
 
 export default chatStore
