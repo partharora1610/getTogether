@@ -14,6 +14,7 @@ interface Event {
   createdAt: string
   channels: any
   startDate: string
+  isAddedToCalendar: boolean
 }
 
 type Store = {
