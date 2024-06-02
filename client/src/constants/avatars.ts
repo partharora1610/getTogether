@@ -1,5 +1,3 @@
-import { Divide } from "lucide-react"
-
 export type Avatar = {
   id: number
   name: string

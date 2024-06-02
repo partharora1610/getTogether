@@ -44,6 +44,7 @@ type Store = {
   addVendor: (vendor: any) => void
   addVenue: (venue: any) => void
   addGuestPost: (guestPost: any) => void
+  recordVote: (poll: any) => void
 
   event: Event | null
   currentRole: any
@@ -103,6 +104,19 @@ const eventStore = create<Store>()((set) => ({
   addVendor: (vendor) =>
     set((state) => ({ vendors: [...state.vendors, vendor] })),
   addVenue: (venue) => set((state) => ({ venue: [...state.venue, venue] })),
+
+  recordVote: async (poll: any) => {
+    set((state) => {
+      const updatedPolls = state.eventPolls.map((p: any) => {
+        if (p.id === poll.id) {
+          return poll
+        }
+        return p
+      })
+
+      return { eventPolls: updatedPolls }
+    })
+  },
 
   fetchEvents: async () => {
     set({ loading: true })
