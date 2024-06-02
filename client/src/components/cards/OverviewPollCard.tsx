@@ -4,49 +4,33 @@ import React from "react"
 import HostIcon from "../shared/HostIcon"
 import authStore from "@/store/auth-store"
 import appearanceStore from "@/store/appearance-store"
-
-type PollOption = {
-  text: string
-  count: number
-  id: string
-  eventPollOptionSelection: any[]
-}
+import { toast, useToast } from "../ui/use-toast"
 
 const OverviewPollCard = ({
   id,
   heading,
   description,
   options,
-  date,
 }: {
   id: string
   heading: string
   description: string
-  options: PollOption[] | undefined
-  date: string
+  options: any | undefined
 }) => {
-  const { event } = eventStore()
+  const { event, recordVote } = eventStore()
   const { user } = authStore()
   const { primaryColor } = appearanceStore()
+  const { toast } = useToast()
 
   if (!event) {
     return null
   }
 
-  const isOptionSelected = (
-    userId: string,
-    optionSelections: any[]
-  ): boolean => {
-    if (optionSelections.some((selection) => selection.userId === userId)) {
-      return true
-    }
-    return false
-  }
-  const optionClickHandler = async (optionId: any) => {
-    const response = await axios.post(
-      `http://localhost:8000/events/${optionId}/polls/${id}/vote`,
+  const optionClickHandler = async (optionId: string) => {
+    const response = await axios.put(
+      `http://localhost:8000/events/${event.id}/polls/${id}/vote`,
       {
-        count: 20,
+        pollOptionId: optionId,
       },
       {
         withCredentials: true,
@@ -54,10 +38,26 @@ const OverviewPollCard = ({
     )
 
     if (response.status == 200) {
-      // setSelectedOption(optionId)
+      recordVote(response.data.data)
+      toast({
+        title: "Success",
+        description: "Your vote has been recorded",
+        variant: "default",
+      })
     }
+  }
 
-    console.log(response.data)
+  const isOptionSelected = (
+    userId: string,
+    optionSelections: any[]
+  ): boolean => {
+    if (
+      optionSelections &&
+      optionSelections.some((selection) => selection.userId === userId)
+    ) {
+      return true
+    }
+    return false
   }
 
   return (
@@ -76,8 +76,9 @@ const OverviewPollCard = ({
         <div>
           <p className="text-md font-medium">Select 1 Option</p>
         </div>
+
         {options &&
-          options.map((option) => {
+          options.map((option: any) => {
             return (
               <div
                 className="flex gap-8 justify-between place-items-center"
@@ -86,12 +87,13 @@ const OverviewPollCard = ({
                 }}
               >
                 <div
-                  className={`flex gap-4 items-center w-full mt-4 p-2 rounded-sm pl-4 border-2 border-gray-200 cursor-pointer ${
-                    user &&
-                    isOptionSelected(user.id, option.eventPollOptionSelection)
-                      ? `bg-[${primaryColor}]`
-                      : ""
-                  }`}
+                  className={`flex gap-4 items-center w-full mt-4 p-2 rounded-sm pl-4 border-2 border-gray-200 cursor-pointer
+                ${
+                  user &&
+                  isOptionSelected(user.id, option.eventPollOptionSelection)
+                    ? `bg-[${primaryColor}]/10`
+                    : ""
+                }`}
                 >
                   <p className="text-base">{option.text}</p>
                 </div>
