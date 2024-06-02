@@ -59,6 +59,9 @@ const ChatContainerHeader = () => {
 const ChatItem = ({ message, avatar, nickName, name, id, createdAt }: any) => {
   console.log(avatar);
   const avatarSrc = AVATARS[parseInt(avatar)]?.link
+  if (!nickName) {
+    nickName = name;
+  }
 
   return (
     <div className="flex shadow w-3/4 p-2 my-2 gap-4 rounded-lg items-start bg-white">
