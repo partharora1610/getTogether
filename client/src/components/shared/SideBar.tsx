@@ -69,8 +69,12 @@ const SideBar = () => {
 
       {(Role.HOST == roleType || Role.GUEST == roleType) && (
         <div className="mb-8">
-          {Role.HOST == roleType && <AddChannelDialog eventId={eventId} />}
-
+          <div className="flex justify-between w-full items-center mb-4">
+            <h2 className="text-lg text-gray-600 font-medium uppercase">
+              Discussion Channels
+            </h2>
+            {Role.HOST == roleType && <AddChannelDialog eventId={eventId} />}
+          </div>
           <div className="flex flex-col gap-6">
             {event?.channels
               ?.filter((channel: any) => channel.channelType != "DIRECT")

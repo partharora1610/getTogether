@@ -13,7 +13,7 @@ import eventStore from "@/store/event-store"
 import HostIcon from "../shared/HostIcon"
 
 const RejectRSVPDialog = () => {
-  const { event } = eventStore()
+  const { event, rsvp, currentRole } = eventStore()
 
   const rsvpDeclineHandler = async () => {
     if (event === null) {
@@ -33,10 +33,12 @@ const RejectRSVPDialog = () => {
     }
   }
 
+  const guestRSVP = rsvp.find((r: any) => r.guestId === currentRole.id)
+
   return (
     <Dialog>
       <DialogTrigger className="px-4 py-6 hover:underline">
-        I will not be able to make it
+        {!guestRSVP && "I will not be able to make it"}
       </DialogTrigger>
       <DialogContent className="max-w-xl">
         <DialogHeader>
