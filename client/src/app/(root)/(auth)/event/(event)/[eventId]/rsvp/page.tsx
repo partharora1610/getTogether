@@ -143,7 +143,7 @@ const RSVPCard = () => {
   const addToCalender = async () => {
     if (!hasAccess) {
       const response = await axios.post(
-        "https://fueled-41xn.onrender.com/auth/calender/url",
+        "http://localhost:8000/auth/calender/url",
         {
           eventId: event?.id,
         },
@@ -158,7 +158,7 @@ const RSVPCard = () => {
       router.push(url)
     } else {
       const response = await axios.post(
-        "https://fueled-41xn.onrender.com/auth/calender/addEvent",
+        "http://localhost:8000/auth/calender/addEvent",
         {
           summary: event?.title,
           description: event?.description,
@@ -193,23 +193,26 @@ const RSVPCard = () => {
 
             <div className="flex gap-12 mt-6">
               <div className="flex gap-2 cursor-pointer">
-                <HoverCard>
-                  <HoverCardTrigger>
-                    <div className="flex gap-2">
-                      <LocateIcon size={20} />
-                      <h1 className="">{venue.name}</h1>
-                    </div>
-                  </HoverCardTrigger>
-                  <HoverCardContent>
-                    <div className="">
-                      <h1 className="font-semibold">{venue.name}</h1>
-                      <h1 className="text-gray-600">{venue.address}</h1>
-                      <h1 className="text-gray-600">
-                        {venue.state} , {venue.city} , {venue.zipCode}
-                      </h1>
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
+                {venue && (
+                  <HoverCard>
+                    <HoverCardTrigger>
+                      <div className="flex gap-2">
+                        <LocateIcon size={20} />
+                        <h1 className="">{venue.name}</h1>
+                      </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent>
+                      <div className="">
+                        <h1 className="font-semibold">{venue.name}</h1>
+                        <h1 className="text-gray-600">{venue.address}</h1>
+                        <h1 className="text-gray-600">
+                          {venue.state} , {venue.city} , {venue.zipCode}
+                        </h1>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                )}
+                {!venue && <p>No venue added yet </p>}
               </div>
               <div
                 onClick={() => {
@@ -236,17 +239,10 @@ const RSVPCard = () => {
         </div>
         {roleType == Role.GUEST && (
           <div className="flex gap-16 mt-4 justify-end">
-            {!guestRSVP && <RejectRSVPDialog />}
-
-            {guestRSVP && guestRSVP.status == "CONFIRMED" && (
-              <button
-                className={`h font-semibold hover:border-white px-6 py-3 rounded-xl ${textClass} `}
-              >
-                Already confirmed
-              </button>
-            )}
-
-            {!guestRSVP && <AccepRSVPDialog />}
+            <div className="flex gap-4">
+              <RejectRSVPDialog />
+              <AccepRSVPDialog />
+            </div>
           </div>
         )}
       </div>

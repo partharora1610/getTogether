@@ -14,7 +14,7 @@ pnpm dev
 bun dev
 ```
 
-Open [https://fueled-41xn.onrender.com:3000](https://fueled-41xn.onrender.com:3000) with your browser to see the result.
+Open [http://localhost:8000:3000](http://localhost:8000:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

@@ -15,7 +15,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const fetchUser = async () => {
     try {
       const response = await axios.post(
-        "https://fueled-41xn.onrender.com/user/me",
+        "http://localhost:8000/user/me",
         {},
         {
           withCredentials: true,

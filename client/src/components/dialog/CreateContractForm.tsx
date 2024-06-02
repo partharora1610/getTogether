@@ -36,7 +36,7 @@ const CreateContractForm = ({ vendorId }: { vendorId: string }) => {
     clearStore()
 
     const response = await axios.post(
-      `https://fueled-41xn.onrender.com/events/${eventId}/contracts/create`,
+      `http://localhost:8000/events/${eventId}/contracts/create`,
       {
         vendorId: vendorId,
         contractData: JSON.stringify(json),
@@ -616,7 +616,7 @@ export const ContractViewOnly = ({ contract }: { contract: any }) => {
 
   const onAcceptContract = async () => {
     const response = await axios.put(
-      `https://fueled-41xn.onrender.com/events/${contract.eventId}/contracts/${contract.id}/status`,
+      `http://localhost:8000/events/${contract.eventId}/contracts/${contract.id}/status`,
       {},
       {
         withCredentials: true,

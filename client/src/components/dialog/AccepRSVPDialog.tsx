@@ -29,7 +29,7 @@ const AccepRSVPDialog = () => {
     }
 
     const response = await axios.post(
-      `https://fueled-41xn.onrender.com/events/${event.id}/rsvp/accept`,
+      `http://localhost:8000/events/${event.id}/rsvp/accept`,
       {
         plusOnes: String(plusOnes),
       },

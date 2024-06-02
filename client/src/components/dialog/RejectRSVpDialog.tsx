@@ -13,7 +13,7 @@ import eventStore from "@/store/event-store"
 import HostIcon from "../shared/HostIcon"
 
 const RejectRSVPDialog = () => {
-  const { event, rsvp, currentRole } = eventStore()
+  const { event } = eventStore()
 
   const rsvpDeclineHandler = async () => {
     if (event === null) {
@@ -21,7 +21,7 @@ const RejectRSVPDialog = () => {
     }
 
     const response = await axios.post(
-      `https://fueled-41xn.onrender.com/events/${event.id}/rsvp/decline`,
+      `http://localhost:8000/events/${event.id}/rsvp/decline`,
       {},
       {
         withCredentials: true,
@@ -33,12 +33,10 @@ const RejectRSVPDialog = () => {
     }
   }
 
-  const guestRSVP = rsvp.find((r: any) => r.guestId === currentRole.id)
-
   return (
     <Dialog>
       <DialogTrigger className="px-4 py-6 hover:underline">
-        {!guestRSVP && "I will not be able to make it"}
+        I will not be able to make it
       </DialogTrigger>
       <DialogContent className="max-w-xl">
         <DialogHeader>

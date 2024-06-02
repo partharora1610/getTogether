@@ -121,12 +121,9 @@ const eventStore = create<Store>()((set) => ({
   fetchEvents: async () => {
     set({ loading: true })
 
-    const response = await axios.get(
-      "https://fueled-41xn.onrender.com/events/all",
-      {
-        withCredentials: true,
-      }
-    )
+    const response = await axios.get("http://localhost:8000/events/all", {
+      withCredentials: true,
+    })
 
     if (response.status == 200) {
       set({ events: response.data.data })
@@ -137,7 +134,7 @@ const eventStore = create<Store>()((set) => ({
 
   fetchUserRole: async (eventId) => {
     const response = await axios.get(
-      `https://fueled-41xn.onrender.com/events/${eventId}/role`,
+      `http://localhost:8000/events/${eventId}/role`,
       {
         withCredentials: true,
       }
@@ -171,12 +168,9 @@ const eventStore = create<Store>()((set) => ({
   fetchEventById: async (id: string) => {
     set({ loading: true })
 
-    const response = await axios.get(
-      `https://fueled-41xn.onrender.com/events/${id}`,
-      {
-        withCredentials: true,
-      }
-    )
+    const response = await axios.get(`http://localhost:8000/events/${id}`, {
+      withCredentials: true,
+    })
 
     if (response.status == 200) {
       set({ event: response.data.data })
@@ -205,9 +199,8 @@ const eventStore = create<Store>()((set) => ({
       })
 
       set({ guestPosts: formattedGuestPost })
+      set({ loading: false })
     }
-
-    set({ loading: false })
   },
 }))
 

@@ -15,7 +15,7 @@ const CompleteGuestProfileForm = () => {
 
   const updateAvatarHandler = async () => {
     const response = await axios.post(
-      `https://fueled-41xn.onrender.com/events/${eventId}/guests/update`,
+      `http://localhost:8000/events/${eventId}/guests/update`,
       {
         avatar: selectedAvatar.id,
         nickName: nickName,

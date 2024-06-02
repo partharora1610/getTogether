@@ -28,7 +28,7 @@ const InviteGuestDialog = () => {
 
   const inviteGuestHandler = async () => {
     const response = await axios.post(
-      `https://fueled-41xn.onrender.com/events/${eventId}/invite/guest`,
+      `http://localhost:8000/events/${eventId}/invite/guest`,
       {
         name,
         email,

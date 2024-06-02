@@ -14,7 +14,7 @@ const Page = () => {
 
   const acceptInvite = async () => {
     const response = await axios.post(
-      `https://fueled-41xn.onrender.com/events/${eventId}/invite/${inviteId}/accept/${role}`,
+      `http://localhost:8000/events/${eventId}/invite/${inviteId}/accept/${role}`,
       {},
       {
         withCredentials: true,

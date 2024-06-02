@@ -24,7 +24,7 @@ const EventVenueForm = () => {
   const onSubmit = async () => {
     try {
       const response = await axios.post(
-        `https://fueled-41xn.onrender.com/events/${eventId}/venue`,
+        `http://localhost:8000/events/${eventId}/venue`,
         {
           name,
           address,

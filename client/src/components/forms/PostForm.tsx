@@ -41,7 +41,7 @@ const PostForm = ({ eventId }: { eventId: string }) => {
     const { heading, description, sendEmail } = values
 
     const response = await axios.post(
-      `https://fueled-41xn.onrender.com/events/${eventId}/posts`,
+      `http://localhost:8000/events/${eventId}/posts`,
       {
         heading,
         description,
