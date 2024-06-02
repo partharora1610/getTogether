@@ -39,44 +39,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import SendVendorInfo from "../forms/SendVendorInfo"
-
-const data: GuestInvite[] = [
-  {
-    id: "1",
-    guestName: "John Doe",
-    email: "hello.com",
-  },
-  {
-    id: "m5gr84i9",
-    guestName: "Hello World",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "m5gr84i8",
-    guestName: "Hello World",
-    email: "yahoo.com",
-  },
-  {
-    id: "m5gr84i9",
-    guestName: "Hello World",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "m5gr84i8",
-    guestName: "Hello World",
-    email: "yahoo.com",
-  },
-  {
-    id: "m5gr84i9",
-    guestName: "Hello World",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "m5gr84i8",
-    guestName: "Hello World",
-    email: "yahoo.com",
-  },
-]
+import eventStore from "@/store/event-store"
 
 export type GuestInvite = {
   id: string
@@ -132,6 +95,17 @@ export const columns: ColumnDef<GuestInvite>[] = [
 
 function GuestInviteTable() {
   const [rowSelection, setRowSelection] = useState({})
+  const { invites } = eventStore()
+
+  const data: GuestInvite[] = invites
+    .filter((invite: any) => invite.status == "PENDING_GUEST")
+    .map((invite: any) => {
+      return {
+        id: invite.id,
+        guestName: "Guest Name",
+        email: invite.email,
+      }
+    })
 
   const table = useReactTable({
     data,
@@ -233,19 +207,28 @@ export const TotalCountCard = ({ totalGuest }: { totalGuest: string }) => {
 }
 
 export const PendingInviteCard = () => {
+  const { invites } = eventStore()
+
+  const pendingGuestInvite = invites.filter((invite: any) => {
+    return invite.status === "PENDING_GUEST"
+  })
+
   return (
     <Card className="border-2 border-gray-200">
       <CardHeader>
         <CardTitle className="text-lg font-semibold">Pending Invites</CardTitle>
         <CardDescription className="mb-8">
-          Till now <span className="underline cursor-pointer">23 guest</span>{" "}
+          Till now
+          <span className="underline cursor-pointer text-gray-900">
+            {"  "}
+            {pendingGuestInvite.length} guests{"  "}
+          </span>
           have not accepted their invite to the event workspace
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex justify-end">
           <SendMailDialog />
-          {/* <Button className="px-4 py-1">Send Invite Email</Button> */}
         </div>
       </CardContent>
     </Card>
@@ -253,11 +236,7 @@ export const PendingInviteCard = () => {
 }
 
 const SendMailDialog = () => {
-  const [selectedGuest, setSelectedGuest] = useState([]) // intially it will be set to the whole array of emails
-
-  const sendEmail = () => {
-    // backend call
-  }
+  const sendEmail = () => {}
 
   return (
     <Dialog>

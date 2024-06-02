@@ -17,10 +17,12 @@ import { Label } from "@radix-ui/react-label"
 import { Textarea } from "../ui/textarea"
 import Image from "next/image"
 import authStore from "@/store/auth-store"
+import eventStore from "@/store/event-store"
 
 const CreatePostDialog = () => {
   const { eventId } = useParams()
   const { primaryColor } = appearanceStore()
+  const { addGuestPost } = eventStore()
   const [text, setText] = useState<string>("")
 
   const bgClass = `bg-[${primaryColor}]/10 `
@@ -40,7 +42,16 @@ const CreatePostDialog = () => {
     console.log(response)
 
     if (response.status === 201) {
-      console.log("Post created")
+      addGuestPost({
+        text: response.data.data.text,
+        createdAt: response.data.data.createdAt,
+        guest: {
+          guest: {
+            name: response.data.data.guest.name,
+            avatar: response.data.data.guest.avatar,
+          },
+        },
+      })
     }
   }
 

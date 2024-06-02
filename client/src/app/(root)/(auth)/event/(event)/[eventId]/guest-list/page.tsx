@@ -27,15 +27,17 @@ const Page = () => {
     }
   })
 
-  const totalGuest = guests.reduce(
+  const rsvpConfirmed = guests.filter(
+    (guest: any) => guest.guest.rsvps.status === "CONFIRMED"
+  )
+
+  const totalGuest = rsvpConfirmed.reduce(
     (acc: number, guest: any) => acc + guest.guest.plusOnes,
-    guests.length
+    rsvpConfirmed.length
   )
 
   return (
     <div>
-      {/* <p>{JSON.stringify(guests)}</p> */}
-
       <div className="flex gap-6 mt-10 px-10">
         <TotalCountCard totalGuest={totalGuest} />
         <PendingInviteCard />

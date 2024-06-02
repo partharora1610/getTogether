@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input"
 import React from "react"
 import axios from "axios"
 import { useParams } from "next/navigation"
+import { useToast } from "../ui/use-toast"
 
 const formSchema = z.object({
   vendorName: z.string(),
@@ -25,6 +26,7 @@ const formSchema = z.object({
 
 const AddVendorForm = () => {
   const { eventId } = useParams()
+  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,7 +50,20 @@ const AddVendorForm = () => {
         withCredentials: true,
       }
     )
-    console.log(response)
+
+    if (response.status === 200) {
+      toast({
+        title: "Vendor Invited",
+        description: "Vendor has been invited successfully",
+        variant: "default",
+      })
+    } else {
+      toast({
+        title: "Error",
+        description: "Failed to invite vendor",
+        variant: "destructive",
+      })
+    }
   }
 
   return (

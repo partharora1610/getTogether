@@ -56,12 +56,6 @@ const OverviewHeader = () => {
         </div>
       </div>
 
-      {/* testing */}
-      <div className="bg-black/30 px-4 py-4 mt-4 rounded-md cursor-pointer  absolute top-0 right-4 flex items-center justify-between">
-        <CompleteGuestProfileDialog />
-      </div>
-      {/* testing */}
-
       {roleType === Role.GUEST && (
         <div className="bg-black/30 px-4 py-4 mt-4 rounded-md cursor-pointer  absolute top-0 right-4 flex items-center justify-between">
           <CompleteGuestProfileDialog />
@@ -75,7 +69,6 @@ const EventAnnouncement = () => {
   const { eventPolls, eventPosts } = eventStore()
 
   const allPosts = [...eventPosts, ...eventPolls]
-  console.log(allPosts)
 
   allPosts.sort((a, b) => {
     const dateA = new Date(a.createdAt)
@@ -159,6 +152,7 @@ const CreateAnnoucementDialog = () => {
 
 const HostSpecialDialog = () => {
   const { primaryColor } = appearanceStore()
+  const { eventHostMessage } = eventStore()
 
   const textClass = `text-[${primaryColor}]`
   const borderClass = `border-[${primaryColor}]`
@@ -168,7 +162,6 @@ const HostSpecialDialog = () => {
   const customShadow = `hover:shadow-custom-shadow-${primaryColor}`
   return (
     <div>
-      {" "}
       <Dialog>
         <DialogTrigger>
           <button
@@ -190,14 +183,7 @@ const HostSpecialDialog = () => {
               </div>
               <div>
                 <p className="text-xl text-gray-700 leading-8">
-                  Lets celebrate ranveer special night together and make it a
-                  memorable one. Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Corporis officia numquam, perspiciatis
-                  nostrum exercitationem pariatur et necessitatibus, fugit aut
-                  eaque sed non ipsa, dicta temporibus. Odio dolor impedit
-                  dignissimos id nulla porro, placeat aliquid vero ipsum itaque
-                  voluptatum doloribus amet, ullam eligendi omnis beatae dolorum
-                  maiores
+                  {eventHostMessage?.message}
                 </p>
               </div>
 

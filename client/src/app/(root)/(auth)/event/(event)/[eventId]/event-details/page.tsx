@@ -1,164 +1,167 @@
 "use client"
 import React from "react"
 import { Button } from "@/components/ui/button"
-import AddVendorForm from "@/components/forms/AddVendorForm"
 import VenuePlanList from "@/components/shared/VenuePlanList"
 import EventVenueForm from "@/components/forms/EventVenueForm"
-import { NegativeTag } from "@/components/tags/tags"
+import { Label } from "@/components/ui/label"
+import appearanceStore from "@/store/appearance-store"
+import axios from "axios"
+import { useToast } from "@/components/ui/use-toast"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { useParams } from "next/navigation"
 import eventStore from "@/store/event-store"
 
 const Page = () => {
-  const [addingVendor, setAddingVendor] = React.useState(false)
-  const { vendors } = eventStore()
-
   return (
-    <div>
-      <div className="mb-12">
-        <HeadingH2 title={"About the event"} />
-        <p>Very Basic Form</p>
-        <p>TODO:FORM and HOST MESSAGE</p>
+    <div className="pl-2 pr-2">
+      <div className="mt-10">
+        <h2 className="text-2xl font-semibold">Event Details</h2>
+        <p className="text-base text-gray-500 mt-1">
+          Manage your event details, vendors, and venue{" "}
+        </p>
       </div>
+      <AccordianComponent />
+    </div>
+  )
+}
 
-      <div className="mb-12">
-        <div>
-          <HeadingH2 title={"Venue Details & Plan"} />
-          <p>TODO:VENUE UPDATE IN THE DB</p>
-          <p>
-            Event Venue location that will be showed on the overview and rsvp
-            page
-          </p>
-        </div>
-
-        <div className="mt-6">
+const AccordianComponent = () => {
+  return (
+    <Accordion
+      type="single"
+      collapsible
+      defaultValue="host_message"
+      className="flex flex-col gap-4"
+    >
+      <AccordionItem value="host_message">
+        <AccordionTrigger className={`text-xl`}>
+          Drop a message for all guests
+        </AccordionTrigger>
+        <AccordionContent>
+          <HostMessageForm />
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="venue_location">
+        <AccordionTrigger className="text-xl">Venue Location </AccordionTrigger>
+        <AccordionContent>
           <EventVenueForm />
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="venue_floor_plan">
+        <AccordionTrigger className="text-xl">
+          Venue Floor Plan
+        </AccordionTrigger>
+        <AccordionContent>
           <VenuePlanList />
-        </div>
-      </div>
-
-      <div className="mb-12">
-        <div className="mb-8 flex justify-between items-center">
-          <div>
-            <HeadingH2 title={"Event Vendors"} />
-            <p className="text-gray-500 mt-1 mb-4">
-              Manage & Add event vendors. Currently You have{" "}
-              <span className="underline cursor-pointer">3 vendors</span> have
-              not accepted the invitation.
-            </p>
-          </div>
-          <div>
-            <Button
-              size="sm"
-              variant="default"
-              onClick={() => setAddingVendor(!addingVendor)}
-            >
-              {!addingVendor ? (
-                <div className="flex items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 inline-block mr-2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                    />
-                  </svg>
-                  <p>Add Vendor</p>
-                </div>
-              ) : (
-                <div className="flex gap-1 items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 inline-block mr-2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 15l7-7 7 7"
-                    ></path>
-                  </svg>
-                  <div>
-                    <p>Close</p>
-                  </div>
-                </div>
-              )}
-            </Button>
-          </div>
-        </div>
-
-        {/* Rendering Vendor Cards */}
-        <div className="grid grid-cols-2 gap-20">
-          <div className="flex flex-col gap-8">
-            {vendors.map((v: any) => {
-              const { id, name, email, phone } = v.vendor
-              return (
-                <VendorCard
-                  key={v.id}
-                  name={name}
-                  email={email}
-                  phone={phone}
-                />
-              )
-            })}
-          </div>
-          <div>{addingVendor ? <AddVendorForm /> : <></>}</div>
-        </div>
-      </div>
-    </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   )
 }
 
-const VendorCard = ({
-  name,
-  email,
-  phone,
-}: {
-  name: string
-  email: string
-  phone: string
-}) => {
+const HostMessageForm = () => {
+  const { eventHostMessage, addEventHostMessage } = eventStore()
+  const [message, setMessage] = React.useState(eventHostMessage?.message)
+  const { primaryColor } = appearanceStore()
+  const { toast } = useToast()
+  const params = useParams()
+  const eventId = params.eventId as string
+
+  const textClass = `text-[${primaryColor}]`
+
+  const onSubmit = async () => {
+    setMessage("")
+
+    if (eventHostMessage == null) {
+      const response = await axios.post(
+        `http://localhost:8000/events/${eventId}/host-message`,
+        {
+          message,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+
+      if (response.status === 200) {
+        addEventHostMessage(response.data.data)
+        toast({
+          title: "Message Updated",
+          description: "Message has been updated successfully",
+          variant: "default",
+        })
+      } else {
+        toast({
+          title: "Error updating a message",
+          description: "Something went wrong",
+          variant: "destructive",
+        })
+      }
+    } else {
+      const response = await axios.put(
+        `http://localhost:8000/events/${eventId}/host-message`,
+        {
+          message,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+
+      if (response.status === 200) {
+        addEventHostMessage(response.data.data)
+        toast({
+          title: "Message Updated",
+          description: "Message has been updated successfully",
+          variant: "default",
+        })
+      } else {
+        toast({
+          title: "Error updating a message",
+          description: "Something went wrong",
+          variant: "destructive",
+        })
+      }
+    }
+  }
+
   return (
-    <div className="border-2 border-gray-200 w-[600px] px-4 py-6 rounded-md">
-      <div className="w-full">
-        <div className="flex gap-4 items-start">
-          <div className="min-w-[52px] h-[52px] bg-gray-500 rounded-md"></div>
-          <div className="flex w-full justify-between">
-            <div>
-              <p className="text-lg">{name}</p>
-              <p className="text-gray-500">
-                Responsible for <span className="underline"> Catering </span>
-              </p>
-            </div>
-            <div>
-              {/* <PositiveTag text={"Contract Signed"} /> */}
-              <NegativeTag text={"Contract Pending"} />
-            </div>
+    <div className="mt-4">
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-1">
+          <Label className="text-base">Message</Label>
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            rows={5}
+            className="border-2 border-gray-200 w-full p-2 text-lg rounded-md"
+            placeholder="Drop a message for all guests"
+          ></textarea>
+        </div>
+        <div className="flex justify-between">
+          <Label className={`text-base`}>Upload Invite Video</Label>
+          <div
+            className={`${textClass} font-semibold underline cursor-pointer`}
+          >
+            Upload
           </div>
         </div>
-        <div className="flex justify-end mt-4 gap-6">
-          <Button size="sm" variant="outline">
-            Chat
-          </Button>
+      </div>
 
-          <Button size="sm" variant="outline">
-            Send Contract Reminder
-          </Button>
-        </div>
+      <div className="flex justify-end mt-8">
+        <Button variant="default" className="" onClick={onSubmit}>
+          {eventHostMessage == null
+            ? "Add Host Message"
+            : "Update Host Message"}
+        </Button>
       </div>
     </div>
   )
-}
-
-const HeadingH2 = ({ title }: { title: string }) => {
-  return <h2 className="text-xl font-medium capitalize">{title}</h2>
 }
 
 export default Page

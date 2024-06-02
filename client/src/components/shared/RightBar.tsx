@@ -8,8 +8,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import eventStore from "@/store/event-store"
-// import { guests } from "@/constants"
 import appearanceStore from "@/store/appearance-store"
+import { useParams } from "next/navigation"
+import Link from "next/link"
+import { Role } from "@/types"
 
 const RightBar = () => {
   return (
@@ -19,41 +21,12 @@ const RightBar = () => {
   )
 }
 
-// const GUESTS = [
-//   {
-//     name: "Mr Mukesh Bansal",
-//     rsvp: true,
-//   },
-//   {
-//     name: "Mr Nitin kamath",
-//     rsvp: false,
-//   },
-//   {
-//     name: "Wedding Venue Service",
-//     rsvp: true,
-//   },
-//   {
-//     name: "Mr Mukesh Bansal",
-//     rsvp: true,
-//   },
-//   {
-//     name: "Mr Nitin kamath",
-//     rsvp: false,
-//   },
-//   {
-//     name: "Wedding Venue Service",
-//     rsvp: true,
-//   },
-//   {
-//     name: "Mr Mukesh Bansal",
-//     rsvp: true,
-//   },
-// ]
-
 const GuestList = () => {
-  const { event, loading } = eventStore()
+  const { event, loading, roleType } = eventStore()
   const { primaryColor } = appearanceStore()
   const textClass = `text-[${primaryColor}]`
+  const params = useParams()
+  const eventId = params.eventId as string
 
   if (loading) {
     return <div>Loading...</div>
@@ -68,13 +41,16 @@ const GuestList = () => {
             ({event?.guests.length} guests)
           </p>
         </div>
-        <div className={`${textClass} font-semibold underline cursor-pointer`}>
-          Manage
-        </div>
+        {Role.HOST == roleType && (
+          <Link href={`/event/${eventId}/guest-list`}>
+            <div
+              className={`${textClass} font-semibold underline cursor-pointer`}
+            >
+              Manage
+            </div>
+          </Link>
+        )}
       </div>
-      {/* <p>{JSON.stringify(event?.guests)}</p> */}
-
-      {/* <p>{event?.guests == 0 ? "No Guest" : "Hello"}</p> */}
 
       <div className="flex flex-col gap-6 w-full">
         {event?.guests.map((guest: any) => (
@@ -99,56 +75,61 @@ const GuestListItem = ({
   rsvp: any
   plusOnes: any
 }) => {
+  const { roleType } = eventStore()
+
   return (
     <div className="flex gap-2 items-center px-2 py-3 rounded-md  ">
       <div className="min-w-[40px] min-h-[40px] bg-gray-800 rounded-full"></div>
       <div className="flex justify-between items-center w-full">
         <p className="text-base">{guest}</p>
+        {Role.HOST == roleType && (
+          <div>
+            {rsvp.status == "PENDING" && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <div className="bg-gray-200 text-gray-700 p-1 rounded-md cursor-pointer">
+                      <Dot size={16} />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Pending</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
 
-        {rsvp.status == "PENDING" && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <div className="bg-gray-200 text-gray-700 p-1 rounded-md cursor-pointer">
-                  <Dot size={16} />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Pending</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        )}
+            {rsvp.status == "CANCELLED" && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <div className="bg-red-100 text-red-700 p-1 rounded-md cursor-pointer">
+                      <X size={16} />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Rejected</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
 
-        {rsvp.status == "CANCELLED" && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <div className="bg-red-100 text-red-700 p-1 rounded-md cursor-pointer">
-                  <X size={16} />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Rejected</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        )}
-
-        {rsvp.status == "CONFIRMED" && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <div className="bg-green-100 text-green-700 p-1 rounded-md cursor-pointer">
-                  <Check size={16} />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Accepted</p>
-                <p className="font-semibold">{plusOnes} plus ones</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+            {rsvp.status == "CONFIRMED" && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <div className="bg-green-100 text-green-700 p-1 rounded-md cursor-pointer">
+                      <Check size={16} />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Accepted</p>
+                    <p className="font-semibold">{plusOnes} plus ones</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+          </div>
         )}
       </div>
     </div>

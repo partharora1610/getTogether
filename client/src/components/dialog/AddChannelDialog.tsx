@@ -42,16 +42,11 @@ const AddChannelDialog = ({ eventId }: { eventId: string }) => {
 
   return (
     <Dialog>
-      <DialogTrigger className="flex justify-between w-full">
-        <h2 className="text-lg text-gray-600 font-medium mb-4 uppercase">
-          Discussion Channels
-        </h2>
-        <div>
-          <PlusIcon
-            size={22}
-            className={`${textClass} ${bgClass} rounded-md p-1 cursor-pointer`}
-          />
-        </div>
+      <DialogTrigger className="">
+        <PlusIcon
+          size={22}
+          className={`${textClass} ${bgClass} rounded-md p-1 cursor-pointer`}
+        />
       </DialogTrigger>
       <DialogContent className="max-w-md">
         <DialogHeader>
