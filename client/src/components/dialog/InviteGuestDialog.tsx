@@ -18,6 +18,7 @@ import { Textarea } from "../ui/textarea"
 import { ScrollArea } from "../ui/scroll-area"
 import axios from "axios"
 import appearanceStore from "@/store/appearance-store"
+import { toast } from "../ui/use-toast"
 
 const InviteGuestDialog = () => {
   const [email, setEmail] = useState<string>("")
@@ -36,8 +37,15 @@ const InviteGuestDialog = () => {
       {
         withCredentials: true,
       }
-    )
-    console.log(response)
+    );
+
+    if (response.status === 200) {
+      toast({
+        title: "Invite Sent to Guest Successfully",
+        variant: "default",
+      });
+    }
+
   }
 
   return (

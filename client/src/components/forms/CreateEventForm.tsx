@@ -18,6 +18,7 @@ import { Textarea } from "../ui/textarea"
 // import CreateEventAccordian from "../accordian/CreateEventAccordian"
 import { useRouter } from "next/navigation"
 import axios from "axios"
+import { toast } from "../ui/use-toast"
 
 const formSchema = z.object({
   title: z.string(),
@@ -62,6 +63,11 @@ const CreateEventForm = () => {
       const {
         data: { id },
       } = response.data
+
+      toast({
+        title: "Event created successfully",
+        variant: "default",
+      });
 
       router.push(`/event/${id}/overview`)
     }

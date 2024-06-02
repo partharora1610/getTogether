@@ -10,7 +10,7 @@ const OnboardingPage = () => {
 
   useEffect(() => {
     fetchEvents()
-  }, [])
+  }, []);
 
   if (loading) {
     return (

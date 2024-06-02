@@ -13,6 +13,7 @@ import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import appearanceStore from "@/store/appearance-store"
+import { toast } from "../ui/use-toast"
 
 enum CHANNELS {
   PUBLIC = "PUBLIC",
@@ -20,15 +21,15 @@ enum CHANNELS {
 }
 
 const AddChannelDialog = ({ eventId }: { eventId: string }) => {
-  const [channelName, setChannelName] = useState<string>("")
-  const [channelType, setChannelType] = useState<string>(CHANNELS.PUBLIC)
-  const { primaryColor } = appearanceStore()
+  const [channelName, setChannelName] = useState<string>("");
+  const [channelType, setChannelType] = useState<string>(CHANNELS.PUBLIC);
+  const { primaryColor } = appearanceStore();
 
   const textClass = `text-[${primaryColor}]`
   const bgClass = `bg-[${primaryColor}]/10`
 
   async function createChannel() {
-    await axios.post(
+    const response = await axios.post(
       `https://fueled-41xn.onrender.com/events/${eventId}/channels/create`,
       {
         name: channelName,
@@ -37,7 +38,14 @@ const AddChannelDialog = ({ eventId }: { eventId: string }) => {
       {
         withCredentials: true,
       }
-    )
+    );
+
+    if (response.status === 200) {
+      toast({
+        title: "Channel Created Successfully",
+        variant: "default",
+      });
+    }
   }
 
   return (

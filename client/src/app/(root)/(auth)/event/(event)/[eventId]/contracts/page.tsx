@@ -25,7 +25,7 @@ const Page = () => {
       )
 
       if (response.status == 200) {
-        setContracts(response.data.data.contract)
+        setContracts(response.data.data.contract);
       } else {
         toast({
           title: "Contracts fetch failed",
