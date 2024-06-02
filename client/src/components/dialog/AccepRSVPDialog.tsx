@@ -17,11 +17,9 @@ import HostIcon from "../shared/HostIcon"
 
 const AccepRSVPDialog = () => {
   const { primaryColor } = appearanceStore()
-
   const bgClass = `bg-[${primaryColor}]/10 `
   const textClass = `text-[${primaryColor}]`
   const borderClass = `border-[${primaryColor}]`
-
   const [plusOnes, setPlusOnes] = useState(0)
   const { event } = eventStore()
 
@@ -45,11 +43,16 @@ const AccepRSVPDialog = () => {
     }
   }
 
+  /**
+   * {"id":"clwwvrej800081cgtcrw47or6","status":"CONFIRMED","eventId":"clwwfive10002ttpsj3w8unnj","guestId":"clwwvraof00071cgtbpm44mgb","createdAt":"2024-06-02T01:45:45.045Z","updatedAt":"2024-06-02T01:53:27.706Z"}
+   */
+  // const guestRSVP = rsvp.find((r: any) => r.guestId === currentRole.id)
+
   return (
     <Dialog>
       <DialogTrigger className="hover:underline">
         <button
-          className={`hover:${bgClass} hover:border-white px-8 py-4 rounded-xl ${textClass} border-2 ${borderClass}`}
+          className={`hover:${bgClass} hover:border-white px-6 py-3 rounded-xl ${textClass} border-2 ${borderClass}`}
         >
           Count me in
         </button>
@@ -65,6 +68,7 @@ const AccepRSVPDialog = () => {
               <div className="min-w-[60px] h-[60px] bg-gray-50 rounded-md">
                 <HostIcon />
               </div>
+
               <div className="text-gray-900">
                 Thankyou so much for confirming you presence, lets make this
                 event a special one for everyone

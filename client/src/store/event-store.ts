@@ -53,7 +53,6 @@ type Store = {
   fetchEvents: () => void
   createEvent: (event: any) => void
 
-  /// testing this
   nickName: string
   avatar: string
 }
@@ -161,7 +160,7 @@ const eventStore = create<Store>()((set) => ({
     if (response.status == 200) {
       set({ event: response.data.data })
       set({ loading: false })
-      set({ rsvp: response.data.data.rsvp })
+      set({ rsvp: response.data.data.rsvps })
       set({ invites: response.data.data.invites })
       set({ guests: response.data.data.guests })
       set({ vendors: response.data.data.vendors })

@@ -12,6 +12,8 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
+import { Role } from "@/types"
+import appearanceStore from "@/store/appearance-store"
 
 const Page = () => {
   const { guestPosts } = eventStore()
@@ -75,7 +77,7 @@ const FeedCard = ({
           <p className="text-lg">
             {guest.guest.name} <span>Just confirmed his presence</span>
           </p>
-          <p className="text-gray-500">2 hours ago</p>
+          <p className="text-gray-500">{convertToDDMM(createdAt)}</p>
         </div>
       </div>
 
@@ -95,11 +97,30 @@ const FeedCard = ({
   )
 }
 
+function convertToDDMM(dateStr: string): string {
+  const dateObj = new Date(dateStr)
+
+  const day = dateObj.getDate().toString().padStart(2, "0")
+  const month = (dateObj.getMonth() + 1).toString().padStart(2, "0")
+  const year = dateObj.getFullYear()
+
+  const ddmmStr = `${day}-${month}-${year}`
+
+  return ddmmStr
+}
+
 const RSVPCard = () => {
-  const { event, venue } = eventStore()
+  const { event, venue, roleType, rsvp, currentRole } = eventStore()
+  const { primaryColor } = appearanceStore()
+  const textClass = `text-[${primaryColor}]`
+  const guestRSVP = rsvp.find((r: any) => r.guestId === currentRole.id)
 
   return (
-    <div className="border-2 w-full border-gray-100 rounded-md flex gap-6 px-4 py-4 h-full">
+    <div
+      className={`border-2 w-full border-gray-100 rounded-md flex gap-6 px-4 py-4 h-full ${
+        roleType == Role.HOST && " pt-6 pb-8"
+      }`}
+    >
       <div className="">
         <div className="flex justify-between gap-24">
           <div>
@@ -139,10 +160,21 @@ const RSVPCard = () => {
             </h1>
           </div>
         </div>
-        <div className="flex gap-16 mt-6 justify-end">
-          <RejectRSVPDialog />
-          <AccepRSVPDialog />
-        </div>
+        {roleType == Role.GUEST && (
+          <div className="flex gap-16 mt-4 justify-end">
+            {!guestRSVP && <RejectRSVPDialog />}
+
+            {guestRSVP && guestRSVP.status == "CONFIRMED" && (
+              <button
+                className={`h font-semibold hover:border-white px-6 py-3 rounded-xl ${textClass} `}
+              >
+                Already confirmed
+              </button>
+            )}
+
+            {!guestRSVP && <AccepRSVPDialog />}
+          </div>
+        )}
       </div>
     </div>
   )
