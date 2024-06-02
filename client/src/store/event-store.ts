@@ -13,6 +13,7 @@ interface Event {
   createdAt: string
   channels: any
   startDate: string
+  isAddedToCalendar: boolean
 }
 
 type Store = {
@@ -138,7 +139,7 @@ const eventStore = create<Store>()((set) => ({
           avatar: data.avatar,
           nickName: data.nickName,
         })
-      } else if (role == "vendor") {
+      } else if (role === "vendor") {
         set({ roleType: Role.VENDOR })
       }
     }

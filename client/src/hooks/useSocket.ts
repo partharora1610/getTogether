@@ -15,7 +15,7 @@ export const useSocket = () => {
     if (channelId && currentRole) {
       setReadyToJoin(true)
     }
-  }, [channelId, currentRole])
+  }, [channelId, currentRole]);
 
   useEffect(() => {
     if (readyToJoin) {
