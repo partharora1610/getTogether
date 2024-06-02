@@ -11,19 +11,19 @@ import eventStore from "@/store/event-store"
 import { Role } from "@/types"
 
 const Page = () => {
-  const { fetchMessages } = chatStore()
-  const params = useParams()
+  const { fetchMessages } = chatStore();
+  const params = useParams();
 
   const { eventId, channelId } = params as {
     eventId: string
     channelId: string
-  }
+  };
 
-  useSocket()
+  useSocket();
 
   useEffect(() => {
     fetchMessages(eventId, channelId)
-  }, [eventId, channelId])
+  }, [eventId, channelId]);
 
   return (
     <div className="relative min-h-full bg-zinc-50 flex-col justify-between gap-2">
@@ -68,7 +68,7 @@ const ChatItem = ({ message, avatar, nickName, name }: any) => {
   } else if (roleType === Role.GUEST && !nickName) {
     nickName = name;
   }
-  
+
   return (
     <div className="flex shadow w-3/4 p-2 my-2 gap-4 rounded-lg items-start bg-white">
       {!avatar ? (
@@ -82,7 +82,7 @@ const ChatItem = ({ message, avatar, nickName, name }: any) => {
       <div className="w-full">
         <div className="flex justify-between ">
           <p className="font-semibold">{nickName || "HOST"}</p>
-          <p className="text-gray-500 text-sm">2 dyas ago</p>
+          {/* <p className="text-gray-500 text-sm"></p> */}
         </div>
         <p className="text-base leading-7 mb-1">{message}</p>
       </div>
